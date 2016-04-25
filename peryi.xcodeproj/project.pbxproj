@@ -1,0 +1,539 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A98AFAB1CCDE59D00721956 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAA1CCDE59D00721956 /* main.m */; };
+		0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAD1CCDE59D00721956 /* AppDelegate.m */; };
+		0A98AFB11CCDE59D00721956 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFB01CCDE59D00721956 /* ViewController.m */; };
+		0A98AFB41CCDE59D00721956 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A98AFB21CCDE59D00721956 /* Main.storyboard */; };
+		0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */; };
+		0A98AFB91CCDE59D00721956 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A98AFB81CCDE59D00721956 /* Assets.xcassets */; };
+		0A98AFBC1CCDE59D00721956 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A98AFBA1CCDE59D00721956 /* LaunchScreen.storyboard */; };
+		0A98AFC71CCDE59D00721956 /* peryiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFC61CCDE59D00721956 /* peryiTests.m */; };
+		0A98AFD21CCDE59D00721956 /* peryiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFD11CCDE59D00721956 /* peryiUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0A98AFC31CCDE59D00721956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A98AF9E1CCDE59D00721956 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A98AFA51CCDE59D00721956;
+			remoteInfo = peryi;
+		};
+		0A98AFCE1CCDE59D00721956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A98AF9E1CCDE59D00721956 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A98AFA51CCDE59D00721956;
+			remoteInfo = peryi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A98AFA61CCDE59D00721956 /* peryi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = peryi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A98AFAA1CCDE59D00721956 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0A98AFAC1CCDE59D00721956 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0A98AFAD1CCDE59D00721956 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0A98AFAF1CCDE59D00721956 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		0A98AFB01CCDE59D00721956 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		0A98AFB31CCDE59D00721956 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0A98AFB61CCDE59D00721956 /* peryi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = peryi.xcdatamodel; sourceTree = "<group>"; };
+		0A98AFB81CCDE59D00721956 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0A98AFBB1CCDE59D00721956 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0A98AFBD1CCDE59D00721956 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A98AFC21CCDE59D00721956 /* peryiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = peryiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A98AFC61CCDE59D00721956 /* peryiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = peryiTests.m; sourceTree = "<group>"; };
+		0A98AFC81CCDE59D00721956 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A98AFCD1CCDE59D00721956 /* peryiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = peryiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A98AFD11CCDE59D00721956 /* peryiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = peryiUITests.m; sourceTree = "<group>"; };
+		0A98AFD31CCDE59D00721956 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0A98AFA31CCDE59D00721956 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFBF1CCDE59D00721956 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFCA1CCDE59D00721956 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A98AF9D1CCDE59D00721956 = {
+			isa = PBXGroup;
+			children = (
+				0A98AFA81CCDE59D00721956 /* peryi */,
+				0A98AFC51CCDE59D00721956 /* peryiTests */,
+				0A98AFD01CCDE59D00721956 /* peryiUITests */,
+				0A98AFA71CCDE59D00721956 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0A98AFA71CCDE59D00721956 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0A98AFA61CCDE59D00721956 /* peryi.app */,
+				0A98AFC21CCDE59D00721956 /* peryiTests.xctest */,
+				0A98AFCD1CCDE59D00721956 /* peryiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0A98AFA81CCDE59D00721956 /* peryi */ = {
+			isa = PBXGroup;
+			children = (
+				0A98AFAC1CCDE59D00721956 /* AppDelegate.h */,
+				0A98AFAD1CCDE59D00721956 /* AppDelegate.m */,
+				0A98AFAF1CCDE59D00721956 /* ViewController.h */,
+				0A98AFB01CCDE59D00721956 /* ViewController.m */,
+				0A98AFB21CCDE59D00721956 /* Main.storyboard */,
+				0A98AFB81CCDE59D00721956 /* Assets.xcassets */,
+				0A98AFBA1CCDE59D00721956 /* LaunchScreen.storyboard */,
+				0A98AFBD1CCDE59D00721956 /* Info.plist */,
+				0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */,
+				0A98AFA91CCDE59D00721956 /* Supporting Files */,
+			);
+			path = peryi;
+			sourceTree = "<group>";
+		};
+		0A98AFA91CCDE59D00721956 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0A98AFAA1CCDE59D00721956 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0A98AFC51CCDE59D00721956 /* peryiTests */ = {
+			isa = PBXGroup;
+			children = (
+				0A98AFC61CCDE59D00721956 /* peryiTests.m */,
+				0A98AFC81CCDE59D00721956 /* Info.plist */,
+			);
+			path = peryiTests;
+			sourceTree = "<group>";
+		};
+		0A98AFD01CCDE59D00721956 /* peryiUITests */ = {
+			isa = PBXGroup;
+			children = (
+				0A98AFD11CCDE59D00721956 /* peryiUITests.m */,
+				0A98AFD31CCDE59D00721956 /* Info.plist */,
+			);
+			path = peryiUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0A98AFA51CCDE59D00721956 /* peryi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A98AFD61CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryi" */;
+			buildPhases = (
+				0A98AFA21CCDE59D00721956 /* Sources */,
+				0A98AFA31CCDE59D00721956 /* Frameworks */,
+				0A98AFA41CCDE59D00721956 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = peryi;
+			productName = peryi;
+			productReference = 0A98AFA61CCDE59D00721956 /* peryi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0A98AFC11CCDE59D00721956 /* peryiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A98AFD91CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryiTests" */;
+			buildPhases = (
+				0A98AFBE1CCDE59D00721956 /* Sources */,
+				0A98AFBF1CCDE59D00721956 /* Frameworks */,
+				0A98AFC01CCDE59D00721956 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0A98AFC41CCDE59D00721956 /* PBXTargetDependency */,
+			);
+			name = peryiTests;
+			productName = peryiTests;
+			productReference = 0A98AFC21CCDE59D00721956 /* peryiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		0A98AFCC1CCDE59D00721956 /* peryiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A98AFDC1CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryiUITests" */;
+			buildPhases = (
+				0A98AFC91CCDE59D00721956 /* Sources */,
+				0A98AFCA1CCDE59D00721956 /* Frameworks */,
+				0A98AFCB1CCDE59D00721956 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0A98AFCF1CCDE59D00721956 /* PBXTargetDependency */,
+			);
+			name = peryiUITests;
+			productName = peryiUITests;
+			productReference = 0A98AFCD1CCDE59D00721956 /* peryiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0A98AF9E1CCDE59D00721956 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = ZK;
+				TargetAttributes = {
+					0A98AFA51CCDE59D00721956 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 8T5GB8CVP5;
+					};
+					0A98AFC11CCDE59D00721956 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 8T5GB8CVP5;
+						TestTargetID = 0A98AFA51CCDE59D00721956;
+					};
+					0A98AFCC1CCDE59D00721956 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 8T5GB8CVP5;
+						TestTargetID = 0A98AFA51CCDE59D00721956;
+					};
+				};
+			};
+			buildConfigurationList = 0A98AFA11CCDE59D00721956 /* Build configuration list for PBXProject "peryi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0A98AF9D1CCDE59D00721956;
+			productRefGroup = 0A98AFA71CCDE59D00721956 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0A98AFA51CCDE59D00721956 /* peryi */,
+				0A98AFC11CCDE59D00721956 /* peryiTests */,
+				0A98AFCC1CCDE59D00721956 /* peryiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0A98AFA41CCDE59D00721956 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A98AFBC1CCDE59D00721956 /* LaunchScreen.storyboard in Resources */,
+				0A98AFB91CCDE59D00721956 /* Assets.xcassets in Resources */,
+				0A98AFB41CCDE59D00721956 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFC01CCDE59D00721956 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFCB1CCDE59D00721956 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0A98AFA21CCDE59D00721956 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A98AFB11CCDE59D00721956 /* ViewController.m in Sources */,
+				0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */,
+				0A98AFAB1CCDE59D00721956 /* main.m in Sources */,
+				0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFBE1CCDE59D00721956 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A98AFC71CCDE59D00721956 /* peryiTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A98AFC91CCDE59D00721956 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A98AFD21CCDE59D00721956 /* peryiUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0A98AFC41CCDE59D00721956 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A98AFA51CCDE59D00721956 /* peryi */;
+			targetProxy = 0A98AFC31CCDE59D00721956 /* PBXContainerItemProxy */;
+		};
+		0A98AFCF1CCDE59D00721956 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A98AFA51CCDE59D00721956 /* peryi */;
+			targetProxy = 0A98AFCE1CCDE59D00721956 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0A98AFB21CCDE59D00721956 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0A98AFB31CCDE59D00721956 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0A98AFBA1CCDE59D00721956 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0A98AFBB1CCDE59D00721956 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0A98AFD41CCDE59D00721956 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0A98AFD51CCDE59D00721956 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0A98AFD71CCDE59D00721956 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = peryi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0A98AFD81CCDE59D00721956 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = peryi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		0A98AFDA1CCDE59D00721956 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = peryiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/peryi.app/peryi";
+			};
+			name = Debug;
+		};
+		0A98AFDB1CCDE59D00721956 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = peryiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/peryi.app/peryi";
+			};
+			name = Release;
+		};
+		0A98AFDD1CCDE59D00721956 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = peryiUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = peryi;
+			};
+			name = Debug;
+		};
+		0A98AFDE1CCDE59D00721956 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = peryiUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ZK.peryiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = peryi;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0A98AFA11CCDE59D00721956 /* Build configuration list for PBXProject "peryi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A98AFD41CCDE59D00721956 /* Debug */,
+				0A98AFD51CCDE59D00721956 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A98AFD61CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A98AFD71CCDE59D00721956 /* Debug */,
+				0A98AFD81CCDE59D00721956 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		0A98AFD91CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A98AFDA1CCDE59D00721956 /* Debug */,
+				0A98AFDB1CCDE59D00721956 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		0A98AFDC1CCDE59D00721956 /* Build configuration list for PBXNativeTarget "peryiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A98AFDD1CCDE59D00721956 /* Debug */,
+				0A98AFDE1CCDE59D00721956 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0A98AFB61CCDE59D00721956 /* peryi.xcdatamodel */,
+			);
+			currentVersion = 0A98AFB61CCDE59D00721956 /* peryi.xcdatamodel */;
+			path = peryi.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 0A98AF9E1CCDE59D00721956 /* Project object */;
+}
