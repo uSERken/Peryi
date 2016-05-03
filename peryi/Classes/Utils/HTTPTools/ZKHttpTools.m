@@ -151,14 +151,24 @@ SingletonM(ZKHttpTools)
                     }
                 }
             }//if结束
-            if (i == 5) {
-                TFHppleElement *jianjie = downElement.children[i];
-                infoText = jianjie.text;
+            
+            if (i < 4) {
+                if (i == 3) {
+                    TFHppleElement *jianjie = downElement.children[i];
+                    infoText = jianjie.text;
+                }
+            }else{
+                if (i == 5) {
+                    TFHppleElement *jianjie = downElement.children[i];
+                    infoText = jianjie.text;
+                }
             }
         }//内循环结束
     }//download 循环结束
     dmDetial[@"dmDownload"] = downloadList;
-    dmDetial[@"dmSynopsis"] = infoText;
+    infoText = [infoText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]; //去除掉首尾的空白字符和换行字符
+    infoText = [infoText stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    dmDetial[@"dmSynopsis"] = [NSString stringWithFormat:@"     %@",infoText];
     /**
      *  猜你喜欢
      */

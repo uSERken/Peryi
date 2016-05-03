@@ -11,6 +11,8 @@
 		0A5697DE1CCF039600F55397 /* UIView+WF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697DD1CCF039600F55397 /* UIView+WF.m */; };
 		0A5697E21CCF03DC00F55397 /* ZKHttpTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697E11CCF03DC00F55397 /* ZKHttpTools.m */; };
 		0A5697E51CCF04C300F55397 /* NSObject+ZKWebString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697E41CCF04C300F55397 /* NSObject+ZKWebString.m */; };
+		0A8823C91CD8A43800B05432 /* ZKPlayAndDownloadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */; };
+		0A8823CB1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */; };
 		0A98AFAB1CCDE59D00721956 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAA1CCDE59D00721956 /* main.m */; };
 		0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAD1CCDE59D00721956 /* AppDelegate.m */; };
 		0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */; };
@@ -122,6 +124,9 @@
 		0A5697E41CCF04C300F55397 /* NSObject+ZKWebString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ZKWebString.m"; sourceTree = "<group>"; };
 		0A5697EF1CCF054500F55397 /* PeryiHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeryiHeader.pch; path = ../Others/PeryiHeader.pch; sourceTree = "<group>"; };
 		0A5697F01CCF0D5500F55397 /* Singelon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singelon.h; path = ../Others/Singelon.h; sourceTree = "<group>"; };
+		0A8823C71CD8A43800B05432 /* ZKPlayAndDownloadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKPlayAndDownloadView.h; sourceTree = "<group>"; };
+		0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPlayAndDownloadView.m; sourceTree = "<group>"; };
+		0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPlayAndDownloadView.h.xib; sourceTree = "<group>"; };
 		0A98AFA61CCDE59D00721956 /* peryi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = peryi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A98AFAA1CCDE59D00721956 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A98AFAC1CCDE59D00721956 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -682,6 +687,9 @@
 				0AC234761CD3572C000D6141 /* ZKInfoView.h */,
 				0AC234771CD3572C000D6141 /* ZKInfoView.m */,
 				0AC234791CD35745000D6141 /* ZKInfoView.xib */,
+				0A8823C71CD8A43800B05432 /* ZKPlayAndDownloadView.h */,
+				0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */,
+				0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -839,6 +847,7 @@
 				0AF675991CCF2E9E002CE56B /* task_normal@2x.png in Resources */,
 				0AF6759C1CCF2E9E002CE56B /* task_selected@3x.png in Resources */,
 				0AF6759F1CCF2E9E002CE56B /* tweet_selected@2x.png in Resources */,
+				0A8823CB1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib in Resources */,
 				0AF675A01CCF2E9E002CE56B /* tweet_selected@3x.png in Resources */,
 				0AF6758D1CCF2E9E002CE56B /* me_normal@2x.png in Resources */,
 			);
@@ -928,6 +937,7 @@
 				0A98B0031CCDE8C000721956 /* ZKSearchController.m in Sources */,
 				0A98B0181CCDFCB100721956 /* ZKNavigationController.m in Sources */,
 				0AF675631CCF28F3002CE56B /* NSString+Attribute.m in Sources */,
+				0A8823C91CD8A43800B05432 /* ZKPlayAndDownloadView.m in Sources */,
 				0AF675CA1CD1FCE9002CE56B /* ZKVideoController.m in Sources */,
 				0AF675731CCF28F3002CE56B /* UIView+Frame.m in Sources */,
 				0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */,

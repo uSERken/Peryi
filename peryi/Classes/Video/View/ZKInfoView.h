@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class ZKDetailAbout;
 @interface ZKInfoView : UIView
 
 +(instancetype)view;
+
+@property (nonatomic, strong) ZKDetailAbout *infoModel;
+
+@property (nonatomic, strong) NSString *synopsis;
 
 @end

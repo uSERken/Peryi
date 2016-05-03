@@ -15,7 +15,7 @@
 #import "MBProgressHUD+Extend.h"
 #import <RDVTabBarController/RDVTabBarController.h>
 #import "ZKDetailListView.h"
-@interface ZKVideoController()<UIWebViewDelegate>
+@interface ZKVideoController()<UIWebViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, strong) VBFPopFlatButton *playBtn;
 
@@ -55,10 +55,10 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
     [self setUpAllView];
     
     [self loadListDataWithstrUrl:self.strUrl];
-    
 }
 
 
@@ -99,8 +99,23 @@
     if (!_detailListView) {
         _detailListView = [[ZKDetailListView alloc] init];
         _detailListView.backgroundColor = [UIColor grayColor];
-        [self.view addSubview:_detailListView];
         
+        //    scrollView.scrollsToTop = NO;
+        _detailListView.delegate = self;
+        // 设置内容大小
+        _detailListView.contentSize = CGSizeMake(0, 460*3);
+        // 是否反弹
+        _detailListView.bounces = YES;
+        // 是否滚动
+        _detailListView.scrollEnabled = YES;
+        _detailListView.showsHorizontalScrollIndicator = YES;
+        _detailListView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 5, 0, 0);
+        // 提示用户,Indicators flash
+        [_detailListView flashScrollIndicators];
+        // 是否同时运动,lock
+        _detailListView.directionalLockEnabled = YES;
+        
+        [self.view addSubview:_detailListView];
         [self.detailListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.playView.mas_bottom);
             make.left.right.equalTo(self.view);
@@ -137,10 +152,10 @@
         weakSelf.detailList = listData;
         [weakSelf timerToGetValue];
         //         NSLog(@"%@,",listData);
+        //视屏播放
     }];
     
-    //视屏播放
-    [self getVideoInfoWithUrl:@"/video/?6126-1-0.html"];
+
     
 
 }
@@ -151,8 +166,6 @@
 {
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
          self.view.backgroundColor = [UIColor whiteColor];
-        
-        
         [self.playView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view).offset(20);
         }];
@@ -170,18 +183,17 @@
 //=========================================获取视屏网址================================//
 //由于需要网页加载后才可得到播放地址。因此添加uiwebview类根据url进入播放页面并得到数据。
 - (void)getVideoInfoWithUrl:(NSString *)url{
+    [MBProgressHUD showMessage:@"正在加载，请稍候..."];
     url = [NSString stringWithFormat:@"%@%@",baseURL,url];
     self.webView = [[UIWebView alloc] init];
     _webView.delegate = self;
     NSURL* videoUrl = [NSURL URLWithString:url];//创建URL
     NSURLRequest* request = [NSURLRequest requestWithURL:videoUrl];//创建NSURLRequest
     [_webView loadRequest:request];//加载
-    [self.view addSubview:_webView];
-    
 }
 //webview的代理。加载网页完成后获取播放地址并删除uiwebview
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-        [MBProgressHUD showMessage:@"请稍候..."];
+  
     //加载网页完成后还需加载视频连接
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
@@ -211,7 +223,7 @@
  */
 
 - (void)timerToGetValue{
-    [MBProgressHUD showMessage:@"正在加载"];
+    [MBProgressHUD showMessage:@"正在加载,请稍候"];
     //定时器
     self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
     //加入循环进程
@@ -223,8 +235,16 @@
 - (void)timerAction{
     if (self.detailList.count > 0) {
         _detailListView.detailList = self.detailList;
+        [MBProgressHUD hideHUD];
+        
+        NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
+        
+        [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
+        
+        NSLog(@"%@",playVideoUrl[@"href"]);
+        
          [self.timer invalidate];
-         [MBProgressHUD hideHUD];
+        
     }
 }
 
