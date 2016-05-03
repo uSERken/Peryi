@@ -1,0 +1,30 @@
+//
+//  PrefixHeader.pch
+//  peryi
+//
+//  Created by k on 16/4/26.
+//  Copyright © 2016年 ZK. All rights reserved.
+//
+
+#ifndef PeryiHeader_pch
+#define PeryiHeader_pch
+#import "UIColor+expanded.h"
+#import "NSString+Common.h"
+#import "UIView+Common.h"
+#import "UIView+WF.h"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#define baseURL @"http://m.peryi.com"
+
+#define screenBounds [[UIScreen mainScreen] bounds]
+#define screenW  [[UIScreen mainScreen] bounds].size.width
+#define screenH  [[UIScreen mainScreen] bounds].size.height
+
+#define DebugLog(s, ...) NSLog(@"%s(%d): %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+
+#define WeakSelf __weak typeof(self) weakSelf = self
+
+//颜色
+#define RGB(r, g, b) [UIColor colorWithRed:r / 255.0 green:g / 255.0 blue:b / 255.0 alpha:1]
+
+#endif /* PrefixHeader_pch */

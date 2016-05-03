@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "ZKMainController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,7 +19,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+  
+    [self setupTabViewController];
+    [self.window makeKeyAndVisible];
+    
     return YES;
+}
+
+- (void)setupTabViewController{
+    ZKMainController *main = [[ZKMainController alloc] init];
+    main.tabBar.translucent = YES;
+    [self.window setRootViewController:main];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
