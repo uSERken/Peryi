@@ -15,6 +15,7 @@
 #import "Masonry.h"
 #import <MJRefresh/MJRefresh.h>
 #import "ZKVideoController.h"
+#import "MBProgressHUD+Extend.h"
 
 #define identifier @"Cell"
 
@@ -43,6 +44,8 @@
    
     if (_dmList != nil || _dmList.count > 0) {
         [self setUpSlideViewAndCollectionView];
+    }else{
+        
     }
         
 
@@ -81,18 +84,19 @@
 }
 
 - (void)refreshHome{
+    [MBProgressHUD showMessage:@"请稍候..."];
     ZKHttpTools *httpTools = [ZKHttpTools sharedZKHttpTools];
     NSArray *dmArr = [httpTools getDMLIST];
     if (dmArr != nil) {
         self.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:dmArr];
          _slideView.listArr = self.dmList;
+        [MBProgressHUD hideHUD];
     }
     [self.collectionView.mj_header endRefreshing];
 }
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{
-    ZKVideoController *viewCtr = [[ZKVideoController alloc] init];
-    viewCtr.strUrl = strUrl;
+    ZKVideoController *viewCtr = [[ZKVideoController alloc] initWithAddress:strUrl];
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
 

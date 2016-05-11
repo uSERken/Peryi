@@ -67,11 +67,11 @@
     
     if (!_currentLabel) {
         _currentLabel = [[UILabel alloc] init];
-        _currentLabel.text = @"更新至第一集";
+        _currentLabel.text = @"更新至第1集";
         _currentLabel.font = [UIFont systemFontOfSize:11];
         _currentLabel.textAlignment = NSTextAlignmentCenter;
         [_currentLabel sizeToFit];
-        [_currentLabel setOrigin:CGPointMake((self.width/3)*2-5, CGRectGetMaxY(_img.frame)+10)];
+        [_currentLabel setOrigin:CGPointMake((self.width/3)*2, CGRectGetMaxY(_img.frame)+10)];
         _currentLabel.textColor = [UIColor blackColor];
         [self addSubview:_currentLabel];
         

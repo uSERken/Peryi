@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, DownloadState){
 };
 
 typedef void(^ZFDownloadProgressBlock)(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize);
+typedef void(^ZFDownloadStateBlock)(DownloadState state);
 
 @interface ZFSessionModel : NSObject <NSCoding>
 
@@ -53,7 +54,7 @@ typedef void(^ZFDownloadProgressBlock)(CGFloat progress, NSString *speed, NSStri
 @property (nonatomic, copy) ZFDownloadProgressBlock progressBlock;
 
 /** 下载状态 */
-@property (nonatomic, copy) void(^stateBlock)(DownloadState state);
+@property (nonatomic, copy) ZFDownloadStateBlock stateBlock;
 
 - (float)calculateFileSizeInUnit:(unsigned long long)contentLength;
 

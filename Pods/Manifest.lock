@@ -19,12 +19,13 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - FontAwesome+iOS (0.1.4)
+  - HMSegmentedControl (1.5.2)
   - hpple (0.2.0)
   - iCarousel (1.8.2)
   - JazzHands (2.0.8)
-  - MarqueeLabel (2.7.1):
-    - MarqueeLabel/ObjC (= 2.7.1)
-  - MarqueeLabel/ObjC (2.7.1)
+  - MarqueeLabel (2.7.4):
+    - MarqueeLabel/ObjC (= 2.7.4)
+  - MarqueeLabel/ObjC (2.7.4)
   - Masonry (1.0.0)
   - MJExtension (3.0.10)
   - MJRefresh (3.1.0)
@@ -61,16 +62,18 @@ PODS:
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SMPageControl (1.2)
+  - SVWebViewController (1.0)
   - UIImage+BlurredFrame (0.0.4)
   - VBFPopFlatButton (0.0.6):
     - pop
-  - ZFPlayer (1.1.0):
+  - ZFPlayer (1.1.1):
     - Masonry
 
 DEPENDENCIES:
   - AFNetworking
   - ASProgressPopUpView
   - FMDB
+  - HMSegmentedControl
   - hpple
   - iCarousel
   - JazzHands
@@ -85,6 +88,7 @@ DEPENDENCIES:
   - SDCycleScrollView
   - SDWebImage
   - SMPageControl
+  - SVWebViewController
   - UIImage+BlurredFrame
   - VBFPopFlatButton
   - ZFPlayer
@@ -94,10 +98,11 @@ SPEC CHECKSUMS:
   ASProgressPopUpView: 945c19297da09a625db48a5a37cabd7756916b9b
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   FontAwesome+iOS: 9070b682a9255ca0fdc34bcfb129ad0ba2b73b87
+  HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   iCarousel: 67c8a43da5a46795b56aadfc96cd36a16f6149b2
   JazzHands: 355dc5c2b6fc38ee460d0ed7836c69539263f477
-  MarqueeLabel: d5796f199ae732d8670f1a6f9af6aec0da0cceb2
+  MarqueeLabel: c06f6081f9e1da2d1e756ceb9c5fab5bd9c2f57c
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MJExtension: d86aacb740c87519d20e3cca55b6fa4be6cc7548
   MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
@@ -109,8 +114,9 @@ SPEC CHECKSUMS:
   SDCycleScrollView: 806fedb9342ab03b58b84442f985517b42c7cbb7
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SMPageControl: 922892813001cfaf059e86e6801f46a967e9ee29
+  SVWebViewController: c36dda7326e81fcae0abf5d02bf7bbf7e41be901
   UIImage+BlurredFrame: ad2f7195c6947ea3117c7d202f75a51958d5061a
   VBFPopFlatButton: 782344da63f104c279a857d806e065117a7e1196
-  ZFPlayer: 326ce3f64be0be583d0a9e5e334659ba2e3c5e7f
+  ZFPlayer: 305873ee60e4722c9efe093d0b1d2ae07c1d9b46
 
 COCOAPODS: 0.39.0

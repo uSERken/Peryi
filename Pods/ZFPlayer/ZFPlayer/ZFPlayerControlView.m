@@ -53,6 +53,10 @@
 @property (nonatomic, strong) UIImageView             *topImageView;
 /** 缓存按钮 */
 @property (nonatomic, strong) UIButton                *downLoadBtn;
+/** 切换分辨率按钮 */
+@property (nonatomic, strong) UIButton                *resolutionBtn;
+/** 分辨率的View */
+@property (nonatomic, strong) UIView                  *resolutionView;
 
 @end
 
@@ -79,13 +83,19 @@
         [self addSubview:self.activity];
         [self addSubview:self.repeatBtn];
         [self addSubview:self.horizontalLabel];
+        
+        [self.topImageView addSubview:self.resolutionBtn];
+        
         // 添加子控件的约束
         [self makeSubViewsConstraints];
+        // 分辨率btn点击
+        [self.resolutionBtn addTarget:self action:@selector(resolutionAction:) forControlEvents:UIControlEventTouchUpInside];
+        UITapGestureRecognizer *sliderTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSliderAction:)];
+        [self.videoSlider addGestureRecognizer:sliderTap];
         
         [self.activity stopAnimating];
-        self.horizontalLabel.hidden = YES;
-        self.repeatBtn.hidden       = YES;
         self.downLoadBtn.hidden     = YES;
+        self.resolutionBtn.hidden   = YES;
         // 初始化时重置controlView
         [self resetControlView];
     }
@@ -108,6 +118,13 @@
     [self.downLoadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(40);
         make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
+        make.centerY.equalTo(self.backBtn.mas_centerY);
+    }];
+
+    [self.resolutionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30);
+        make.trailing.equalTo(self.downLoadBtn.mas_leading).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
     
@@ -149,7 +166,8 @@
     [self.videoSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.currentTimeLabel.mas_trailing).offset(4);
         make.trailing.equalTo(self.totalTimeLabel.mas_leading).offset(-4);
-        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-0.25);
+        make.centerY.equalTo(self.currentTimeLabel.mas_centerY).offset(-1);
+        make.height.mas_equalTo(30);
     }];
     
     [self.lockBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -173,6 +191,46 @@
     }];
 }
 
+#pragma mark - Action
+
+/**
+ *  点击topImageView上的按钮
+ */
+- (void)resolutionAction:(UIButton *)sender
+{
+    sender.selected = !sender.selected;
+    // 显示隐藏分辨率View
+    self.resolutionView.hidden = !sender.isSelected;
+}
+
+/**
+ *  点击切换分别率按钮
+ */
+- (void)changeResolution:(UIButton *)sender
+{
+    // 隐藏分辨率View
+    self.resolutionView.hidden  = YES;
+    // 分辨率Btn改为normal状态
+    self.resolutionBtn.selected = NO;
+    // topImageView上的按钮的文字
+    [self.resolutionBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    if (self.resolutionBlock) { self.resolutionBlock(sender); }
+}
+
+/**
+ *  UISlider TapAction
+ */
+- (void)tapSliderAction:(UITapGestureRecognizer *)tap
+{
+    if ([tap.view isKindOfClass:[UISlider class]] && self.tapBlock) {
+        UISlider *slider = (UISlider *)tap.view;
+        CGPoint point = [tap locationInView:slider];
+        CGFloat length = slider.frame.size.width;
+        // 视频跳转的value
+        CGFloat tapValue = point.x / length;
+        self.tapBlock(tapValue);
+    }
+}
 
 #pragma mark - Public Method
 
@@ -185,6 +243,15 @@
     self.totalTimeLabel.text    = @"00:00";
     self.horizontalLabel.hidden = YES;
     self.repeatBtn.hidden       = YES;
+    self.resolutionView.hidden  = YES;
+    self.backgroundColor        = [UIColor clearColor];
+}
+
+- (void)resetControlViewForResolution
+{
+    self.horizontalLabel.hidden = YES;
+    self.repeatBtn.hidden       = YES;
+    self.resolutionView.hidden  = YES;
     self.backgroundColor        = [UIColor clearColor];
 }
 
@@ -200,8 +267,41 @@
     self.topImageView.alpha    = 0;
     self.bottomImageView.alpha = 0;
     self.lockBtn.alpha         = 0;
+    // 隐藏resolutionView
+    self.resolutionBtn.selected = YES;
+    [self resolutionAction:self.resolutionBtn];
 }
 
+#pragma mark - setter
+
+- (void)setResolutionArray:(NSArray *)resolutionArray
+{
+    _resolutionArray = resolutionArray;
+    [_resolutionBtn setTitle:resolutionArray.firstObject forState:UIControlStateNormal];
+    // 添加分辨率按钮和分辨率下拉列表
+    self.resolutionView = [[UIView alloc] init];
+    self.resolutionView.hidden = YES;
+    self.resolutionView.backgroundColor = RGBA(0, 0, 0, 0.7);
+    [self addSubview:self.resolutionView];
+    
+    [self.resolutionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(30*resolutionArray.count);
+        make.leading.equalTo(self.resolutionBtn.mas_leading).offset(0);
+        make.top.equalTo(self.resolutionBtn.mas_bottom).offset(0);
+    }];
+    // 分辨率View上边的Btn
+    for (int i = 0 ; i < resolutionArray.count; i++) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.tag = 200+i;
+        [self.resolutionView addSubview:btn];
+        btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        btn.frame = CGRectMake(0, 30*i, 40, 30);
+        [btn setTitle:resolutionArray[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(changeResolution:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+}
 #pragma mark - getter
 
 - (UIButton *)backBtn
@@ -280,7 +380,7 @@
         _videoSlider                       = [[UISlider alloc] init];
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
-
+        _videoSlider.maximumValue = 1;
         _videoSlider.minimumTrackTintColor = [UIColor whiteColor];
         _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
     }
@@ -345,6 +445,16 @@
         [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_not_downLoad")] forState:UIControlStateDisabled];
     }
     return _downLoadBtn;
+}
+
+- (UIButton *)resolutionBtn
+{
+    if (!_resolutionBtn) {
+        _resolutionBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _resolutionBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _resolutionBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
+    }
+    return _resolutionBtn;
 }
 
 @end

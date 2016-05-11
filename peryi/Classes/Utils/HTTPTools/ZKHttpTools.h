@@ -25,6 +25,13 @@ SingletonH(ZKHttpTools)
  */
 - (void)getDetailDMWithURL:(NSString *)url getDatasuccess:(void (^)(NSDictionary *listData))dict;
 
+/**
+ *  动漫类型分类标签
+ *
+ *  @return
+ */
+-(void)searchHomeListgetDatasuccess:(void (^)(NSArray *listArr))arr;
+
 
 /**
  *  按标签搜索页面
@@ -33,7 +40,19 @@ SingletonH(ZKHttpTools)
  *
  *  @return
  */
-- (NSDictionary *)searchWithUrl:(NSString *)url;
+- (void)searchWithUrlStr:(NSString *)str withPage:(NSString *)pageStr getDatasuccess:(void (^)(NSDictionary *listDict))dict;
+
+
+/**
+ *  根据关键词查询
+ *
+ *  @param keyword 关键字
+ *
+ *  @return
+ */
+- (void)serarchWithString:(NSString *)keyword withPage:(NSString *)pageStr getDatasuccess:(void (^)(NSDictionary *listDict))dict;
+
+
 
 /**
  *  获取新番页面数据
@@ -43,20 +62,6 @@ SingletonH(ZKHttpTools)
 -(NSDictionary *)getNewPageList;
 
 
-/**
- *  动漫类型分类标签
- *
- *  @return 
- */
--(NSDictionary *)searchHomeList;
 
-/**
- *  根据关键词查询
- *
- *  @param keyword 关键字
- *
- *  @return 
- */
-- (NSDictionary *)serarchWithString:(NSString *)keyword;
 
 @end

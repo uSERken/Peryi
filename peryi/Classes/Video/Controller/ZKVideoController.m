@@ -15,7 +15,13 @@
 #import "MBProgressHUD+Extend.h"
 #import <RDVTabBarController/RDVTabBarController.h>
 #import "ZKDetailListView.h"
+#import <SVWebViewController/SVWebViewController.h>
 @interface ZKVideoController()<UIWebViewDelegate,UIScrollViewDelegate>
+
+/**
+ *  详情页面
+ */
+@property (nonatomic, strong) NSString *strUrl;
 
 @property (nonatomic, strong) VBFPopFlatButton *playBtn;
 
@@ -31,6 +37,12 @@
 
 @property (nonatomic, strong) ZKDetailListView *detailListView;
 
+@property (nonatomic, assign) BOOL isCreate;
+
+@property (nonatomic, strong) SVWebViewController *webViewController;
+
+
+
 @end
 
 @implementation ZKVideoController
@@ -42,11 +54,12 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
     
+    
     [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{
+{   _isCreate = NO;
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
     [UIApplication sharedApplication].statusBarHidden = NO;
@@ -59,6 +72,13 @@
     [self setUpAllView];
     
     [self loadListDataWithstrUrl:self.strUrl];
+}
+
+-(id) initWithAddress:(NSString *)addresUrlStr{
+    if (self = [super init]) {
+        self.strUrl = addresUrlStr;
+    }
+    return self;
 }
 
 
@@ -76,8 +96,8 @@
     if (!_playView) {
          _playView = [[ZFPlayerView alloc] init];
         _playView.backgroundColor = [UIColor blackColor];
+        _isCreate = NO;
         [self.view addSubview:self.playView];
-        
         [self.playView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view).offset(20);
             make.left.right.equalTo(self.view);
@@ -86,8 +106,6 @@
         }];
         
         }
-
-    
       self.playView.hasDownload = YES;
       self.playView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
       __weak typeof(self) weakSelf = self;
@@ -95,57 +113,46 @@
         [weakSelf.navigationController popViewControllerAnimated:YES];
         };
     
-    
     if (!_detailListView) {
         _detailListView = [[ZKDetailListView alloc] init];
-        _detailListView.backgroundColor = [UIColor grayColor];
-        
-        //    scrollView.scrollsToTop = NO;
+        _detailListView.backgroundColor = RGB(241, 241, 241);
+        _detailListView.scrollsToTop = YES;
         _detailListView.delegate = self;
-        // 设置内容大小
-        _detailListView.contentSize = CGSizeMake(0, 460*3);
-        // 是否反弹
         _detailListView.bounces = YES;
-        // 是否滚动
         _detailListView.scrollEnabled = YES;
         _detailListView.showsHorizontalScrollIndicator = YES;
         _detailListView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 5, 0, 0);
-        // 提示用户,Indicators flash
         [_detailListView flashScrollIndicators];
-        // 是否同时运动,lock
         _detailListView.directionalLockEnabled = YES;
-        
+//        _detailListView.contentSize = CGSizeMake(0, 460*3);
+        WeakSelf;
+        _detailListView.myHeight =^(CGFloat myHeight){
+            [weakSelf.detailListView setContentSize:CGSizeMake(0, myHeight)];
+        };
+        _detailListView.playAndDownView.action = ^(NSString *url){
+            if (![url hasPrefix:@"http://"]) {
+                [weakSelf getVideoInfoWithUrl:url];
+            }else{
+                SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:url];
+                [weakSelf presentViewController:webViewController animated:YES completion:NULL];
+            }
+        };
+        _detailListView.likeListView.btClick =^(NSString *url){
+             [weakSelf loadListDataWithstrUrl:url];
+        };
         [self.view addSubview:_detailListView];
+        
         [self.detailListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.playView.mas_bottom);
             make.left.right.equalTo(self.view);
             make.bottom.equalTo(@0);
-        }];
+        }];  
     }
-    /*
-    
-    if (!_playBtn) {
-        _playBtn = [[VBFPopFlatButton alloc] initWithFrame:CGRectMake((self.playView.width - 64)/2, (self.playView.height - 64)/2,44,44) buttonType:buttonRightTriangleType buttonStyle:buttonPlainStyle animateToInitialState:YES];
-        [_playBtn addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
-        _playBtn.roundBackgroundColor = RGB(92, 149, 219);
-        _playBtn.lineThickness = 2;
-        _playBtn.tintColor = [UIColor whiteColor];
-        
-        [_playView addSubview:_playBtn];
-    }
-    [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.playView);
-        
-    }];
-     */
-
-    
 }
 
 
 - (void)loadListDataWithstrUrl:(NSString *)strUrl{
     ZKHttpTools *http = [ZKHttpTools sharedZKHttpTools];
-    
     //加载列表数据
     WeakSelf;
     [http getDetailDMWithURL:strUrl getDatasuccess:^(NSDictionary *listData) {
@@ -154,10 +161,6 @@
         //         NSLog(@"%@,",listData);
         //视屏播放
     }];
-    
-
-    
-
 }
 
 
@@ -197,9 +200,16 @@
     //加载网页完成后还需加载视频连接
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
-//        self.videoUrl=
-        self.playView.videoURL = [NSURL URLWithString:docStr];
-        NSLog(@"%@",docStr);
+        
+        //用于重置播放
+        if (_isCreate) {
+            [self.playView resetToPlayNewURL];
+            self.playView.videoURL = [NSURL URLWithString:docStr];
+        }else{
+            _isCreate = YES;
+           self.playView.videoURL = [NSURL URLWithString:docStr];
+         }
+        
         if (docStr != nil){
             [self.webView removeFromSuperview];
             [MBProgressHUD hideHUD];
@@ -241,10 +251,9 @@
         
         [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
         
-        NSLog(@"%@",playVideoUrl[@"href"]);
+         NSLog(@"%@",playVideoUrl[@"href"]);
         
          [self.timer invalidate];
-        
     }
 }
 

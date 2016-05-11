@@ -8,6 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^ZKPlayAndDownloadViewActionBlock)(NSString *url);
+
 @interface ZKPlayAndDownloadView : UIView
+
++(instancetype)view;
+
+
+@property (nonatomic, strong) NSArray *playModelList;
+
+@property (nonatomic, strong) NSArray *downModelList;
+
+@property (nonatomic, copy) ZKPlayAndDownloadViewActionBlock action;
+
 
 @end

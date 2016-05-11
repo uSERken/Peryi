@@ -13,6 +13,7 @@
 #import "ZKDetailYourLike.h"
 #import <MJExtension/MJExtension.h>
 #import "ZKInfoView.h"
+#import "Masonry.h"
 
 
 
@@ -25,23 +26,19 @@
 
 @property (nonatomic, strong) ZKDetailAbout *detailAbout;
 
-/**
- *  你喜欢列表模型数组
- */
-@property (nonatomic, strong) NSArray *detailYourLike;
 
 /**
  *  播放列表模型数组
  */
 @property (nonatomic, strong) NSMutableArray *detailPlayList;
 
-/**
- *  下载列表模型数组
- */
-@property (nonatomic, strong) NSMutableArray *detailDownList;
 
-//界面
-@property (nonatomic, strong)  ZKInfoView *infoView;
+//信息介绍界面
+@property (nonatomic, strong) ZKInfoView *infoView;
+
+
+
+@property (nonatomic, assign) CGFloat playY;
 
 
 @end
@@ -51,9 +48,7 @@
 - (instancetype)init{
    self =  [super init];
     if (self) {
-        
       [self setUpAllView];
-    
     }
     return self;
 }
@@ -61,42 +56,58 @@
 - (void)setDetailList:(NSDictionary *)detailList{
     _detailList = detailList;
     [self getListModelFromDict];
-
 }
 
 
 - (void)setUpAllView{
     if (!_infoView) {
         _infoView = [ZKInfoView view];
-        _infoView.frame = CGRectMake(0, 0, screenW, 210);
+        _infoView.backgroundColor = [UIColor whiteColor];
+        _infoView.frame = CGRectMake(0, 0, screenW, 80);
         [self addSubview:_infoView];
     }
-   
     
+    if (!_playAndDownView) {
+        _playAndDownView = [ZKPlayAndDownloadView view];
+        [self addSubview:_playAndDownView];
+        [_playAndDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.infoView.mas_bottom).offset(8);
+            make.right.and.right.equalTo(self.infoView);
+            make.size.mas_equalTo(CGSizeMake(screenW, 300));
+        }];
+    }
+   
+    if (!_likeListView) {
+        _likeListView = [ZKLikeListView view];
+        _likeListView.backgroundColor = [UIColor whiteColor];
+        [self addSubview:_likeListView];
+        [_likeListView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.playAndDownView.mas_bottom).offset(8);
+            make.right.and.right.equalTo(self.infoView);
+            make.size.mas_equalTo(CGSizeMake(screenW, 900));
+        }];
+    }
 }
 
 //获取数据
 - (void)getListModelFromDict{
     self.detailPlayList = [NSMutableArray array];
-    self.detailDownList = [NSMutableArray array];
+    _infoView.synopsis = _detailList[@"dmSynopsis"];
+    _infoView.infoModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
+    _likeListView.likeArr = [ZKDetailYourLike mj_objectArrayWithKeyValuesArray:_detailList[@"dmYourLike"]];
+    _playAndDownView.downModelList = [ZKDetailDown mj_objectArrayWithKeyValuesArray:_detailList[@"dmDownload"]];
     
-    self.synopsis = _detailList[@"dmSynopsis"];
-    _infoView.synopsis = self.synopsis;
-    
-    
-    self.detailAbout = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
-    _infoView.infoModel = self.detailAbout;
-    
-    self.detailYourLike = [ZKDetailYourLike mj_objectArrayWithKeyValuesArray:_detailList[@"dmYourLike"]];
-    
-    for (NSArray *playArr in _detailList[@"dmPlay"]) {
-        NSArray *modelArr = [ZKDetailPlay mj_objectArrayWithKeyValuesArray:playArr];
+    NSArray *playArr = _detailList[@"dmPlay"];
+    for (int i = 0; i < playArr.count; i ++) {
+        NSArray *modelArr = [ZKDetailPlay mj_objectArrayWithKeyValuesArray:playArr[i]];
         [self.detailPlayList addObject:modelArr];
     }
-    self.detailDownList = [ZKDetailDown mj_objectArrayWithKeyValuesArray:_detailList[@"dmDownload"]];;
+    _playAndDownView.playModelList = self.detailPlayList;
+    if (_myHeight) {
+         CGFloat height = CGRectGetHeight(_likeListView.frame) + CGRectGetHeight(_playAndDownView.frame) + CGRectGetHeight(_infoView.frame) - 20;
+        _myHeight(height);
+    }
 
-//    [_detailList writeToFile:@"/Users/k/Desktop/test.plist" atomically:YES];
-    
 }
 
 @end

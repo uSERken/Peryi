@@ -18,4 +18,6 @@ pod 'ZFPlayer'
 pod 'Masonry'
 pod 'AFNetworking'
 pod 'SDCycleScrollView'
+pod 'HMSegmentedControl'
+pod 'SVWebViewController'
 

@@ -14,9 +14,7 @@ typedef NS_ENUM(NSInteger, requestType) {
 
 @interface ZKVideoController : UIViewController
 
-/**
- *  详情页面
- */
-@property (nonatomic, strong) NSString *strUrl;
+-(id) initWithAddress:(NSString *)addresUrlStr;
+
 
 @end

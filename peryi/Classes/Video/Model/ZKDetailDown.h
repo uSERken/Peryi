@@ -11,17 +11,14 @@
 @interface ZKDetailDown : NSObject
 
 /**
- *  下载页面地址
- */
-@property (nonatomic, strong) NSString *href;
-
-
-/**
  *  集数
  */
 @property (nonatomic, strong) NSString *title;
 
-
+/**
+ *  下载页面地址
+ */
+@property (nonatomic, strong) NSString *href;
 
 
 @end

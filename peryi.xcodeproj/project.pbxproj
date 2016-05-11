@@ -11,12 +11,18 @@
 		0A5697DE1CCF039600F55397 /* UIView+WF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697DD1CCF039600F55397 /* UIView+WF.m */; };
 		0A5697E21CCF03DC00F55397 /* ZKHttpTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697E11CCF03DC00F55397 /* ZKHttpTools.m */; };
 		0A5697E51CCF04C300F55397 /* NSObject+ZKWebString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5697E41CCF04C300F55397 /* NSObject+ZKWebString.m */; };
+		0A5B8ECE1CE06231001C1940 /* ZKTypeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8ECD1CE06231001C1940 /* ZKTypeCollection.m */; };
+		0A5B8ED11CE07099001C1940 /* ZKSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8ED01CE07099001C1940 /* ZKSearchDisplayController.m */; };
+		0A5B8ED41CE076D3001C1940 /* ZKCollectionTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8ED31CE076D3001C1940 /* ZKCollectionTypeCell.m */; };
+		0A5B8ED71CE183D4001C1940 /* ZKTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8ED61CE183D4001C1940 /* ZKTypeModel.m */; };
+		0A5B8EDD1CE1A13C001C1940 /* ZKDMListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8EDC1CE1A13C001C1940 /* ZKDMListVC.m */; };
+		0A5B8EE01CE1A1CD001C1940 /* ZKDMListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8EDF1CE1A1CD001C1940 /* ZKDMListCell.m */; };
+		0A5B8EE21CE1A66B001C1940 /* ZKDMListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B8EE11CE1A66B001C1940 /* ZKDMListCell.xib */; };
+		0A5B8EE51CE1A99B001C1940 /* ZKListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B8EE41CE1A99B001C1940 /* ZKListModel.m */; };
 		0A8823C91CD8A43800B05432 /* ZKPlayAndDownloadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */; };
-		0A8823CB1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */; };
 		0A98AFAB1CCDE59D00721956 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAA1CCDE59D00721956 /* main.m */; };
 		0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAD1CCDE59D00721956 /* AppDelegate.m */; };
 		0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */; };
-		0A98AFB91CCDE59D00721956 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A98AFB81CCDE59D00721956 /* Assets.xcassets */; };
 		0A98AFBC1CCDE59D00721956 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A98AFBA1CCDE59D00721956 /* LaunchScreen.storyboard */; };
 		0A98AFC71CCDE59D00721956 /* peryiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFC61CCDE59D00721956 /* peryiTests.m */; };
 		0A98AFD21CCDE59D00721956 /* peryiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFD11CCDE59D00721956 /* peryiUITests.m */; };
@@ -46,6 +52,15 @@
 		0AC2346F1CD34887000D6141 /* ZKDetailYourLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC2346E1CD34887000D6141 /* ZKDetailYourLike.m */; };
 		0AC234781CD3572C000D6141 /* ZKInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC234771CD3572C000D6141 /* ZKInfoView.m */; };
 		0AC2347A1CD35745000D6141 /* ZKInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AC234791CD35745000D6141 /* ZKInfoView.xib */; };
+		0AE40AFE1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */; };
+		0AE40B011CD9A7B50069FB80 /* ZKSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */; };
+		0AE40B041CD9B21B0069FB80 /* ZKPlayAndDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B031CD9B21B0069FB80 /* ZKPlayAndDownCell.m */; };
+		0AE40B091CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B081CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m */; };
+		0AEEF1951CD997E80096BC59 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AEEF1941CD997E80096BC59 /* Assets.xcassets */; };
+		0AF13A711CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF13A701CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m */; };
+		0AF13A731CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AF13A721CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib */; };
+		0AF13A781CDC8AFF00C9BF93 /* ZKLikeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF13A771CDC8AFF00C9BF93 /* ZKLikeListView.m */; };
+		0AF13A7A1CDC8B1B00C9BF93 /* ZKLikeListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AF13A791CDC8B1B00C9BF93 /* ZKLikeListView.xib */; };
 		0AF6751B1CCF1710002CE56B /* ZKSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF6751A1CCF1710002CE56B /* ZKSlideView.m */; };
 		0AF6751E1CCF1756002CE56B /* ZKHomeList.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF6751D1CCF1756002CE56B /* ZKHomeList.m */; };
 		0AF675601CCF28F3002CE56B /* NSMutableString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF6752E1CCF28F3002CE56B /* NSMutableString+Common.m */; };
@@ -124,15 +139,28 @@
 		0A5697E41CCF04C300F55397 /* NSObject+ZKWebString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ZKWebString.m"; sourceTree = "<group>"; };
 		0A5697EF1CCF054500F55397 /* PeryiHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PeryiHeader.pch; path = ../Others/PeryiHeader.pch; sourceTree = "<group>"; };
 		0A5697F01CCF0D5500F55397 /* Singelon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singelon.h; path = ../Others/Singelon.h; sourceTree = "<group>"; };
+		0A5B8ECC1CE06231001C1940 /* ZKTypeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKTypeCollection.h; sourceTree = "<group>"; };
+		0A5B8ECD1CE06231001C1940 /* ZKTypeCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKTypeCollection.m; sourceTree = "<group>"; };
+		0A5B8ECF1CE07099001C1940 /* ZKSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSearchDisplayController.h; sourceTree = "<group>"; };
+		0A5B8ED01CE07099001C1940 /* ZKSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSearchDisplayController.m; sourceTree = "<group>"; };
+		0A5B8ED21CE076D3001C1940 /* ZKCollectionTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKCollectionTypeCell.h; sourceTree = "<group>"; };
+		0A5B8ED31CE076D3001C1940 /* ZKCollectionTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKCollectionTypeCell.m; sourceTree = "<group>"; };
+		0A5B8ED51CE183D4001C1940 /* ZKTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKTypeModel.h; sourceTree = "<group>"; };
+		0A5B8ED61CE183D4001C1940 /* ZKTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKTypeModel.m; sourceTree = "<group>"; };
+		0A5B8EDB1CE1A13C001C1940 /* ZKDMListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDMListVC.h; sourceTree = "<group>"; };
+		0A5B8EDC1CE1A13C001C1940 /* ZKDMListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDMListVC.m; sourceTree = "<group>"; };
+		0A5B8EDE1CE1A1CD001C1940 /* ZKDMListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDMListCell.h; sourceTree = "<group>"; };
+		0A5B8EDF1CE1A1CD001C1940 /* ZKDMListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDMListCell.m; sourceTree = "<group>"; };
+		0A5B8EE11CE1A66B001C1940 /* ZKDMListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKDMListCell.xib; sourceTree = "<group>"; };
+		0A5B8EE31CE1A99B001C1940 /* ZKListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKListModel.h; sourceTree = "<group>"; };
+		0A5B8EE41CE1A99B001C1940 /* ZKListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKListModel.m; sourceTree = "<group>"; };
 		0A8823C71CD8A43800B05432 /* ZKPlayAndDownloadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKPlayAndDownloadView.h; sourceTree = "<group>"; };
 		0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPlayAndDownloadView.m; sourceTree = "<group>"; };
-		0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPlayAndDownloadView.h.xib; sourceTree = "<group>"; };
 		0A98AFA61CCDE59D00721956 /* peryi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = peryi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A98AFAA1CCDE59D00721956 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A98AFAC1CCDE59D00721956 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0A98AFAD1CCDE59D00721956 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0A98AFB61CCDE59D00721956 /* peryi.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = peryi.xcdatamodel; sourceTree = "<group>"; };
-		0A98AFB81CCDE59D00721956 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A98AFBB1CCDE59D00721956 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A98AFBD1CCDE59D00721956 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A98AFC21CCDE59D00721956 /* peryiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = peryiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +198,20 @@
 		0AC234761CD3572C000D6141 /* ZKInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKInfoView.h; sourceTree = "<group>"; };
 		0AC234771CD3572C000D6141 /* ZKInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKInfoView.m; sourceTree = "<group>"; };
 		0AC234791CD35745000D6141 /* ZKInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKInfoView.xib; sourceTree = "<group>"; };
+		0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPlayAndDownloadView.xib; sourceTree = "<group>"; };
+		0AE40AFF1CD9A7B50069FB80 /* ZKSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSegmentedControl.h; sourceTree = "<group>"; };
+		0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSegmentedControl.m; sourceTree = "<group>"; };
+		0AE40B021CD9B21B0069FB80 /* ZKPlayAndDownCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKPlayAndDownCell.h; sourceTree = "<group>"; };
+		0AE40B031CD9B21B0069FB80 /* ZKPlayAndDownCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPlayAndDownCell.m; sourceTree = "<group>"; };
+		0AE40B071CDB26EC0069FB80 /* ZKPlayListCollectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKPlayListCollectionHeader.h; sourceTree = "<group>"; };
+		0AE40B081CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPlayListCollectionHeader.m; sourceTree = "<group>"; };
+		0AEEF1941CD997E80096BC59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0AF13A6F1CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKLikeCollectionViewCell.h; sourceTree = "<group>"; };
+		0AF13A701CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKLikeCollectionViewCell.m; sourceTree = "<group>"; };
+		0AF13A721CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKLikeCollectionViewCell.xib; sourceTree = "<group>"; };
+		0AF13A761CDC8AFF00C9BF93 /* ZKLikeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKLikeListView.h; sourceTree = "<group>"; };
+		0AF13A771CDC8AFF00C9BF93 /* ZKLikeListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKLikeListView.m; sourceTree = "<group>"; };
+		0AF13A791CDC8B1B00C9BF93 /* ZKLikeListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKLikeListView.xib; sourceTree = "<group>"; };
 		0AF675191CCF1710002CE56B /* ZKSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSlideView.h; sourceTree = "<group>"; };
 		0AF6751A1CCF1710002CE56B /* ZKSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSlideView.m; sourceTree = "<group>"; };
 		0AF6751C1CCF1756002CE56B /* ZKHomeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKHomeList.h; sourceTree = "<group>"; };
@@ -368,7 +410,7 @@
 				0A98AFDF1CCDE79200721956 /* Classes */,
 				0A98AFAC1CCDE59D00721956 /* AppDelegate.h */,
 				0A98AFAD1CCDE59D00721956 /* AppDelegate.m */,
-				0A98AFB81CCDE59D00721956 /* Assets.xcassets */,
+				0AEEF1941CD997E80096BC59 /* Assets.xcassets */,
 				0A98AFBA1CCDE59D00721956 /* LaunchScreen.storyboard */,
 				0A98AFBD1CCDE59D00721956 /* Info.plist */,
 				0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */,
@@ -505,6 +547,10 @@
 			children = (
 				0A98B0011CCDE8C000721956 /* ZKSearchController.h */,
 				0A98B0021CCDE8C000721956 /* ZKSearchController.m */,
+				0A5B8ECF1CE07099001C1940 /* ZKSearchDisplayController.h */,
+				0A5B8ED01CE07099001C1940 /* ZKSearchDisplayController.m */,
+				0A5B8EDB1CE1A13C001C1940 /* ZKDMListVC.h */,
+				0A5B8EDC1CE1A13C001C1940 /* ZKDMListVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -512,6 +558,10 @@
 		0A98AFEA1CCDE79200721956 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0A5B8ED51CE183D4001C1940 /* ZKTypeModel.h */,
+				0A5B8ED61CE183D4001C1940 /* ZKTypeModel.m */,
+				0A5B8EE31CE1A99B001C1940 /* ZKListModel.h */,
+				0A5B8EE41CE1A99B001C1940 /* ZKListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -519,6 +569,13 @@
 		0A98AFEB1CCDE79200721956 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0A5B8ECC1CE06231001C1940 /* ZKTypeCollection.h */,
+				0A5B8ECD1CE06231001C1940 /* ZKTypeCollection.m */,
+				0A5B8ED21CE076D3001C1940 /* ZKCollectionTypeCell.h */,
+				0A5B8ED31CE076D3001C1940 /* ZKCollectionTypeCell.m */,
+				0A5B8EDE1CE1A1CD001C1940 /* ZKDMListCell.h */,
+				0A5B8EDF1CE1A1CD001C1940 /* ZKDMListCell.m */,
+				0A5B8EE11CE1A66B001C1940 /* ZKDMListCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -689,7 +746,19 @@
 				0AC234791CD35745000D6141 /* ZKInfoView.xib */,
 				0A8823C71CD8A43800B05432 /* ZKPlayAndDownloadView.h */,
 				0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */,
-				0A8823CA1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib */,
+				0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */,
+				0AE40B021CD9B21B0069FB80 /* ZKPlayAndDownCell.h */,
+				0AE40B031CD9B21B0069FB80 /* ZKPlayAndDownCell.m */,
+				0AF13A761CDC8AFF00C9BF93 /* ZKLikeListView.h */,
+				0AF13A771CDC8AFF00C9BF93 /* ZKLikeListView.m */,
+				0AF13A791CDC8B1B00C9BF93 /* ZKLikeListView.xib */,
+				0AF13A6F1CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.h */,
+				0AF13A701CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m */,
+				0AF13A721CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib */,
+				0AE40B071CDB26EC0069FB80 /* ZKPlayListCollectionHeader.h */,
+				0AE40B081CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m */,
+				0AE40AFF1CD9A7B50069FB80 /* ZKSegmentedControl.h */,
+				0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -823,6 +892,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE40AFE1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib in Resources */,
 				0AF675941CCF2E9E002CE56B /* privatemessage_selected@3x.png in Resources */,
 				0AF675911CCF2E9E002CE56B /* privatemessage_normal@2x.png in Resources */,
 				0AF6758F1CCF2E9E002CE56B /* me_selected@2x.png in Resources */,
@@ -830,6 +900,7 @@
 				0AF6759D1CCF2E9E002CE56B /* tweet_normal@2x.png in Resources */,
 				0AF675931CCF2E9E002CE56B /* privatemessage_selected@2x.png in Resources */,
 				0AF675981CCF2E9E002CE56B /* project_selected@3x.png in Resources */,
+				0AF13A731CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib in Resources */,
 				0AF675A41CCF2EB6002CE56B /* banner__page_selected@2x.png in Resources */,
 				0AF675961CCF2E9E002CE56B /* project_normal@3x.png in Resources */,
 				0AF6759B1CCF2E9E002CE56B /* task_selected@2x.png in Resources */,
@@ -842,13 +913,14 @@
 				0AF675921CCF2E9E002CE56B /* privatemessage_normal@3x.png in Resources */,
 				0AF675A21CCF2EA8002CE56B /* banner__page_unselected@2x.png in Resources */,
 				0AF675B91CCF6B35002CE56B /* MBProgressHUD.bundle in Resources */,
-				0A98AFB91CCDE59D00721956 /* Assets.xcassets in Resources */,
 				0AF6758E1CCF2E9E002CE56B /* me_normal@3x.png in Resources */,
 				0AF675991CCF2E9E002CE56B /* task_normal@2x.png in Resources */,
+				0AF13A7A1CDC8B1B00C9BF93 /* ZKLikeListView.xib in Resources */,
 				0AF6759C1CCF2E9E002CE56B /* task_selected@3x.png in Resources */,
 				0AF6759F1CCF2E9E002CE56B /* tweet_selected@2x.png in Resources */,
-				0A8823CB1CD8A45600B05432 /* ZKPlayAndDownloadView.h.xib in Resources */,
 				0AF675A01CCF2E9E002CE56B /* tweet_selected@3x.png in Resources */,
+				0A5B8EE21CE1A66B001C1940 /* ZKDMListCell.xib in Resources */,
+				0AEEF1951CD997E80096BC59 /* Assets.xcassets in Resources */,
 				0AF6758D1CCF2E9E002CE56B /* me_normal@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -926,6 +998,8 @@
 				0AF6751E1CCF1756002CE56B /* ZKHomeList.m in Sources */,
 				0AF6756C1CCF28F3002CE56B /* UIColor+expanded.m in Sources */,
 				0AF675C21CD1E3F5002CE56B /* ZKHomeCollectionCell.m in Sources */,
+				0A5B8EE01CE1A1CD001C1940 /* ZKDMListCell.m in Sources */,
+				0AE40B041CD9B21B0069FB80 /* ZKPlayAndDownCell.m in Sources */,
 				0A5697E21CCF03DC00F55397 /* ZKHttpTools.m in Sources */,
 				0AF675661CCF28F3002CE56B /* NSURL+Common.m in Sources */,
 				0AF6756A1CCF28F3002CE56B /* UIButton+Bootstrap.m in Sources */,
@@ -938,21 +1012,31 @@
 				0A98B0181CCDFCB100721956 /* ZKNavigationController.m in Sources */,
 				0AF675631CCF28F3002CE56B /* NSString+Attribute.m in Sources */,
 				0A8823C91CD8A43800B05432 /* ZKPlayAndDownloadView.m in Sources */,
+				0A5B8EE51CE1A99B001C1940 /* ZKListModel.m in Sources */,
 				0AF675CA1CD1FCE9002CE56B /* ZKVideoController.m in Sources */,
 				0AF675731CCF28F3002CE56B /* UIView+Frame.m in Sources */,
 				0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */,
 				0A98AFAB1CCDE59D00721956 /* main.m in Sources */,
+				0A5B8ED71CE183D4001C1940 /* ZKTypeModel.m in Sources */,
 				0AF675BB1CCF6B35002CE56B /* MBProgressHUD+Extend.m in Sources */,
 				0A98B05F1CCE59A300721956 /* NSTimer+Addition.m in Sources */,
+				0A5B8EDD1CE1A13C001C1940 /* ZKDMListVC.m in Sources */,
 				0AF675621CCF28F3002CE56B /* NSObject+ObjectMap.m in Sources */,
+				0AF13A781CDC8AFF00C9BF93 /* ZKLikeListView.m in Sources */,
 				0AF675651CCF28F3002CE56B /* NSTimer+Common.m in Sources */,
+				0A5B8ECE1CE06231001C1940 /* ZKTypeCollection.m in Sources */,
+				0AE40B011CD9A7B50069FB80 /* ZKSegmentedControl.m in Sources */,
 				0AF6756D1CCF28F3002CE56B /* UIDevice+Info.m in Sources */,
 				0A5697DE1CCF039600F55397 /* UIView+WF.m in Sources */,
+				0AF13A711CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m in Sources */,
 				0AF675741CCF28F3002CE56B /* UIView+PressMenu.m in Sources */,
 				0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */,
+				0AE40B091CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m in Sources */,
 				0A98B0081CCDE8D700721956 /* ZKSettingsController.m in Sources */,
 				0AF6756E1CCF28F3002CE56B /* UIImage+Common.m in Sources */,
+				0A5B8ED41CE076D3001C1940 /* ZKCollectionTypeCell.m in Sources */,
 				0AC234781CD3572C000D6141 /* ZKInfoView.m in Sources */,
+				0A5B8ED11CE07099001C1940 /* ZKSearchDisplayController.m in Sources */,
 				0AF6756F1CCF28F3002CE56B /* UILabel+Common.m in Sources */,
 				0AC234661CD3483B000D6141 /* ZKDetailAbout.m in Sources */,
 				0AC2346C1CD34872000D6141 /* ZKDetailDown.m in Sources */,

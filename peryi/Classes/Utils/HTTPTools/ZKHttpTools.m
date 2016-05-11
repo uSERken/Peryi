@@ -26,20 +26,9 @@ SingletonM(ZKHttpTools)
  *  获取 m.preyi.com 主页数据
  */
 - (NSArray *)getDMLIST{
-    [MBProgressHUD showMessage:@"请稍候..."];
      NSArray *arr = [NSArray array];
-//    __weak __typeof(self) weakSelf = self;
-//    [self getHtmlDataWithUrl:baseURL getDatasuccess:^(NSData *listData){
-//
-//      arr = [weakSelf DMListArrayWithHtmlData:listData];
-//    }];
-//    
-//    NSLog(@"list:%@",arr);
-    
     NSData *data = [self getHtmlDataWithUrl:baseURL];
     arr = [self DMListArrayWithHtmlData:data];
-    [MBProgressHUD hideHUD];
-    
     return arr;
 }
 
@@ -243,62 +232,39 @@ SingletonM(ZKHttpTools)
 //    [newDict writeToFile:@"/Users/k/Desktop/new.plist" atomically:YES];
 }
 
-- (NSMutableArray *)commondCellWithelement:(TFHppleElement *)element{
-    //otherList
-    NSMutableArray *otherArr = [NSMutableArray array];
-    for (NSInteger j = 0; j<element.children.count; j++) {
-        NSMutableDictionary *otherAboutDict = [NSMutableDictionary dictionary];
-        TFHppleElement *otherList = element.children[j];
-        if (j > 1 && otherList.raw != nil) {
-            TFHppleElement *otherUrl = [otherList firstChildWithTagName:@"a"];
-            [otherAboutDict addEntriesFromDictionary:otherUrl.attributes];
-            TFHppleElement *otherImg = [otherUrl firstChildWithTagName:@"img"];
-            [otherAboutDict addEntriesFromDictionary:otherImg.attributes];
-            TFHppleElement *otherInfo = [otherUrl firstChildWithTagName:@"p"];
-            otherAboutDict[@"about"] = [self returnNewPageHtmlArr:otherInfo.raw];
-            [otherArr addObject:otherAboutDict];
-        }
-    }//otherList 结束
-    
-    return otherArr;
-}
+
 
 //=========================================分类查询页面处理分割线================================//
--(NSDictionary *)searchHomeList{
+-(void)searchHomeListgetDatasuccess:(void (^)(NSArray *listArr))arr{
     NSString *url = @"http://m.peryi.com/sou.html";
-    [MBProgressHUD showMessage:@"请稍候..."];
-    __block NSDictionary *dict = [NSDictionary  dictionary];
     WeakSelf;
     [self getHtmlDataWithUrl:url getDatasuccess:^(NSData *listData) {
-      dict = [weakSelf getSearchListWhitData:listData];
-        [MBProgressHUD hideHUD];
+        arr([weakSelf getSearchListWhitData:listData]);
     }];
-    return dict;
 }
 /**
  *  获取搜索标签页面列表
  *
  */
--(NSDictionary *)getSearchListWhitData:(NSData *)htmlData{
+-(NSArray *)getSearchListWhitData:(NSData *)htmlData{
     TFHpple *rootDoucument = [TFHpple hppleWithHTMLData:htmlData];
     NSArray *divElements = [rootDoucument searchWithXPathQuery:@"//div[@class=\"fenlei-list clearfix\"]"];
-    NSMutableDictionary *allType = [NSMutableDictionary dictionary];
+    NSMutableArray *allType = [NSMutableArray array];
     for (TFHppleElement *allList in divElements) {
         for (NSInteger i  = 0 ; i < allList.children.count ; i++) {
             TFHppleElement *typesList = allList.children[i];
             TFHppleElement *typeList = [typesList firstChildWithTagName:@"dd"];
             if (i == 1) {
-                allType[@"type"] = [self forTypeWithElement:typeList];
+                [allType addObject:[self forTypeWithElement:typeList]];
             }else if (i == 3){
-                allType[@"yearType"] = [self forTypeWithElement:typeList];
+                [allType addObject:[self forTypeWithElement:typeList]];
             }else if (i == 5){
-                allType[@"languageType"] = [self forTypeWithElement:typeList];
+                [allType addObject:[self forTypeWithElement:typeList]];
             }else if (i == 7){
-                allType[@"versionType"] = [self forTypeWithElement:typeList];
+                [allType addObject:[self forTypeWithElement:typeList]];
             }
         }//循环 结束
     }//forin结束
-    
     return allType;
 }
 
@@ -314,21 +280,41 @@ SingletonM(ZKHttpTools)
             typeDict[@"title"] = title.text;
             [typeDict addEntriesFromDictionary:title.attributes];
         }
-        [typeArr addObject:typeDict];
+        if (typeDict.count != 0) {
+           [typeArr addObject:typeDict];
+        }
+        
     }
     return typeArr;
 }
 
-//=========================================搜索页面处理分割线================================//
-- (NSDictionary *)searchWithUrl:(NSString *)url{
-    [MBProgressHUD showMessage:@"请稍候..."];
-    __block NSDictionary *dict = [NSDictionary dictionary];
+//=========================================按类型搜索页面处理分割线================================//
+- (void)searchWithUrlStr:(NSString *)str withPage:(NSString *)pageStr getDatasuccess:(void (^)(NSDictionary *listDict))dict{
+    NSString *url = nil;
+    if (pageStr == nil) {
+        url = [NSString stringWithFormat:@"%@%@",baseURL,str];
+    }else{
+        url = [NSString stringWithFormat:@"%@%@&page=%@",baseURL,str,pageStr];
+    }
     WeakSelf;
     [self getHtmlDataWithUrl:url getDatasuccess:^(NSData *listData) {
-      dict = [weakSelf getTypePageListWithData:listData];
-        [MBProgressHUD hideHUD];
+      dict([weakSelf getTypePageListWithData:listData]);
     }];
-    return dict;
+   }
+
+//关键词搜索
+- (void)serarchWithString:(NSString *)keyword withPage:(NSString *)pageStr getDatasuccess:(void (^)(NSDictionary *listDict))dict{
+    NSString *url =  nil;
+    if (pageStr == nil) {
+        url = [NSString stringWithFormat:@"%@/search.php?searchword=%@",baseURL,keyword];
+    }else{
+        url = [NSString stringWithFormat:@"%@/search.php?searchword=%@&page=%@",baseURL,keyword,pageStr];
+    }
+    
+ 
+    [self getHtmlDataWithUrl:url getDatasuccess:^(NSData *listData) {
+        dict([self getTypePageListWithData:listData]);
+    }];
 }
 
 /**
@@ -339,6 +325,7 @@ SingletonM(ZKHttpTools)
     
     TFHpple *rootDoucument = [TFHpple hppleWithHTMLData:htmlData];
     NSArray *divElements = [rootDoucument searchWithXPathQuery:@"//div[@id=\"quarter1\"]"];
+//    NSLog(@"%@",divElements);
     for (TFHppleElement *allList in divElements) {
         allType[@"list"] = [self commondCellWithelement:allList];
     }
@@ -351,27 +338,37 @@ SingletonM(ZKHttpTools)
             if ([allPage.text isEqualToString:@">"]) {
                 TFHppleElement *page = pages.children[i+2];
                 lastPage = [page.text substringFromIndex:2];
-                
             }
-            
         }
     }
     allType[@"lastPage"] = lastPage;
-    
     return  allType;
-//    [allType writeToFile:@"/Users/k/Desktop/search.plist" atomically:YES];
 }
 
-- (NSDictionary *)serarchWithString:(NSString *)keyword{
-    NSString *url = [NSString stringWithFormat:@"%@/search.php?searchword=%@",baseURL,keyword];
-    __block NSDictionary *dict = [NSDictionary dictionary];
-    [self getHtmlDataWithUrl:url getDatasuccess:^(NSData *listData) {
-       dict = [self getTypePageListWithData:listData];
-    }];
-    return dict;
-}
+
 
 //=========================================公共方法================================//
+- (NSMutableArray *)commondCellWithelement:(TFHppleElement *)element{
+    //otherList
+    NSMutableArray *otherArr = [NSMutableArray array];
+    for (NSInteger j = 0; j<element.children.count; j++) {
+        NSMutableDictionary *otherAboutDict = [NSMutableDictionary dictionary];
+        TFHppleElement *otherList = element.children[j];
+//        NSLog(@"otherList:%@",element);
+        if (j > 1 && otherList.raw != nil) {
+            TFHppleElement *otherUrl = [otherList firstChildWithTagName:@"a"];
+            [otherAboutDict addEntriesFromDictionary:otherUrl.attributes];
+            TFHppleElement *otherImg = [otherUrl firstChildWithTagName:@"img"];
+            [otherAboutDict addEntriesFromDictionary:otherImg.attributes];
+            TFHppleElement *otherInfo = [otherUrl firstChildWithTagName:@"p"];
+            otherAboutDict[@"about"] = [self returnNewPageHtmlArr:otherInfo.raw];
+            [otherArr addObject:otherAboutDict];
+        }
+    }//otherList 结束
+    
+    return otherArr;
+}
+
 
 /**
  *  根据URL获取网页源码
@@ -383,8 +380,11 @@ SingletonM(ZKHttpTools)
 
 - (void)getHtmlDataWithUrl:(NSString *)urlStr getDatasuccess:(void (^)(NSData *listData))listData{
     
-    NSString *utf8String = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSURL *url = [NSURL URLWithString:utf8String];
+    if ([urlStr rangeOfString:@"%"].location == NSNotFound) {
+        urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    }
+
+    NSURL *url = [NSURL URLWithString:urlStr];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"GET";
@@ -393,7 +393,7 @@ SingletonM(ZKHttpTools)
     session = [NSURLSession sessionWithConfiguration:urlConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
-            NSLog(@"错误:%@",error);
+            [MBProgressHUD showError:@"网络错误"];
         }else{
             listData(data);
         }

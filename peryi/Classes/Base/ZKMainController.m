@@ -53,13 +53,10 @@
     ZKSearchController *search = [[ZKSearchController alloc] init];
     UINavigationController *nav_search = [[ZKNavigationController alloc] initWithRootViewController:search];
     
-    ZKNewController *new = [[ZKNewController alloc] init];
-    UINavigationController *nav_new = [[ZKNavigationController alloc] initWithRootViewController:new];
-    
     ZKSettingsController *settings = [[ZKSettingsController alloc] init];
     UINavigationController *nav_settings =[[ZKNavigationController alloc] initWithRootViewController:settings];
     
-    [self setViewControllers:@[nav_home,nav_search,nav_new,nav_settings]];
+    [self setViewControllers:@[nav_home,nav_search,nav_settings]];
     
     [self setCustomizeTabBar];
     
@@ -72,8 +69,8 @@
  */
 - (void)setCustomizeTabBar{
     UIImage *backgroundImage = [UIImage imageNamed:@"tabbar_background"];
-    NSArray *tabBarItemImages = @[@"project",@"task",@"tweet",@"me"];
-    NSArray *tabBarItemTitles = @[@"首页",@"搜索",@"新番",@"设置"];
+    NSArray *tabBarItemImages = @[@"project",@"task",@"me"];
+    NSArray *tabBarItemTitles = @[@"首页",@"搜索",@"设置"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[self tabBar] items]) {
         item.titlePositionAdjustment = UIOffsetMake(0, 3);

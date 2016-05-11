@@ -1,1 +1,1 @@
-../../../MarqueeLabel/Classes/ObjC/MarqueeLabel.h
+../../../MarqueeLabel/Sources/ObjC/MarqueeLabel.h

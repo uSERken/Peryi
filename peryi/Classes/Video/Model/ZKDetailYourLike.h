@@ -10,8 +10,6 @@
 
 @interface ZKDetailYourLike : NSObject
 
-//当前跟新集数
-@property (nonatomic, strong) NSString *current;
 
 //动漫详情页面
 @property (nonatomic, strong) NSString *href;

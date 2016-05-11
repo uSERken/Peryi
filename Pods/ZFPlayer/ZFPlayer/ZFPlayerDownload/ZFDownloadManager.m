@@ -122,7 +122,7 @@ static ZFDownloadManager *_downloadManager;
 /**
  *  开启任务下载资源
  */
-- (void)download:(NSString *)url progress:(ZFDownloadProgressBlock)progressBlock state:(void (^)(DownloadState))stateBlock
+- (void)download:(NSString *)url progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock
 {
     if (!url) return;
     if ([self isCompletion:url]) {
@@ -257,21 +257,6 @@ static ZFDownloadManager *_downloadManager;
 }
 
 /**
- *  获取全部正在下载URL
- *
- *  @return 返回下载URL数组
- */
-- (NSArray *)getAllDownloadingURL
-{
-    NSMutableArray *URLArray = @[].mutableCopy;
-    for (ZFSessionModel *model in self.sessionModels) {
-        [URLArray addObject:model.url];
-    }
-    return URLArray;
-}
-
-
-/**
  *  获取该资源总大小
  */
 - (NSInteger)fileTotalLength:(NSString *)url
@@ -392,7 +377,7 @@ static ZFDownloadManager *_downloadManager;
     sessionModel.totalSize = fileSizeInUnits;
     // 更新数据(文件总长度)
     [self save:self.sessionModelsArray];
-    
+
     // 接收这个请求，允许接收服务器的数据
     completionHandler(NSURLSessionResponseAllow);
 }
@@ -415,6 +400,7 @@ static ZFDownloadManager *_downloadManager;
     // 每秒下载速度
     NSTimeInterval downloadTime = -1 * [sessionModel.startTime timeIntervalSinceNow];
     NSUInteger speed = receivedSize / downloadTime;
+    if (speed == 0) { return; }
     float speedSec = [sessionModel calculateFileSizeInUnit:(unsigned long long) speed];
     NSString *unit = [sessionModel calculateUnit:(unsigned long long) speed];
     NSString *speedStr = [NSString stringWithFormat:@"%.2f%@/s",speedSec,unit];
@@ -435,13 +421,8 @@ static ZFDownloadManager *_downloadManager;
                                  [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
                                  [sessionModel calculateUnit:(unsigned long long)receivedSize]];
     
-    //    sessionModel.progress = progress;
-    //    sessionModel.writtenSize = writtenSize;
-    //    // 更新数据(文件写入的长度、进度)
-    //    [self save:self.sessionModelsArray];
-    
+    // 下载中
     if (sessionModel.stateBlock) {
-        // 下载中
         sessionModel.stateBlock(DownloadStateStart);
     }
     if (sessionModel.progressBlock) {

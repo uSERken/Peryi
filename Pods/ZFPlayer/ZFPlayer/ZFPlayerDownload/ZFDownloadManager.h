@@ -25,7 +25,7 @@
 #import "ZFSessionModel.h"
 
 // 缓存主目录
-#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
+#define ZFCachesDirectory [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject]stringByAppendingPathComponent:@"ZFCache"]
 
 // 保存文件名
 #define ZFFileName(url)  [[url componentsSeparatedByString:@"/"] lastObject]
@@ -76,7 +76,7 @@
  *  @param progressBlock 回调下载进度
  *  @param stateBlock    下载状态
  */
-- (void)download:(NSString *)url progress:(ZFDownloadProgressBlock)progressBlock state:(void(^)(DownloadState state))stateBlock;
+- (void)download:(NSString *)url progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock;
 
 /**
  *  查询该资源的下载进度值
@@ -86,13 +86,6 @@
  *  @return 返回下载进度值
  */
 - (CGFloat)progress:(NSString *)url;
-
-/**
- *  获取全部正在下载URL
- *
- *  @return 返回下载URL数组
- */
-- (NSArray *)getAllDownloadingURL;
 
 /**
  *  获取该资源总大小

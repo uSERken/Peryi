@@ -8,6 +8,7 @@
 
 #import "ZKInfoView.h"
 #import "ZKDetailAbout.h"
+#import "Masonry.h"
 
 @interface ZKInfoView()
 
@@ -17,7 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *start;
 
-@property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+
 
 
 @end
@@ -26,22 +27,18 @@
 
 - (instancetype)init{
     self = [super init];
-    
     return self;
 }
 
 
 - (void)setInfoModel:(ZKDetailAbout *)infoModel{
     _infoModel = infoModel;
-    
     _title.text = _infoModel.alt;
     _source.text = _infoModel.souce;
     _synopsisLabel.text = _synopsis;
     
     CGFloat maxY = [_synopsisLabel systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     [self setHeight:maxY + 80];
-    
-    [self layoutIfNeeded];
     
 }
 

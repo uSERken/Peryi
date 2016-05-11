@@ -35,12 +35,16 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 
 /** 视频URL */
 @property (nonatomic, strong) NSURL                *videoURL;
+/** 视频URL的数组 */
+@property (nonatomic, strong) NSArray              *videoURLArray;
 /** 返回按钮Block */
 @property (nonatomic, copy  ) ZFPlayerGoBackBlock  goBackBlock;
 /** 设置playerLayer的填充模式 */
 @property (nonatomic, assign) ZFPlayerLayerGravity playerLayerGravity;
 /** 是否有下载功能(默认是关闭) */
 @property (nonatomic, assign) BOOL                 hasDownload;
+/** 切换分辨率传的字典(key:分辨率名称，value：分辨率url) */
+@property (nonatomic, strong) NSDictionary         *resolutionDic;
 /** 从xx秒开始播放视频跳转 */
 @property (nonatomic, assign) NSInteger            seekTime;
 
@@ -97,5 +101,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
         AtIndexPath:(NSIndexPath *)indexPath
    withImageViewTag:(NSInteger)tag;
 
+/**
+ *  关闭当前按钮
+ */
+- (void)closeCurrentVideo;
 
 @end

@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 @class ZKDetailAbout;
+
+
+
 @interface ZKInfoView : UIView
+
+@property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+
 
 +(instancetype)view;
 
 @property (nonatomic, strong) ZKDetailAbout *infoModel;
 
 @property (nonatomic, strong) NSString *synopsis;
+
 
 @end

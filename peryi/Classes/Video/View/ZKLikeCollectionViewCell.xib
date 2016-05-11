@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="Cell" id="Mru-KW-RT2" customClass="ZKLikeCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="164" height="204"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="164" height="204"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eRq-Q1-gNm">
+                        <rect key="frame" x="0.0" y="0.0" width="164" height="166"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7m8-kf-vMW">
+                        <rect key="frame" x="0.0" y="174" width="164" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="7m8-kf-vMW" secondAttribute="trailing" id="1gL-cm-aXC"/>
+                <constraint firstAttribute="trailing" secondItem="eRq-Q1-gNm" secondAttribute="trailing" id="BPY-M4-GdP"/>
+                <constraint firstItem="eRq-Q1-gNm" firstAttribute="top" secondItem="Mru-KW-RT2" secondAttribute="top" id="Pqd-GB-oiv"/>
+                <constraint firstItem="7m8-kf-vMW" firstAttribute="leading" secondItem="Mru-KW-RT2" secondAttribute="leading" id="bcy-xg-AEY"/>
+                <constraint firstItem="7m8-kf-vMW" firstAttribute="top" secondItem="eRq-Q1-gNm" secondAttribute="bottom" constant="8" id="cVp-Xm-TiR"/>
+                <constraint firstAttribute="bottom" secondItem="7m8-kf-vMW" secondAttribute="bottom" id="fkT-kl-01U"/>
+                <constraint firstItem="eRq-Q1-gNm" firstAttribute="leading" secondItem="Mru-KW-RT2" secondAttribute="leading" id="yk2-QZ-kV1"/>
+            </constraints>
+            <size key="customSize" width="164" height="204"/>
+            <connections>
+                <outlet property="imageVeiw" destination="eRq-Q1-gNm" id="si6-Ne-iwQ"/>
+                <outlet property="titleLabel" destination="7m8-kf-vMW" id="TiY-Bd-UJr"/>
+            </connections>
+            <point key="canvasLocation" x="198" y="151"/>
+        </collectionViewCell>
+    </objects>
+</document>
