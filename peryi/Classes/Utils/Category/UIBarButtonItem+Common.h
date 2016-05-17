@@ -10,5 +10,8 @@
 
 @interface UIBarButtonItem (Common)
 + (UIBarButtonItem *)itemWithBtnTitle:(NSString *)title target:(id)obj action:(SEL)selector;
+
++ (UIBarButtonItem *)itemWithImage:(UIImage *)image highImage:(UIImage *)highImage target:(id)target action:(SEL)action;
+
 @end
 

@@ -16,7 +16,7 @@ SingletonH(ZKHttpTools)
 /**
  *  获取 m.preyi.com 主页数据
  */
--(NSArray *)getDMLIST;
+- (void)getDMListDatasuccess:(void (^)(NSArray *listArr))arr;
 
 /**
  *  根据对应的某部动漫网页获数据

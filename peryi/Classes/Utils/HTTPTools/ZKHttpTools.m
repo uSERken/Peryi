@@ -25,11 +25,14 @@ SingletonM(ZKHttpTools)
 /**
  *  获取 m.preyi.com 主页数据
  */
-- (NSArray *)getDMLIST{
-     NSArray *arr = [NSArray array];
+- (void)getDMListDatasuccess:(void (^)(NSArray *listArr))arr{
+    
     NSData *data = [self getHtmlDataWithUrl:baseURL];
-    arr = [self DMListArrayWithHtmlData:data];
-    return arr;
+    if (data != nil) {
+        arr([self DMListArrayWithHtmlData:data]);
+    }else{
+        arr([NSArray arrayWithObjects:@"nil", nil]);
+    }
 }
 
 /**
@@ -393,6 +396,7 @@ SingletonM(ZKHttpTools)
     session = [NSURLSession sessionWithConfiguration:urlConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
+            listData(data);
             [MBProgressHUD showError:@"网络错误"];
         }else{
             listData(data);

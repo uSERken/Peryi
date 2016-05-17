@@ -16,6 +16,7 @@
 #import <MJRefresh/MJRefresh.h>
 #import "ZKVideoController.h"
 #import "MBProgressHUD+Extend.h"
+#import "ZKDataTools.h"
 
 #define identifier @"Cell"
 
@@ -27,7 +28,7 @@
 
 @property (nonatomic, strong) ZKSlideView *slideView;
 
-
+@property (nonatomic, strong) ZKDataTools *dataTools;
 
 @end
 
@@ -40,21 +41,21 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
 
+    self.title = @"首页";
+    
+    _dataTools = [ZKDataTools sharedZKDataTools];
+    
     [self refreshHome];
-   
-    if (_dmList != nil || _dmList.count > 0) {
-        [self setUpSlideViewAndCollectionView];
-    }else{
-        
-    }
-        
+ 
+    [self setUpSlideViewAndCollectionView];
+
 
 }
 
 - (void)setUpSlideViewAndCollectionView{
     
     if (_slideView == nil) {
-        _slideView = [[ZKSlideView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.width, 210)];
+        _slideView = [[ZKSlideView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.width, 265)];
         _slideView.listArr = self.dmList;
         [self.view addSubview:_slideView];
     }
@@ -73,7 +74,7 @@
             [collectionView registerClass:[ZKHomeCollectionCell class] forCellWithReuseIdentifier:identifier];
             collectionView.delegate = self;
             collectionView.dataSource = self;
-            collectionView.backgroundColor = [UIColor whiteColor];
+            collectionView.backgroundColor = [UIColor clearColor];
             collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshHome)];
             collectionView;
         });
@@ -86,13 +87,22 @@
 - (void)refreshHome{
     [MBProgressHUD showMessage:@"请稍候..."];
     ZKHttpTools *httpTools = [ZKHttpTools sharedZKHttpTools];
-    NSArray *dmArr = [httpTools getDMLIST];
-    if (dmArr != nil) {
-        self.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:dmArr];
-         _slideView.listArr = self.dmList;
-        [MBProgressHUD hideHUD];
-    }
-    [self.collectionView.mj_header endRefreshing];
+//    NSArray *dmArr = [httpTools getDMLIST];
+    WeakSelf;
+    [httpTools getDMListDatasuccess:^(NSArray *listArr) {
+        if (listArr.count > 1) {
+            weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
+            weakSelf.slideView.listArr = weakSelf.dmList;
+            [_dataTools saveHomeDMListWithArry:listArr];
+            [MBProgressHUD hideHUD];
+        }else{
+            [MBProgressHUD hideHUD];
+            weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
+            [MBProgressHUD showError:@"无网络连接或网络错误"];
+        }
+    }];
+    
+       [self.collectionView.mj_header endRefreshing];
 }
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{
@@ -127,6 +137,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ZKHomeList *selectModel = _dmList[indexPath.row];
     [self goToVideoControllerWithStrUrl:selectModel.href];
+    //进入即保存为播放记录
+    [_dataTools saveHistroyOrStartWithModel:selectModel withType:saveHome];
+    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

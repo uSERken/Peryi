@@ -50,7 +50,7 @@
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPW-OG-gyu">
                     <rect key="frame" x="287" y="-2" width="120" height="120"/>
                     <state key="normal" image="like_unsel"/>
-                    <state key="highlighted" image="like_sel"/>
+                    <state key="selected" image="like_sel"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

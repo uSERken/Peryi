@@ -16,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *source;
 
-@property (weak, nonatomic) IBOutlet UIButton *start;
+
 
 
 

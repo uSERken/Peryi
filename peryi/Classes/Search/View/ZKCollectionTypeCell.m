@@ -25,6 +25,8 @@
         _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_titleLabel];
+    
+        self.layer.cornerRadius = 5;
         
     }
     return self;

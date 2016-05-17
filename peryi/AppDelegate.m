@@ -25,6 +25,9 @@
     [self setupTabViewController];
     [self.window makeKeyAndVisible];
     
+    
+    [self addDatabaseToDocument];
+    
     return YES;
 }
 
@@ -32,6 +35,25 @@
     ZKMainController *main = [[ZKMainController alloc] init];
     main.tabBar.translucent = YES;
     [self.window setRootViewController:main];
+}
+
+
+/**
+ *  add database to ios document
+ 增加数据库文件至iOS document目录
+ */
+- (void)addDatabaseToDocument{
+    NSString *dbpath = dbpaths;
+    
+    NSString *dbBackUppath =[[NSBundle mainBundle] pathForResource:@"DMLIST" ofType:@"db"];
+    
+    BOOL isDbFileExist =  [[NSFileManager defaultManager] fileExistsAtPath:dbpath];
+    
+    if (!isDbFileExist) {
+        
+        [[NSFileManager defaultManager] copyItemAtPath:dbBackUppath toPath:dbpath error:nil];
+        
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -30,7 +30,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我叫坂本我最屌" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zf-hi-Vph">
-                        <rect key="frame" x="93" y="-2" width="105" height="29.5"/>
+                        <rect key="frame" x="93" y="-2" width="105" height="30"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>

@@ -12,7 +12,6 @@
 #import "ZKDetailDown.h"
 #import "ZKDetailYourLike.h"
 #import <MJExtension/MJExtension.h>
-#import "ZKInfoView.h"
 #import "Masonry.h"
 
 
@@ -26,15 +25,13 @@
 
 @property (nonatomic, strong) ZKDetailAbout *detailAbout;
 
-
 /**
  *  播放列表模型数组
  */
 @property (nonatomic, strong) NSMutableArray *detailPlayList;
 
 
-//信息介绍界面
-@property (nonatomic, strong) ZKInfoView *infoView;
+
 
 
 

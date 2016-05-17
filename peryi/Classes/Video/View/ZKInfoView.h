@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *start;
 
 +(instancetype)view;
 

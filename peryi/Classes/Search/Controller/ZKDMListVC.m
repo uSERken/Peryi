@@ -15,6 +15,8 @@
 #import "MBProgressHUD+Extend.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ZKVideoController.h"
+#import "ZKDataTools.h"
+#import "ZKPageTips.h"
 
 @interface ZKDMListVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -28,16 +30,19 @@
 
 @property (nonatomic, assign) NSInteger page;
 
+@property (nonatomic, strong) ZKPageTips *pageTipsView;
 @end
 
 @implementation ZKDMListVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    self.title = _navTitle;
+    [self setUpView];
+    _pageTipsView.lastPageStr = _lastPage;
     _page = 2;
     _httpTools = [ZKHttpTools sharedZKHttpTools];
-    [self setUpView];
+    
 }
 
 - (void)setDmListDict:(NSDictionary *)dmListDict{
@@ -48,10 +53,7 @@
 }
 
 - (void)setUpView{
-    
-    UIBarButtonItem *popRoot = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
-    self.navigationItem.leftBarButtonItem = popRoot;
-    
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     _tableView = ({
         UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 44) style:UITableViewStylePlain];
         tableView.delegate = self;
@@ -63,26 +65,49 @@
         tableView;
         });
     [self.view addSubview:_tableView];
+    
+    _pageTipsView = [ZKPageTips initView];
+    [_pageTipsView setOrigin:CGPointMake((self.view.width - 80)/2, (self.view.height - 80))];
+    [self.view addSubview:_pageTipsView];
 }
-
-- (void)back{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 
 
 - (void)getMoreData{
     if (_page <= [_lastPage integerValue]) {
-        NSString *pageStr = [NSString stringWithFormat:@"%ld",_page];
+      NSString *pageStr = [NSString stringWithFormat:@"%ld",_page];
         WeakSelf;
+        //判断是网页类型搜索还是关键词语搜索
+    if ([_pageStyle rangeOfString:@"searchtype"].location != NSNotFound) {
         [_httpTools searchWithUrlStr:_pageStyle withPage:pageStr getDatasuccess:^(NSDictionary *listDict) {
-            [weakSelf.dmListArr addObjectsFromArray:[ZKListModel mj_objectArrayWithKeyValuesArray:listDict[@"list"]]];
-            [weakSelf.tableView reloadData];
-            ++weakSelf.page;
+            if (listDict[@"list"] != nil) {
+                [weakSelf.dmListArr addObjectsFromArray:[ZKListModel mj_objectArrayWithKeyValuesArray:listDict[@"list"]]];
+                [weakSelf.tableView reloadData];
+                ++weakSelf.page;
+            }else{
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            
             [weakSelf.tableView.mj_footer endRefreshing];
         }];
         
     }else{
+        
+        [_httpTools serarchWithString:_pageStyle withPage:pageStr getDatasuccess:^(NSDictionary *listDict) {
+            if (listDict[@"list"] != nil) {
+                [weakSelf.dmListArr addObjectsFromArray:[ZKListModel mj_objectArrayWithKeyValuesArray:listDict[@"list"]]];
+                [weakSelf.tableView reloadData];
+                ++weakSelf.page;
+                
+            }else{
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            
+            [weakSelf.tableView.mj_footer endRefreshing];
+        }];
+    }
+    
+        
+}else{
         [_tableView.mj_footer endRefreshingWithNoMoreData];
         [MBProgressHUD showError:@"没有更多了"];
         [_tableView.mj_footer endRefreshing];
@@ -110,12 +135,21 @@
     cell.updateLabel.text = model.about[@"update"];
     cell.attentionLabel.text = model.about[@"attention"];
     cell.synopsisLabel.text = model.about[@"synopsis"];
+    
+    //网页中每页分别19条数据
+    NSInteger count = indexPath.row / 19;
+    _pageTipsView.currentPageStr = [NSString stringWithFormat:@"%ld",count+1];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     ZKListModel *model = self.dmListArr[indexPath.row];
+    
+    ZKDataTools *datatools = [ZKDataTools sharedZKDataTools];
+    //点击了即保存数据
+    [datatools saveHistroyOrStartWithModel:model withType:saveList];
     ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -138,6 +172,24 @@
     return 90;
 }
 
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    _pageTipsView.hidden = NO;
+    [UIView animateWithDuration:1 animations:^{
+        _pageTipsView.alpha = 0.5;
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [UIView animateWithDuration:1 animations:^{
+        _pageTipsView.alpha = 0;
+    } completion:^(BOOL finished) {
+        _pageTipsView.hidden = YES;
+    }];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

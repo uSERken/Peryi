@@ -25,7 +25,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
     [self setupViewControllers];
     
 }
@@ -48,12 +47,15 @@
 - (void)setupViewControllers{
     
     ZKHomeController *home = [[ZKHomeController alloc] init];
+    home.view.backgroundColor = RGB(238, 238, 244);
     UINavigationController *nav_home = [[ZKNavigationController alloc] initWithRootViewController:home];
     
     ZKSearchController *search = [[ZKSearchController alloc] init];
+    search.view.backgroundColor = RGB(238, 238, 244);
     UINavigationController *nav_search = [[ZKNavigationController alloc] initWithRootViewController:search];
     
     ZKSettingsController *settings = [[ZKSettingsController alloc] init];
+    settings.view.backgroundColor = RGB(238, 238, 244);
     UINavigationController *nav_settings =[[ZKNavigationController alloc] initWithRootViewController:settings];
     
     [self setViewControllers:@[nav_home,nav_search,nav_settings]];
@@ -83,7 +85,6 @@
         index++;
         
     }
-    
     
 }
 

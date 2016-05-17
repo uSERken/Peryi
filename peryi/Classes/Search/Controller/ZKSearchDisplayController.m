@@ -7,6 +7,9 @@
 //
 
 #import "ZKSearchDisplayController.h"
+#import "ZKDataTools.h"
+#import <MJExtension/MJExtension.h>
+#import "ZKSearchModel.h"
 
 @interface ZKSearchDisplayController()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 
@@ -19,7 +22,9 @@
 @property (nonatomic, assign) NSInteger count;
 
 
-@property (nonatomic, strong) NSArray *histroryArr;
+@property (nonatomic, strong) NSMutableArray *histroryArr;
+
+@property (nonatomic, strong) ZKDataTools *dataTools;
 
 @end
 
@@ -30,8 +35,6 @@
 
 - (void)setActive:(BOOL)visible animated:(BOOL)animated{
     
-
-    
     if (!visible) {
         [_tableView  removeFromSuperview];
         [_contentView removeFromSuperview];
@@ -40,8 +43,7 @@
        [super setActive:visible animated:animated];
     }else{
         [super setActive:visible animated:animated];
-        _histroryArr = [NSArray arrayWithObjects:@"姐",@"妹",@"哥", nil];
-        
+
         __weak typeof(self) weakSelf = self;
         self.searchBar.delegate = weakSelf;
         
@@ -50,7 +52,7 @@
             for (UIView *view in subViews) {
                 if ([view isKindOfClass:NSClassFromString(@"UISearchDisplayControllerContainerView")]) {
                     NSArray *sub = view.subviews;
-                    ((UIView*)sub[2]).hidden = YES;
+                    ((UIView*)sub[2]).hidden = NO;
                 }
             }
         } else {
@@ -82,13 +84,16 @@
         _tableView = ({
          UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 64.0f, screenW, screenH - 40.0f) style:UITableViewStylePlain];
             tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            tableView.tableFooterView =[[UIView alloc] initWithFrame:CGRectZero];
             tableView.delegate = self;
             tableView.dataSource = self;
             tableView;
         });
         [self.parentVC.view addSubview:_tableView];
     }
-    
+    _dataTools = [ZKDataTools sharedZKDataTools];
+    _histroryArr = [ZKSearchModel mj_objectArrayWithKeyValuesArray:[_dataTools getSearchHistory]];
+    [self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -97,7 +102,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        NSLog(@"%ld",_histroryArr.count);
          return self.histroryArr.count;
     }else{
          return 1;
@@ -111,13 +115,18 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     if (indexPath.section == 0) {
-        cell.textLabel.text = _histroryArr[indexPath.row];
+        ZKSearchModel *searchModel = _histroryArr[indexPath.row];
+        cell.textLabel.text = searchModel.title;
+//        UIButton *btn  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+//        [btn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
+//        [btn addTarget:self action:@selector(deleteCell:) forControlEvents:UIControlEventTouchUpInside];
+//        cell.accessoryView = btn;
     }else{
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.text = @"清楚历史记录";
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
     }
     
     
@@ -127,15 +136,44 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
+    ZKSearchModel *searchModel = _histroryArr[indexPath.row];
     if (indexPath.section == 0) {
         if (_actionBlock) {
-            _actionBlock(_histroryArr[indexPath.row]);
+            _actionBlock(searchModel.title);
         }
     }else{
         _histroryArr = nil;
+        [_dataTools removeSearchHistoryWithStr:nil];
         [_tableView reloadData];
     }
 }
+
+//
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+     ZKSearchModel *searchModel = _histroryArr[indexPath.row];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [_histroryArr removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [_dataTools removeSearchHistoryWithStr:searchModel.title];
+    }
+}
+
+/*
+- (void)deleteCell:(UIButton *)button{
+    NSArray *visiblecells = [self.tableView visibleCells];
+    for(UITableViewCell *cell in visiblecells){
+        if(cell.tag == button.tag){
+            NSLog(@"cellTAG：%ld",cell.tag);
+            NSLog(@"btnTAG：%ld",button.tag);
+            [_histroryArr removeObjectAtIndex:[cell tag]];
+            NSLog(@"%@",cell.textLabel.text);
+//            [_dataTools removeSearchHistoryWithStr:cell.textLabel.text];
+//            [self.tableView reloadData];
+            break;
+        }
+    }
+}
+*/
 
 - (void)didClickedContentView:(UIGestureRecognizer *)sender{
     self.active = NO;
@@ -146,18 +184,15 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     if (_count != 1) {
         [self.searchBar resignFirstResponder];
-        
         [_histroryArr arrayByAddingObject:searchBar.text];
         if (_actionBlock) {
             _actionBlock(searchBar.text);
+            [_dataTools saveSearchHistortWithStr:searchBar.text];
         }
-        
         _count = 1;
     }
     ++_count;
 }
-
-
 
 
 -(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{

@@ -52,7 +52,9 @@
 }
 
 - (void)viewDidLoad{
+
     [super viewDidLoad];
+    self.title = @"搜索";
     _typeArr = @[@"类型",@"年份",@"语言",@"版本"];
     _httpTools = [ZKHttpTools sharedZKHttpTools];
     [self getAllTypeList];
@@ -65,7 +67,7 @@
         _collectionView = ({
             UICollectionViewFlowLayout *collectionViewFlow = [[UICollectionViewFlowLayout alloc] init];
             [collectionViewFlow setScrollDirection:UICollectionViewScrollDirectionVertical];
-            UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0, self.view.width, self.view.height - 40) collectionViewLayout:collectionViewFlow];
+            UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0, self.view.width, self.view.height - 48) collectionViewLayout:collectionViewFlow];
             [collectionView registerClass:[ZKCollectionTypeCell class] forCellWithReuseIdentifier:@"Cell"];
             [collectionView registerClass:[ZKPlayListCollectionHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"Header"];
             collectionView.delegate = self;
@@ -85,15 +87,14 @@
             searchBar.delegate = self;
             [searchBar sizeToFit];
             searchBar.backgroundColor = [UIColor colorWithHexString:@"0x28303b"];
-//            searchBar.backgroundColor = [UIColor whiteColor];
             searchBar.translucent = NO;
             searchBar.tintColor = [UIColor whiteColor];
             searchBar.placeholder = @"请输入动漫名称";
             searchBar.keyboardType = UIKeyboardTypeWebSearch;
             searchBar;
         });
-        [self.navigationController.view addSubview:_searchBar];
     }
+     [self.navigationController.view addSubview:_searchBar];
  
     if (!_searchViewVC) {
         _searchViewVC = ({
@@ -113,6 +114,8 @@
                 if (arr.count != 0) {
                     ZKDMListVC *vc = [[ZKDMListVC alloc] init];
                     vc.dmListDict = listDict;
+                    vc.pageStyle = text;
+                    vc.navTitle = text;
                     weakSelf.searchViewVC.active = NO;
                     [weakSelf.navigationController pushViewController:vc animated:YES];
                     [MBProgressHUD hideHUD];
@@ -124,7 +127,7 @@
             }];
         };
     }
-         [_searchBar becomeFirstResponder];
+    [_searchBar becomeFirstResponder];
    
 }
 
@@ -144,15 +147,16 @@
     }];
 }
 
-- (void)getSearchWithType:(NSString *)urlStr{
+- (void)getSearchWithType:(NSString *)urlStr withTitle:(NSString *)title{
     [MBProgressHUD showMessage:@"请稍候..."];
     WeakSelf;
     [_httpTools searchWithUrlStr:urlStr withPage:nil getDatasuccess:^(NSDictionary *listDict) {
-        [MBProgressHUD hideHUD];
         ZKDMListVC *vc = [[ZKDMListVC alloc] init];
         vc.dmListDict = listDict;
         vc.pageStyle = urlStr;
+        vc.navTitle = title;
         [weakSelf.navigationController pushViewController:vc animated:YES];
+         [MBProgressHUD hideHUD];
     }];
 }
 
@@ -191,7 +195,8 @@
 //    ZKCollectionTypeCell *cell = (ZKCollectionTypeCell *)[collectionView cellForItemAtIndexPath:indexPath];
 //    cell.isHighlighted = YES
     ZKTypeModel *model = _typeList[indexPath.section][indexPath.row];
-    [self getSearchWithType:model.href];
+    [self getSearchWithType:model.href withTitle:model.title];
+    
     
 }
 
@@ -216,6 +221,7 @@
         if (arr.count != 0) {
             ZKDMListVC *vc = [[ZKDMListVC alloc] init];
             vc.dmListDict = listDict;
+            vc.pageStyle = searchBar.text;
             weakSelf.searchViewVC.active = NO;
             [weakSelf.navigationController pushViewController:vc animated:YES];
              [MBProgressHUD hideHUD];

@@ -32,6 +32,8 @@
     }
     return cell;
 }
+
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     _imgView.layer.cornerRadius = 10;

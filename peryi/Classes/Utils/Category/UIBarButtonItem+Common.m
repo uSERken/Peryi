@@ -15,4 +15,15 @@
     return buttonItem;
 }
 
++ (UIBarButtonItem *)itemWithImage:(UIImage *)image highImage:(UIImage *)highImage target:(id)target action:(SEL)action
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setBackgroundImage:highImage forState:UIControlStateHighlighted];
+    [button sizeToFit];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return  [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+}
+
 @end

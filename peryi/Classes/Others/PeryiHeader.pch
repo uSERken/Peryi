@@ -27,4 +27,7 @@
 //颜色
 #define RGB(r, g, b) [UIColor colorWithRed:r / 255.0 green:g / 255.0 blue:b / 255.0 alpha:1]
 
+//存储数据库文件位置
+#define  dbpaths [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"DMLIST.db"];
+
 #endif /* PrefixHeader_pch */
