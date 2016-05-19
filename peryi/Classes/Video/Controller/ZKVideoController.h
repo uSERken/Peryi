@@ -16,5 +16,6 @@ typedef NS_ENUM(NSInteger, requestType) {
 
 -(id) initWithAddress:(NSString *)addresUrlStr;
 
+@property (nonatomic, strong) NSString *localHtml;
 
 @end

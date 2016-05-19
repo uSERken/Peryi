@@ -16,15 +16,11 @@
 
 
 + (void)initialize{
-//    UIBarButtonItem *btnItem = [UIBarButtonItem appearance];
-//    NSMutableDictionary *textDict = [NSMutableDictionary dictionary];
-//    textDict[NSForegroundColorAttributeName] = [UIColor grayColor];
-    
     UINavigationBar *barItem = [UINavigationBar appearance];
     NSMutableDictionary *textDict = [NSMutableDictionary dictionary];
         textDict[NSForegroundColorAttributeName] = [UIColor blackColor];
     [barItem setTitleTextAttributes:textDict];
-    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 
 - (void)viewDidLoad{

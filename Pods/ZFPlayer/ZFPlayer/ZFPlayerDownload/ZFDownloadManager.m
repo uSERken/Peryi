@@ -122,7 +122,7 @@ static ZFDownloadManager *_downloadManager;
 /**
  *  开启任务下载资源
  */
-- (void)download:(NSString *)url progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock
+- (void)download:(NSString *)url withHtmlStr:(NSString *)urlStr progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock
 {
     if (!url) return;
     if ([self isCompletion:url]) {
@@ -168,6 +168,7 @@ static ZFDownloadManager *_downloadManager;
         sessionModel.stream = stream;
         sessionModel.startTime = [NSDate date];
         sessionModel.fileName = ZFFileName(url);
+        sessionModel.urlStr = urlStr;
         [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
         [self.sessionModelsArray addObject:sessionModel];
         // 保存
@@ -181,6 +182,7 @@ static ZFDownloadManager *_downloadManager;
                 sessionModel.stream = stream;
                 sessionModel.startTime = [NSDate date];
                 sessionModel.fileName = ZFFileName(url);
+                sessionModel.urlStr = urlStr;
                 [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
             }
         }

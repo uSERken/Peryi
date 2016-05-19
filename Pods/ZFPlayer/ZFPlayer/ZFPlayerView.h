@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerLayerGravity) {
 /** 从xx秒开始播放视频跳转 */
 @property (nonatomic, assign) NSInteger            seekTime;
 
+@property (nonatomic, strong) NSString             *htmlStr;
 /**
  *  取消延时隐藏controlView的方法,在ViewController的delloc方法中调用
  *  用于解决：刚打开视频播放器，就关闭该页面，maskView的延时隐藏还未执行。

@@ -50,6 +50,8 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
+
+
 @end
 
 @implementation ZKVideoController
@@ -64,27 +66,41 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{   _isCreate = NO;
+{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
     [UIApplication sharedApplication].statusBarHidden = NO;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
-}
-
-- (void)viewDidLoad{
-    [super viewDidLoad];
-    [self setUpAllView];
-    _dataTools = [ZKDataTools sharedZKDataTools];
-    [self loadListDataWithstrUrl:self.strUrl];
 }
 
 -(id) initWithAddress:(NSString *)addresUrlStr{
     if (self = [super init]) {
-        self.strUrl = addresUrlStr;
+        _isCreate = NO;
+        [self setUpAllView];
+        _dataTools = [ZKDataTools sharedZKDataTools];
+        if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {
+            _playView.videoURL = [NSURL URLWithString:addresUrlStr];
+            _playView.hidden = NO;
+            }else{
+            _strUrl = addresUrlStr;
+            [self loadListDataWithstrUrl:addresUrlStr];
+        }
+        
     }
     return self;
 }
 
+- (void)viewDidLoad{
+    [super viewDidLoad];
+
+    
+}
+
+- (void)setLocalHtml:(NSString *)localHtml{
+     _localHtml = localHtml;
+     [self loadListDataWithstrUrl:_localHtml];
+}
 
 - (void)setUpAllView{
     [self.navigationController.navigationBar setHidden:YES];
@@ -131,6 +147,7 @@
          _playView = [[ZFPlayerView alloc] init];
         _playView.backgroundColor = [UIColor blackColor];
         _playView.hidden = YES;
+        _playView.hasDownload = YES;
         _isCreate = NO;
         [self.view addSubview:self.playView];
         [self.playView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,7 +158,6 @@
         }];
         }
     
-      self.playView.hasDownload = YES;
       self.playView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
       __weak typeof(self) weakSelf = self;
       self.playView.goBackBlock = ^(){
@@ -239,18 +255,23 @@
         [_activity stopAnimating];
         _playView.hidden = NO;
         //用于重置播放
-        if ([docStr rangeOfString:@"mp4"].location != NSNotFound) {
+        
+        if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
+            _playView.htmlStr = _strUrl;
         }else{
             _playView.hasDownload = NO;
         }
+        
         if (_isCreate) {
             [self.playView resetToPlayNewURL];
             self.playView.videoURL = [NSURL URLWithString:docStr];
         }else{
             _isCreate = YES;
-           self.playView.videoURL = [NSURL URLWithString:docStr];
-         }
+            self.playView.videoURL = [NSURL URLWithString:docStr];
+        }
+
+        
         if (docStr != nil){
             [self.webView removeFromSuperview];
             [MBProgressHUD hideHUD];
@@ -282,14 +303,17 @@
 
 - (void)timerAction{
     if (self.detailList.count > 0) {
+        
         _detailListView.detailList = self.detailList;
         [MBProgressHUD hideHUD];
-        NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
-        [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
-        NSLog(@"%@",playVideoUrl[@"href"]);
+        if (self.localHtml == nil) {
+            NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
+            [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
+            NSLog(@"%@",playVideoUrl[@"href"]);
+        }
         //判断是否是收藏
         NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
-         _isStart = [_dataTools isStartWithTitle:aboutInfo[@"alt"]];
+        _isStart = [_dataTools isStartWithTitle:aboutInfo[@"alt"]];
         if (_isStart) {
             _detailListView.infoView.start.selected = YES;
         }else{

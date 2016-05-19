@@ -55,6 +55,7 @@
     [aCoder encodeObject:self.fileName forKey:@"fileName"];
     [aCoder encodeInteger:self.totalLength forKey:@"totalLength"];
     [aCoder encodeObject:self.totalSize forKey:@"totalSize"];
+    [aCoder encodeObject:self.urlStr forKey:@"urlStr"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder //将属性进行解码
@@ -65,6 +66,8 @@
         self.fileName = [aDecoder decodeObjectForKey:@"fileName"];
         self.totalLength = [aDecoder decodeIntegerForKey:@"totalLength"];
         self.totalSize = [aDecoder decodeObjectForKey:@"totalSize"];
+        self.urlStr = [aDecoder decodeObjectForKey:@"urlStr"];
+        
     }
     return self;
 }

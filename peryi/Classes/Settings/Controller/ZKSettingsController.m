@@ -101,6 +101,7 @@
          [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
          cell.accessoryView = switchview;
          cell.textLabel.text = @"是否允许3G/4G播放";
+            
         }
     }else{
 //        cell.textLabel.textAlignment = NSTextAlignmentCenter;

@@ -1205,7 +1205,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)downloadVideo:(UIButton *)sender
 {
     __weak UIButton *btn = sender;
-    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString withHtmlStr:(NSString *)_htmlStr progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
         dispatch_async(dispatch_get_main_queue(), ^{ btn.enabled = NO; });
     } state:^(DownloadState state) {}];
 }

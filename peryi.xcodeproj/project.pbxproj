@@ -23,6 +23,10 @@
 		0A691E9B1CE470B90030BCDE /* ZKPlayANDStarTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A691E991CE470B90030BCDE /* ZKPlayANDStarTableVC.m */; };
 		0A691E9F1CE470E00030BCDE /* ZKAboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A691E9E1CE470E00030BCDE /* ZKAboutVC.m */; };
 		0A8823C91CD8A43800B05432 /* ZKPlayAndDownloadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */; };
+		0A9605D91CED4F9300D04AC1 /* ZKDownLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9605D81CED4F9300D04AC1 /* ZKDownLoadingCell.m */; };
+		0A9605DC1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9605DB1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m */; };
+		0A9605DE1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A9605DD1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib */; };
+		0A9605E01CED500D00D04AC1 /* ZKDownloadCompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A9605DF1CED500D00D04AC1 /* ZKDownloadCompleteCell.xib */; };
 		0A98AFAB1CCDE59D00721956 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAA1CCDE59D00721956 /* main.m */; };
 		0A98AFAE1CCDE59D00721956 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFAD1CCDE59D00721956 /* AppDelegate.m */; };
 		0A98AFB71CCDE59D00721956 /* peryi.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A98AFB51CCDE59D00721956 /* peryi.xcdatamodeld */; };
@@ -173,6 +177,12 @@
 		0A691E9E1CE470E00030BCDE /* ZKAboutVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKAboutVC.m; sourceTree = "<group>"; };
 		0A8823C71CD8A43800B05432 /* ZKPlayAndDownloadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKPlayAndDownloadView.h; sourceTree = "<group>"; };
 		0A8823C81CD8A43800B05432 /* ZKPlayAndDownloadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKPlayAndDownloadView.m; sourceTree = "<group>"; };
+		0A9605D71CED4F9300D04AC1 /* ZKDownLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDownLoadingCell.h; sourceTree = "<group>"; };
+		0A9605D81CED4F9300D04AC1 /* ZKDownLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDownLoadingCell.m; sourceTree = "<group>"; };
+		0A9605DA1CED4FF100D04AC1 /* ZKDownloadCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKDownloadCompleteCell.h; sourceTree = "<group>"; };
+		0A9605DB1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKDownloadCompleteCell.m; sourceTree = "<group>"; };
+		0A9605DD1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKDownLoadingCell.xib; sourceTree = "<group>"; };
+		0A9605DF1CED500D00D04AC1 /* ZKDownloadCompleteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKDownloadCompleteCell.xib; sourceTree = "<group>"; };
 		0A98AFA61CCDE59D00721956 /* peryi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = peryi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A98AFAA1CCDE59D00721956 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A98AFAC1CCDE59D00721956 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -656,6 +666,12 @@
 				0AB2820E1CE5CDB800AA8B02 /* ZKHistoryANDStartCell.h */,
 				0AB2820F1CE5CDB800AA8B02 /* ZKHistoryANDStartCell.m */,
 				0AEF51EA1CE5D14600FF7892 /* ZKHistoryANDStartCell.xib */,
+				0A9605D71CED4F9300D04AC1 /* ZKDownLoadingCell.h */,
+				0A9605D81CED4F9300D04AC1 /* ZKDownLoadingCell.m */,
+				0A9605DD1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib */,
+				0A9605DA1CED4FF100D04AC1 /* ZKDownloadCompleteCell.h */,
+				0A9605DB1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m */,
+				0A9605DF1CED500D00D04AC1 /* ZKDownloadCompleteCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -964,6 +980,7 @@
 				0AF675961CCF2E9E002CE56B /* project_normal@3x.png in Resources */,
 				0AF6759B1CCF2E9E002CE56B /* task_selected@2x.png in Resources */,
 				0AF675951CCF2E9E002CE56B /* project_normal@2x.png in Resources */,
+				0A9605DE1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib in Resources */,
 				0AF675901CCF2E9E002CE56B /* me_selected@3x.png in Resources */,
 				0A98AFBC1CCDE59D00721956 /* LaunchScreen.storyboard in Resources */,
 				0AF675971CCF2E9E002CE56B /* project_selected@2x.png in Resources */,
@@ -982,6 +999,7 @@
 				0AEEF1951CD997E80096BC59 /* Assets.xcassets in Resources */,
 				0AF6758D1CCF2E9E002CE56B /* me_normal@2x.png in Resources */,
 				0AC466A61CEAE9FA00646E68 /* ZKPageTips.xib in Resources */,
+				0A9605E01CED500D00D04AC1 /* ZKDownloadCompleteCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1061,6 +1079,7 @@
 				0AF6756C1CCF28F3002CE56B /* UIColor+expanded.m in Sources */,
 				0AB282101CE5CDB800AA8B02 /* ZKHistoryANDStartCell.m in Sources */,
 				0AF675C21CD1E3F5002CE56B /* ZKHomeCollectionCell.m in Sources */,
+				0A9605DC1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m in Sources */,
 				0A5B8EE01CE1A1CD001C1940 /* ZKDMListCell.m in Sources */,
 				0AE40B041CD9B21B0069FB80 /* ZKPlayAndDownCell.m in Sources */,
 				0A5697E21CCF03DC00F55397 /* ZKHttpTools.m in Sources */,
@@ -1091,6 +1110,7 @@
 				0AF675651CCF28F3002CE56B /* NSTimer+Common.m in Sources */,
 				0A5B8ECE1CE06231001C1940 /* ZKTypeCollection.m in Sources */,
 				0AE40B011CD9A7B50069FB80 /* ZKSegmentedControl.m in Sources */,
+				0A9605D91CED4F9300D04AC1 /* ZKDownLoadingCell.m in Sources */,
 				0AF6756D1CCF28F3002CE56B /* UIDevice+Info.m in Sources */,
 				0A5697DE1CCF039600F55397 /* UIView+WF.m in Sources */,
 				0AF13A711CDC6F2100C9BF93 /* ZKLikeCollectionViewCell.m in Sources */,
