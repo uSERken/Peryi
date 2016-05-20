@@ -7,37 +7,50 @@
 //
 
 #import "AppDelegate.h"
-
+#import "ZKSettingModel.h"
+#import "ZKSettingModelTool.h"
 #import "ZKMainController.h"
-
+#import "ZKPlayANDStarTableVC.h"
+#import "ZKNavigationController.h"
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-  
-    [self setupTabViewController];
+    if (IOS_VERSION > 9.0) {
+        [self APP3DTouch];
+    }
+    ZKMainController *main = [[ZKMainController alloc] init];
+    main.tabBar.translucent = YES;
+    [self.window setRootViewController:main];
     [self.window makeKeyAndVisible];
-    
-    
     [self addDatabaseToDocument];
+    
+    
+    
+    //延迟调用网络检测以免检测出错
+    [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.3f];
     
     return YES;
 }
 
-- (void)setupTabViewController{
-    ZKMainController *main = [[ZKMainController alloc] init];
-    main.tabBar.translucent = YES;
-    [self.window setRootViewController:main];
+-(void)detectionNetWorking{
+    NSFileManager* fm = [NSFileManager defaultManager];
+    BOOL isDbFileExist =  [fm fileExistsAtPath:ZKSettingModelPath];
+    if (!isDbFileExist) {
+        //默认保存的设置配置
+        ZKSettingModel *model = [[ZKSettingModel alloc] init];
+        model.isOpenNetwork = @"No";
+        [ZKSettingModelTool saveSettingWithModel:model];
+    }
+    //检测网络
+    [[AFNetworkReachabilityManager  sharedManager] startMonitoring];
 }
-
-
 /**
  *  add database to ios document
  增加数据库文件至iOS document目录
@@ -54,6 +67,24 @@
         [[NSFileManager defaultManager] copyItemAtPath:dbBackUppath toPath:dbpath error:nil];
         
     }
+}
+
+/**
+ *  3D touch
+ */
+- (void)APP3DTouch{
+    UIApplicationShortcutItem *shortItem1 = [[UIApplicationShortcutItem alloc] initWithType:@"搜索" localizedTitle:@"搜索" localizedSubtitle:nil icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeSearch] userInfo:nil];
+//    [shortItem1 ] initWithType:@"搜索" localizedTitle:@"搜索"
+    UIApplicationShortcutItem *shortItem2 = [[UIApplicationShortcutItem alloc] initWithType:@"收藏列表" localizedTitle:@"收藏列表" localizedSubtitle:nil icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeFavorite] userInfo:nil];
+    
+    
+    NSArray *itemArr = [NSArray arrayWithObjects:shortItem1,shortItem2, nil];
+    [[UIApplication sharedApplication] setShortcutItems:itemArr];
+}
+
+
++ (AppDelegate *)appDelegate {
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -159,5 +190,18 @@
         }
     }
 }
+
+- (void)application:(UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler{
+      ZKMainController *mainVC = (ZKMainController *)self.window.rootViewController;
+    if ([shortcutItem.localizedTitle isEqual:@"搜索"]) {
+        mainVC.selectedIndex = 1;
+    }else if([shortcutItem.localizedTitle isEqual:@"收藏列表"]){
+        mainVC.selectedIndex = 2;
+        ZKPlayANDStarTableVC *tablVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartCollectionType];
+        [(ZKNavigationController *)mainVC.selectedViewController pushViewController:tablVC animated:YES];
+    }
+    
+}
+
 
 @end

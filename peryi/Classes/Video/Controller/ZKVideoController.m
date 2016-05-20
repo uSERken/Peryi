@@ -7,7 +7,6 @@
 //
 
 #import "ZKVideoController.h"
-#import <VBFPopFlatButton/VBFPopFlatButton.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ZFPlayer/ZFPlayer.h>
@@ -15,18 +14,18 @@
 #import "MBProgressHUD+Extend.h"
 #import <RDVTabBarController/RDVTabBarController.h>
 #import "ZKDetailListView.h"
-#import <SVWebViewController/SVWebViewController.h>
 #import "ZKDataTools.h"
 #import "ZKHomeList.h"
+#import "ZKSettingModel.h"
+#import "ZKSettingModelTool.h"
 
-@interface ZKVideoController()<UIWebViewDelegate,UIScrollViewDelegate>
+@interface ZKVideoController()<UIWebViewDelegate,UIScrollViewDelegate,UIAlertViewDelegate>
 
 /**
  *  详情页面
  */
 @property (nonatomic, strong) NSString *strUrl;
 
-@property (nonatomic, strong) VBFPopFlatButton *playBtn;
 
 @property (nonatomic, strong) ZFPlayerView *playView;
 
@@ -42,14 +41,12 @@
 
 @property (nonatomic, assign) BOOL isCreate;
 
-@property (nonatomic, strong) SVWebViewController *webViewController;
 
 @property (nonatomic, assign) BOOL isStart;
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
-
 
 
 @end
@@ -63,6 +60,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
     [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -93,8 +91,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-
-    
 }
 
 - (void)setLocalHtml:(NSString *)localHtml{
@@ -113,6 +109,7 @@
          make.height.equalTo(topView.mas_width);
      }];
     
+    //由于zfplayer里，没有写入url就不能初始化点击按钮。因此自定义一个以防视频url为加载出的等待
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:@"loading_bg"]];
     imageView.backgroundColor = [UIColor blueColor];
@@ -129,20 +126,7 @@
     [imageView addSubview:_activity];
     
     
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(topView).offset(20);
-        make.left.right.equalTo(topView);
-        make.height.equalTo(imageView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
-    }];
-    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(imageView.mas_leading).offset(15);
-        make.top.equalTo(imageView.mas_top).offset(5);
-        make.width.height.mas_equalTo(30);
-    }];
-    [_activity mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(imageView);
-    }];
-
+    //加载播放界面
     if (!_playView) {
          _playView = [[ZFPlayerView alloc] init];
         _playView.backgroundColor = [UIColor blackColor];
@@ -162,10 +146,11 @@
       __weak typeof(self) weakSelf = self;
       self.playView.goBackBlock = ^(){
           dispatch_async(dispatch_get_main_queue(), ^{
-             [weakSelf.navigationController popViewControllerAnimated:YES];
+              [weakSelf.navigationController popViewControllerAnimated:YES];
+              [weakSelf deleteAll];
           });
-        
         };
+    
     if (!_detailListView) {
         _detailListView = [[ZKDetailListView alloc] init];
         _detailListView.backgroundColor = RGB(241, 241, 241);
@@ -183,14 +168,11 @@
         };
         _detailListView.playAndDownView.action = ^(NSString *url){
             if (![url hasPrefix:@"http://"]) {
+                [weakSelf.activity bringSubviewToFront:weakSelf.playView];
+                [weakSelf.activity startAnimating];
                 [weakSelf getVideoInfoWithUrl:url];
             }else{
-                if ([url rangeOfString:@"torrent"].location == NSNotFound) {
-                    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:url];
-                    [weakSelf presentViewController:webViewController animated:YES completion:NULL];
-                }else{
-                    [MBProgressHUD showError:@"抱歉，此连接无法打开"];
-                }
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
             }
         };
         //猜你喜欢点击处理
@@ -200,11 +182,26 @@
         //收藏按钮
         [_detailListView.infoView.start addTarget:self action:@selector(startOnClick) forControlEvents:UIControlEventTouchDown];
         [self.view addSubview:_detailListView];
+        
+        
         [self.detailListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.playView.mas_bottom);
             make.left.right.equalTo(self.view);
             make.bottom.equalTo(@0);
-        }];  
+        }];
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(topView).offset(20);
+            make.left.right.equalTo(topView);
+            make.height.equalTo(imageView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+        }];
+        [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(imageView.mas_leading).offset(15);
+            make.top.equalTo(imageView.mas_top).offset(5);
+            make.width.height.mas_equalTo(30);
+        }];
+        [_activity mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(imageView);
+        }];
     }
 }
 
@@ -239,7 +236,6 @@
 //=========================================获取视屏网址================================//
 //由于需要网页加载后才可得到播放地址。因此添加uiwebview类根据url进入播放页面并得到数据。
 - (void)getVideoInfoWithUrl:(NSString *)url{
-//    [MBProgressHUD showMessage:@"正在加载，请稍候..."];
     url = [NSString stringWithFormat:@"%@%@",baseURL,url];
     self.webView = [[UIWebView alloc] init];
     _webView.delegate = self;
@@ -249,6 +245,7 @@
 }
 //webview的代理。加载网页完成后获取播放地址并删除uiwebview
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
+    [self open4GSetting];
     //加载网页完成后还需加载视频连接
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
@@ -258,11 +255,10 @@
         
         if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
-            _playView.htmlStr = _strUrl;
+            _playView.urlStr = _strUrl;
         }else{
             _playView.hasDownload = NO;
         }
-        
         if (_isCreate) {
             [self.playView resetToPlayNewURL];
             self.playView.videoURL = [NSURL URLWithString:docStr];
@@ -270,8 +266,6 @@
             _isCreate = YES;
             self.playView.videoURL = [NSURL URLWithString:docStr];
         }
-
-        
         if (docStr != nil){
             [self.webView removeFromSuperview];
             [MBProgressHUD hideHUD];
@@ -344,10 +338,70 @@
 }
 
 - (void)backtoRootVC{
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    //如果竖屏时强制改为横屏
+    UIInterfaceOrientation oreientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (oreientation == UIInterfaceOrientationLandscapeRight || oreientation == UIInterfaceOrientationLandscapeLeft) {
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector             = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val                  = UIInterfaceOrientationPortrait;
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+        
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+        [self deleteAll];
+    }
 }
 
+/**
+ *  是否设置观看
+ */
+- (void)open4GSetting{
+    ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
+    if ([model.isOpenNetwork isEqualToString:@"Yes"]) {
+    }else{
+        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            if (status == AFNetworkReachabilityStatusNotReachable) {
+                [MBProgressHUD showError:@"您的网络已断开"];
+            }else{
+                UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
+                [aler show];
+            }
+        }];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+         [_playView pause];
+    }else{
+       
+    }
+}
+
+
+/**
+ *  删除所有view及数据
+ */
+- (void)deleteAll{
+    _strUrl = nil;
+    _playView = nil;
+    _detailList = nil;
+    _webView = nil;
+    _videoUrl = nil;
+    _timer = nil;
+    _detailListView = nil;
+    _dataTools = nil;
+}
+
+
 - (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.playView cancelAutoFadeOutControlBar];
 }
 @end

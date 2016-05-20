@@ -47,8 +47,14 @@
 
 @interface ZFDownloadManager : NSObject
 
-/** 保存所有下载相关信息 */
+/** 保存所有下载相关信息字典 */
 @property (nonatomic, strong, readonly) NSMutableDictionary *sessionModels;
+/** 所有本地存储的所有下载信息数据数组 */
+@property (nonatomic, strong, readonly) NSMutableArray *sessionModelsArray;
+/** 下载完成的模型数组*/
+@property (nonatomic, strong, readonly) NSMutableArray *downloadedArray;
+/** 下载中的模型数组*/
+@property (nonatomic, strong, readonly) NSMutableArray *downloadingArray;
 /** ZFDownloadDelegate */
 @property (nonatomic, assign) id<ZFDownloadDelegate> delegate;
 

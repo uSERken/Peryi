@@ -11,7 +11,10 @@
 #import "ZKPlayANDStarTableVC.h"
 #import "ZKAboutVC.h"
 #import "NSFileManager+ZKCache.h"
-#import <SDImageCache.h>
+#import "SDImageCache.h"
+#import "MBProgressHUD+Extend.h"
+#import "ZKSettingModel.h"
+#import "ZKSettingModelTool.h"
 
 @interface ZKSettingsController()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
 
@@ -19,7 +22,7 @@
 
 @property (nonatomic, strong) NSArray *functionArr;
 
-
+@property (nonatomic, strong) ZKSettingModel *model;
 @end
 
 @implementation ZKSettingsController
@@ -101,7 +104,12 @@
          [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
          cell.accessoryView = switchview;
          cell.textLabel.text = @"是否允许3G/4G播放";
-            
+        ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
+            if ([model.isOpenNetwork isEqualToString:@"Yes"]) {
+                switchview.on = YES;
+            }else{
+                switchview.on = NO;
+            }
         }
     }else{
 //        cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -148,10 +156,19 @@
 - (void)updateSwitchAtIndexPath:(id)sender{
     UISwitch *switchView = (UISwitch *)sender;
     if ([switchView isOn]){
-        NSLog(@"开");
+        
+        ZKSettingModel *model = [[ZKSettingModel alloc] init];
+        model.isOpenNetwork = @"Yes";
+        [ZKSettingModelTool saveSettingWithModel:model];
+        [MBProgressHUD showSuccess:@"开启3G/4G播放"];
     }
     else{
-        NSLog(@"关");
+        
+        ZKSettingModel *model = [[ZKSettingModel alloc] init];
+        model.isOpenNetwork = @"No";
+        [ZKSettingModelTool saveSettingWithModel:model];
+        [MBProgressHUD showSuccess:@"关闭3G/4G播放"];
+        
     }
 }
 
@@ -161,6 +178,10 @@
         [NSFileManager clearPicture];
         [self.tabelView reloadData];
     }
+}
+
+- (void)dealloc{
+    
 }
 
 @end

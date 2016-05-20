@@ -154,6 +154,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 {
     self.playerItem = nil;
     self.tableView = nil;
+    self.player = nil;
+    self.playerLayer = nil;
     // 移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -358,12 +360,11 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)setVideoURL:(NSURL *)videoURL
 {
-    _videoURL = videoURL;
-    
     // 如果已经下载过这个video了，那么直接播放本地视频
     if ([[ZFDownloadManager sharedInstance] isCompletion:videoURL.absoluteString]) {
         videoURL = [NSURL fileURLWithPath:ZFFileFullpath(videoURL.absoluteString)];
     }
+    _videoURL = videoURL;
     
     // 播放开始之前（加载中）设置站位图
     UIImage *image = [UIImage imageNamed:ZFPlayerSrcName(@"loading_bgView")];
@@ -664,17 +665,17 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 
     if ([visableCells containsObject:cell]) {
         //在显示中
-        [self updataPlayerViewToCell];
+        [self updatePlayerViewToCell];
     }else {
         //在底部
-        [self updataPlayerViewToBottom];
+        [self updatePlayerViewToBottom];
     }
 }
 
 /**
  *  缩小到底部，显示小视频
  */
-- (void)updataPlayerViewToBottom
+- (void)updatePlayerViewToBottom
 {
     if (self.isBottomVideo) { return ; }
     self.isBottomVideo = YES;
@@ -710,7 +711,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 /**
  *  回到cell显示
  */
-- (void)updataPlayerViewToCell
+- (void)updatePlayerViewToCell
 {
     if (!self.isBottomVideo) { return; }
     self.isBottomVideo     = NO;
@@ -733,7 +734,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         // 亮度view加到window最上层
-        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnesView];
+        ZFBrightnessView *brightnessView = [ZFBrightnessView sharedBrightnessView];
         [[UIApplication sharedApplication].keyWindow insertSubview:self belowSubview:brightnessView];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.edges.insets(UIEdgeInsetsMake(0, 0, 0, 0));
@@ -753,7 +754,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
         NSArray *visableCells = self.tableView.visibleCells;
         self.isBottomVideo = NO;
         if (![visableCells containsObject:cell]) {
-            [self updataPlayerViewToBottom];
+            [self updatePlayerViewToBottom];
         }else {
             // 根据tag取到对应的cellImageView
             UIImageView *cellImageView = [cell viewWithTag:self.cellImageViewTag];
@@ -889,7 +890,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             // 设置返回按钮的约束
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
 
@@ -903,7 +905,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 ZFPlayerShared.isAllowLandscape = NO;
                 [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.top.leading.mas_equalTo(5);
+                    make.top.mas_equalTo(10);
+                    make.leading.mas_equalTo(7);
+                    make.width.height.mas_equalTo(20);
                 }];
                 
                 // 点击播放URL时候不会调用次方法
@@ -919,7 +923,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }else {
                 [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.mas_equalTo(5);
-                    make.leading.mas_equalTo(15);
+                    make.leading.mas_equalTo(7);
+                    make.width.height.mas_equalTo(40);
                 }];
             }
             self.isFullScreen = NO;
@@ -933,7 +938,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
         }
@@ -945,7 +951,8 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
             }
             [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(20);
-                make.leading.mas_equalTo(15);
+                make.leading.mas_equalTo(7);
+                make.width.height.mas_equalTo(40);
             }];
             self.isFullScreen = YES;
         }
@@ -961,7 +968,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     if (self.isCellVideo && !ZFPlayerShared.isAllowLandscape) {
         [self.controlView.backBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"kr-video-player-close")] forState:UIControlStateNormal];
         [self.controlView.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.leading.mas_equalTo(5);
+            make.top.mas_equalTo(10);
+            make.leading.mas_equalTo(7);
+            make.width.height.mas_equalTo(20);
         }];
         self.controlView.fullScreenBtn.selected = NO;
         self.controlView.lockBtn.hidden = YES;
@@ -1143,18 +1152,6 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 }
 
 /**
- *  关闭当前视频
- */
-- (void)closeCurrentVideo{
-
-            // player加到控制器上，只有一个player时候
-            [self.timer invalidate];
-            [self pause];
-
-
-}
-
-/**
  *  返回按钮事件
  */
 - (void)backButtonAction
@@ -1171,9 +1168,14 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 [self removeFromSuperview];
                 return;
             }
+                [_player pause];
+                [self.timer invalidate];
+                //移除view 以防控制器退出后继续播放
+                self.player = nil;
+                self.playerLayer = nil;
+                [self removeFromSuperview];
             // player加到控制器上，只有一个player时候
-            [self.timer invalidate];
-            [self pause];
+            
             if (self.goBackBlock) {
                 self.goBackBlock();
             }
@@ -1205,7 +1207,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
 - (void)downloadVideo:(UIButton *)sender
 {
     __weak UIButton *btn = sender;
-    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString withHtmlStr:(NSString *)_htmlStr progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString  withHtmlStr:(NSString *)_urlStr progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
         dispatch_async(dispatch_get_main_queue(), ^{ btn.enabled = NO; });
     } state:^(DownloadState state) {}];
 }

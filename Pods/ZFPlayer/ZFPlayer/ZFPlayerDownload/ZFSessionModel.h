@@ -46,9 +46,9 @@ typedef void(^ZFDownloadStateBlock)(DownloadState state);
 @property (nonatomic, copy) NSString *fileName;
 /** 文件大小 */
 @property (nonatomic, copy) NSString *totalSize;
-/** 下载动漫所对应的动漫 */
-@property (nonatomic, copy) NSString *urlStr;
 
+/** 所对应的html页面 **/
+@property (nonatomic, copy) NSString *urlStr;
 
 /** 获得服务器这次请求 返回数据的总长度 */
 @property (nonatomic, assign) NSInteger totalLength;

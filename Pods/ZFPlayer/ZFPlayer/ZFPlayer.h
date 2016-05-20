@@ -25,7 +25,7 @@
 // 监听TableView的contentOffset
 #define kZFPlayerViewContentOffset          @"contentOffset"
 // player的单例
-#define ZFPlayerShared                      [ZFBrightnessView sharedBrightnesView]
+#define ZFPlayerShared                      [ZFBrightnessView sharedBrightnessView]
 // 屏幕的宽
 #define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
 // 屏幕的高

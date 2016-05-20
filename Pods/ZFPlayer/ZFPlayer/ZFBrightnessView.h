@@ -30,6 +30,6 @@
 /** cell上添加player时候，不允许横屏,只运行竖屏状态状态*/
 @property (nonatomic, assign) BOOL     isAllowLandscape;
 
-+ (instancetype)sharedBrightnesView;
++ (instancetype)sharedBrightnessView;
 
 @end

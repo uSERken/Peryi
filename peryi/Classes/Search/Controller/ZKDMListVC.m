@@ -17,8 +17,9 @@
 #import "ZKVideoController.h"
 #import "ZKDataTools.h"
 #import "ZKPageTips.h"
+#import "ZKDMListTouchVC.h"
 
-@interface ZKDMListVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface ZKDMListVC ()<UITableViewDelegate,UITableViewDataSource,UIViewControllerPreviewingDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -59,6 +60,7 @@
         tableView.delegate = self;
         tableView.dataSource = self;
         tableView.backgroundColor = [UIColor clearColor];
+        tableView.tableFooterView =[[UIView alloc] initWithFrame:CGRectZero];
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
         
@@ -130,6 +132,9 @@
    
     ZKDMListCell *cell = [ZKDMListCell cellWithTableView:tableView];
     ZKListModel *model = self.dmListArr[indexPath.row];
+    
+     [self registerForPreviewingWithDelegate:self sourceView:cell];
+
     cell.titleLabel.text = model.alt;
     [cell.imgView sd_setImageWithURL:[NSURL URLWithString:model.src] placeholderImage:[UIImage imageNamed:@"Management_Mask"]];
     cell.updateLabel.text = model.about[@"update"];
@@ -194,6 +199,28 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+
+#pragma mark - 3DTouch
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+    NSIndexPath *indexPath = [_tableView indexPathForCell:(ZKDMListCell*)[previewingContext sourceView]];
+    ZKListModel *model = self.dmListArr[indexPath.row];
+
+    ZKDMListTouchVC *touchVc = [[ZKDMListTouchVC alloc] initWithUrlStr:model.href bgColor:[UIColor yellowColor]];
+    //加载列表数据
+    [_httpTools getDetailDMWithURL:model.href getDatasuccess:^(NSDictionary *listData) {
+        touchVc.detailList = listData;
+    }];
+    
+    touchVc.preferredContentSize = CGSizeMake(0, 450);
+    return touchVc;
+}
+
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit{
+    [self showViewController:viewControllerToCommit sender:self];
+}
+
 
 
 @end

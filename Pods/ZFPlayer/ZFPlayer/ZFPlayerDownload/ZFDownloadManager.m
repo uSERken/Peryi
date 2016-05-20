@@ -27,10 +27,16 @@
 
 /** 保存所有任务(注：用下载地址/后作为key) */
 @property (nonatomic, strong) NSMutableDictionary *tasks;
-/** 保存所有下载相关信息 */
+/** 保存所有下载相关信息字典 */
 @property (nonatomic, strong) NSMutableDictionary *sessionModels;
-/** 所有本地存储的下载信息数据 */
+/** 所有本地存储的所有下载信息数据数组 */
 @property (nonatomic, strong) NSMutableArray *sessionModelsArray;
+/** 下载完成的模型数组*/
+@property (nonatomic, strong) NSMutableArray *downloadedArray;
+/** 下载中的模型数组*/
+@property (nonatomic, strong) NSMutableArray *downloadingArray;
+
+
 @end
 
 @implementation ZFDownloadManager
@@ -46,10 +52,11 @@
 - (NSMutableDictionary *)sessionModels
 {
     if (!_sessionModels) {
-        _sessionModels = [NSMutableDictionary dictionary];
+        _sessionModels = @{}.mutableCopy;
     }
     return _sessionModels;
 }
+
 
 - (NSMutableArray *)sessionModelsArray
 {
@@ -60,6 +67,31 @@
     return _sessionModelsArray;
 }
 
+- (NSMutableArray *)downloadingArray
+{
+    if (!_downloadingArray) {
+        _downloadingArray = @[].mutableCopy;
+        for (ZFSessionModel *obj in self.sessionModelsArray) {
+            if (![self isCompletion:obj.url]) {
+                [_downloadingArray addObject:obj];
+            }
+        }
+    }
+    return _downloadingArray;
+}
+
+- (NSMutableArray *)downloadedArray
+{
+    if (!_downloadedArray) {
+        _downloadedArray = @[].mutableCopy;
+        for (ZFSessionModel *obj in self.sessionModelsArray) {
+            if ([self isCompletion:obj.url]) {
+                [_downloadedArray addObject:obj];
+            }
+        }
+    }
+    return _downloadedArray;
+}
 
 static ZFDownloadManager *_downloadManager;
 
@@ -158,31 +190,32 @@ static ZFDownloadManager *_downloadManager;
     [task setValue:@(taskIdentifier) forKeyPath:@"taskIdentifier"];
     // 保存任务
     [self.tasks setValue:task forKey:ZFFileName(url)];
-
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:ZFFileFullpath(url)]) {
         ZFSessionModel *sessionModel = [[ZFSessionModel alloc] init];
         sessionModel.url = url;
+        sessionModel.urlStr = urlStr;
         sessionModel.progressBlock = progressBlock;
         sessionModel.stateBlock = stateBlock;
         sessionModel.stream = stream;
         sessionModel.startTime = [NSDate date];
         sessionModel.fileName = ZFFileName(url);
-        sessionModel.urlStr = urlStr;
         [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
         [self.sessionModelsArray addObject:sessionModel];
+        [self.downloadingArray addObject:sessionModel];
         // 保存
         [self save:self.sessionModelsArray];
     }else {
         for (ZFSessionModel *sessionModel in self.sessionModelsArray) {
             if ([sessionModel.url isEqualToString:url]) {
                 sessionModel.url = url;
+                sessionModel.urlStr = urlStr;
                 sessionModel.progressBlock = progressBlock;
                 sessionModel.stateBlock = stateBlock;
                 sessionModel.stream = stream;
                 sessionModel.startTime = [NSDate date];
                 sessionModel.fileName = ZFFileName(url);
-                sessionModel.urlStr = urlStr;
                 [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
             }
         }
@@ -312,7 +345,7 @@ static ZFDownloadManager *_downloadManager;
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:ZFCachesDirectory]) {
-
+        
         // 删除沙盒中所有资源
         [fileManager removeItemAtPath:ZFCachesDirectory error:nil];
         // 删除任务
@@ -329,6 +362,8 @@ static ZFDownloadManager *_downloadManager;
             [fileManager removeItemAtPath:ZFDownloadDetailPath error:nil];
             [self.sessionModelsArray removeAllObjects];
             self.sessionModelsArray = nil;
+            [self.downloadedArray removeAllObjects];
+            [self.downloadingArray removeAllObjects];
         }
     }
 }
@@ -379,7 +414,12 @@ static ZFDownloadManager *_downloadManager;
     sessionModel.totalSize = fileSizeInUnits;
     // 更新数据(文件总长度)
     [self save:self.sessionModelsArray];
-
+    
+    // 添加下载中数组
+    if (![self.downloadingArray containsObject:sessionModel]) {
+        [self.downloadingArray addObject:sessionModel];
+    }
+    
     // 接收这个请求，允许接收服务器的数据
     completionHandler(NSURLSessionResponseAllow);
 }
@@ -420,10 +460,9 @@ static ZFDownloadManager *_downloadManager;
     if(seconds>0) {[remainingTimeStr appendFormat:@"%d 秒",seconds];}
     
     NSString *writtenSize = [NSString stringWithFormat:@"%.2f %@",
-                                 [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
-                                 [sessionModel calculateUnit:(unsigned long long)receivedSize]];
+                             [sessionModel calculateFileSizeInUnit:(unsigned long long)receivedSize],
+                             [sessionModel calculateUnit:(unsigned long long)receivedSize]];
     
-    // 下载中
     if (sessionModel.stateBlock) {
         sessionModel.stateBlock(DownloadStateStart);
     }
@@ -445,6 +484,10 @@ static ZFDownloadManager *_downloadManager;
     ZFSessionModel *sessionModel = [self getSessionModel:task.taskIdentifier];
     if (!sessionModel) return;
     
+    // 关闭流
+    [sessionModel.stream close];
+    sessionModel.stream = nil;
+    
     if ([self isCompletion:sessionModel.url]) {
         // 下载完成
         sessionModel.stateBlock(DownloadStateCompleted);
@@ -452,14 +495,23 @@ static ZFDownloadManager *_downloadManager;
         // 下载失败
         sessionModel.stateBlock(DownloadStateFailed);
     }
+    // 清除任务
+    [self.tasks removeObjectForKey:ZFFileName(sessionModel.url)];
+    [self.sessionModels removeObjectForKey:@(task.taskIdentifier).stringValue];
     
-    // 关闭流
-    [sessionModel.stream close];
-    sessionModel.stream = nil;
+    [self.downloadingArray removeObject:sessionModel];
     
     // 清除任务
     [self.tasks removeObjectForKey:ZFFileName(sessionModel.url)];
     [self.sessionModels removeObjectForKey:@(task.taskIdentifier).stringValue];
+    
+    [self.downloadingArray removeObject:sessionModel];
+    
+    if (error.code == -999)    return;   // cancel
+    
+    if (![self.downloadedArray containsObject:sessionModel]) {
+        [self.downloadedArray addObject:sessionModel];
+    }
 }
 
 @end

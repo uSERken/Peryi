@@ -17,10 +17,11 @@
 #import "ZKVideoController.h"
 #import "MBProgressHUD+Extend.h"
 #import "ZKDataTools.h"
+#import "ZKDMListTouchVC.h"
 
 #define identifier @"Cell"
 
-@interface ZKHomeController()
+@interface ZKHomeController()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIViewControllerPreviewingDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
@@ -30,11 +31,10 @@
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
 
-@end
-
-@interface ZKHomeController()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@property (nonatomic, strong) ZKHttpTools *httpTools;
 
 @end
+
 
 @implementation ZKHomeController
 
@@ -48,7 +48,6 @@
     [self refreshHome];
  
     [self setUpSlideViewAndCollectionView];
-
 
 }
 
@@ -85,23 +84,18 @@
 }
 
 - (void)refreshHome{
-    [MBProgressHUD showMessage:@"请稍候..."];
-    ZKHttpTools *httpTools = [ZKHttpTools sharedZKHttpTools];
-//    NSArray *dmArr = [httpTools getDMLIST];
+    _httpTools = [ZKHttpTools sharedZKHttpTools];
     WeakSelf;
-    [httpTools getDMListDatasuccess:^(NSArray *listArr) {
+    [_httpTools getDMListDatasuccess:^(NSArray *listArr) {
         if (listArr.count > 1) {
             weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
             weakSelf.slideView.listArr = weakSelf.dmList;
             [_dataTools saveHomeDMListWithArry:listArr];
-            [MBProgressHUD hideHUD];
         }else{
-            [MBProgressHUD hideHUD];
             weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
             [MBProgressHUD showError:@"无网络连接或网络错误"];
         }
     }];
-    
        [self.collectionView.mj_header endRefreshing];
 }
 
@@ -130,7 +124,7 @@
     cell.title = model.title;
     cell.current = model.current;
     cell.imgUrl = model.src;
-    
+    [self registerForPreviewingWithDelegate:self sourceView:cell];
     return cell;
 }
 
@@ -151,6 +145,33 @@
     CGFloat ViewW = (self.view.width - 20)/2;
     return CGSizeMake(ViewW, 260);
     
+}
+
+
+
+#pragma mark - 3DTouch
+- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+    
+    
+    NSIndexPath *indexPath = [_collectionView indexPathForCell:(ZKHomeCollectionCell*)[previewingContext sourceView]];
+    ZKHomeList *model = _dmList[indexPath.row];
+    ZKDMListTouchVC *touchVc = [[ZKDMListTouchVC alloc] initWithUrlStr:model.href bgColor:[UIColor yellowColor]];
+    //加载列表数据
+    [_httpTools getDetailDMWithURL:model.href getDatasuccess:^(NSDictionary *listData) {
+        touchVc.detailList = listData;
+    }];
+    
+    touchVc.preferredContentSize = CGSizeMake(0, 450);
+    return touchVc;
+}
+
+
+- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit{
+    [self showViewController:viewControllerToCommit sender:self];
+}
+
+-(void)dealloc{
+   
 }
 
 

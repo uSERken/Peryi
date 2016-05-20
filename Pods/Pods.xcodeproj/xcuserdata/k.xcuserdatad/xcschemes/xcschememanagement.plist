@@ -4,22 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>ASProgressPopUpView.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>FMDB.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FontAwesome+iOS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -44,22 +29,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>MarqueeLabel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Masonry.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>POP+MCAnimate.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>PPiAwesomeButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -74,37 +44,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>RKSwipeBetweenViewControllers.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SDCycleScrollView.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>SMPageControl.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SVWebViewController.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>UIImage+BlurredFrame.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>VBFPopFlatButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -119,34 +64,9 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>iCarousel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>pop.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>18013C0DB4E9277AAA84B294389C44F8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2658F8E3A328627F19E58566C896BA6E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>286B9D5B171D75C5F34B19B3C9EE3A5B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>2AB49797D14D57FA43A345254AFB9F18</key>
 		<dict>
 			<key>primary</key>
@@ -157,62 +77,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5AF2DC1B4DE757D86D0E473E50E1770B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5C14B7EB791D670D9E07D39CEC7C2DF7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>638676E881F14D97C5D618942A14C120</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>66D40645E13B84FE3BF29D700C9BDD70</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6B6975761A09A335BC0471B5C0301736</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6ED5E39BAE53EF0CB47743622A6CF9A2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>72B6ABDBF0AB1360BE2C50A6C23C55BC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>841E0C2A9D616F96286046FD7137AA1D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>8F74D9EA91F4C43190670066BAC37D44</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>91DD3A06013D443F75BA2DDC6567987F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>928353533005A4198EBDA5B700D37B64</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9494390523250106847516AB47E5F9FF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -227,7 +97,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AD779C8C5FFCF463304F34C14340D00C</key>
+		<key>B1A5D7CA090F7EE36F7E06B322F45A45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -237,22 +107,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF2E7064C159A52AA3D0CD16EA3A812D</key>
+		<key>BDFDDED884145110FF7CA7447F7F98BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8E4262B7E3A2EB371187B937D70C125</key>
+		<key>CBF319C41B6F15B25C57B2017E532291</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EA876BC718F224A84323EE637839D052</key>
+		<key>D432F726646AFF2041CAF00D0CED8612</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F6FBFC953F0895DC29D1A112BD1CF93D</key>
+		<key>DB8FC2882DC957C92E52DBCD8D961D9A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

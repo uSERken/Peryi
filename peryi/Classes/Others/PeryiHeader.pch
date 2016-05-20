@@ -12,10 +12,12 @@
 #import "NSString+Common.h"
 #import "UIView+Common.h"
 #import "UIView+WF.h"
+
+#import "AFNetworkReachabilityManager.h"
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #define baseURL @"http://m.peryi.com"
-
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 #define screenBounds [[UIScreen mainScreen] bounds]
 #define screenW  [[UIScreen mainScreen] bounds].size.width
 #define screenH  [[UIScreen mainScreen] bounds].size.height
@@ -29,5 +31,11 @@
 
 //存储数据库文件位置
 #define  dbpaths [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"DMLIST.db"];
+
+#define open4GPlay @"open4GPlay"
+
+#define close4GPlay @"close4GPlay"
+
+#define  ZKSettingModelPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"settingModel.data"]
 
 #endif /* PrefixHeader_pch */

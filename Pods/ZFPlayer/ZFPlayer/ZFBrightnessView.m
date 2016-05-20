@@ -37,7 +37,7 @@
 
 @implementation ZFBrightnessView
 
-+ (instancetype)sharedBrightnesView {
++ (instancetype)sharedBrightnessView {
 	static ZFBrightnessView *instance;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{

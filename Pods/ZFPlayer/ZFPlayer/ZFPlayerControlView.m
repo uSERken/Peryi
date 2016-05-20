@@ -105,9 +105,9 @@
 - (void)makeSubViewsConstraints
 {
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.mas_leading).offset(15);
+        make.leading.equalTo(self.mas_leading).offset(7);
         make.top.equalTo(self.mas_top).offset(5);
-        make.width.height.mas_equalTo(30);
+        make.width.height.mas_equalTo(40);
     }];
     
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,7 +116,8 @@
     }];
     
     [self.downLoadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(40);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(49);
         make.trailing.equalTo(self.topImageView.mas_trailing).offset(-10);
         make.centerY.equalTo(self.backBtn.mas_centerY);
     }];
@@ -245,6 +246,7 @@
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
     self.backgroundColor        = [UIColor clearColor];
+    self.downLoadBtn.enabled    = YES;
 }
 
 - (void)resetControlViewForResolution
@@ -252,6 +254,7 @@
     self.horizontalLabel.hidden = YES;
     self.repeatBtn.hidden       = YES;
     self.resolutionView.hidden  = YES;
+    self.downLoadBtn.enabled    = YES;
     self.backgroundColor        = [UIColor clearColor];
 }
 
@@ -368,7 +371,7 @@
 {
     if (!_progressView) {
         _progressView                   = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-        _progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
+        _progressView.progressTintColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
         _progressView.trackTintColor    = [UIColor clearColor];
     }
     return _progressView;
@@ -380,9 +383,9 @@
         _videoSlider                       = [[UISlider alloc] init];
         // 设置slider
         [_videoSlider setThumbImage:[UIImage imageNamed:ZFPlayerSrcName(@"slider")] forState:UIControlStateNormal];
-        _videoSlider.maximumValue = 1;
+        _videoSlider.maximumValue          = 1;
         _videoSlider.minimumTrackTintColor = [UIColor whiteColor];
-        _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.6];
+        _videoSlider.maximumTrackTintColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5];
     }
     return _videoSlider;
 }
@@ -441,8 +444,8 @@
 {
     if (!_downLoadBtn) {
         _downLoadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_downLoad")] forState:UIControlStateNormal];
-        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"player_not_downLoad")] forState:UIControlStateDisabled];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"download")] forState:UIControlStateNormal];
+        [_downLoadBtn setImage:[UIImage imageNamed:ZFPlayerSrcName(@"not_download")] forState:UIControlStateDisabled];
     }
     return _downLoadBtn;
 }
