@@ -120,10 +120,6 @@
     if (indexPath.section == 0) {
         ZKSearchModel *searchModel = _histroryArr[indexPath.row];
         cell.textLabel.text = searchModel.title;
-//        UIButton *btn  = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-//        [btn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
-//        [btn addTarget:self action:@selector(deleteCell:) forControlEvents:UIControlEventTouchUpInside];
-//        cell.accessoryView = btn;
     }else{
         cell.textLabel.text = @"清楚历史记录";
         cell.textLabel.textAlignment = NSTextAlignmentCenter;

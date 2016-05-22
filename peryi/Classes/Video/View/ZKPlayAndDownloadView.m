@@ -144,12 +144,14 @@ static NSString *ID = identifier;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.cornerRadius = 5.0f;
     NSString *url = nil;
+    //播放地址
     if (_isPlay) {
        ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
         url = playModel.href;
-        cell.backgroundColor = [UIColor grayColor];
-    }else{
+        cell.backgroundColor = RGB(233, 198, 0);
+    }else{//下载地址
         ZKDetailDown *downModel = self.useList[indexPath.row];
         url = downModel.href;
     }

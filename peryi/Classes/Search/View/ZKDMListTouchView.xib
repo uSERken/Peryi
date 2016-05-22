@@ -81,7 +81,7 @@
                         <constraint firstAttribute="width" constant="25" id="qsz-W7-daJ"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="current" translatesAutoresizingMaskIntoConstraints="NO" id="sZS-BY-rR2">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="source" translatesAutoresizingMaskIntoConstraints="NO" id="sZS-BY-rR2">
                     <rect key="frame" x="186" y="195" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="Juf-MO-igX"/>
@@ -141,8 +141,9 @@
         </view>
     </objects>
     <resources>
-        <image name="current" width="15" height="15"/>
-        <image name="start" width="15" height="15"/>
-        <image name="type" width="15" height="15"/>
+        <image name="current" width="25" height="25"/>
+        <image name="source" width="25" height="25"/>
+        <image name="start" width="25" height="25"/>
+        <image name="type" width="25" height="25"/>
     </resources>
 </document>

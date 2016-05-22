@@ -31,7 +31,7 @@ SingletonM(ZKHttpTools)
     if (data != nil) {
         arr([self DMListArrayWithHtmlData:data]);
     }else{
-        arr([NSArray arrayWithObjects:@"nil", nil]);
+        arr([NSArray arrayWithObjects:@"0", nil]);
     }
 }
 

@@ -266,4 +266,47 @@ SingletonM(ZKDataTools);
 
 }
 
+/**
+ *  存储搜索类型
+ *
+ */
+- (void)saveSearchTypeWithArr:(NSArray *)array{
+    NSString *dbpath = dbpaths;
+    _db = [FMDatabase databaseWithPath:dbpath];
+    if ([_db open]) {
+        //每次从网络存储前删除之前数据
+        NSString *deleteSql = @"delete from searchtype";
+        [_db executeUpdate:deleteSql];
+         NSString *sql = @"insert into searchtype (type) values(?)";
+        for (NSArray *listArr in array) {
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:listArr];
+            [_db executeUpdate:sql,data,nil];
+        }  
+    }
+    [_db close];
+}
+
+/**
+ *  获取搜索类型的数组
+ *
+ */
+- (NSArray *)getSearchType{
+    NSString *dbpath = dbpaths;
+    _db = [FMDatabase databaseWithPath:dbpath];
+    NSMutableArray *arr = [NSMutableArray array];
+    if ([_db open]) {
+        
+        NSString *selectSql = @"select * from searchtype";
+        FMResultSet *set = [_db executeQuery:selectSql];
+        while ([set next]) {
+            NSArray *arrDict = [NSKeyedUnarchiver unarchiveObjectWithData:[set dataForColumn:@"type"]];
+            [arr addObject:arrDict];
+        }
+    }
+    [_db close];
+    return arr;
+
+}
+
+
 @end

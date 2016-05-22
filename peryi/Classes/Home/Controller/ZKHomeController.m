@@ -18,7 +18,8 @@
 #import "MBProgressHUD+Extend.h"
 #import "ZKDataTools.h"
 #import "ZKDMListTouchVC.h"
-
+#import "AppDelegate.h"
+#import "ZKMainController.h"
 #define identifier @"Cell"
 
 @interface ZKHomeController()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UIViewControllerPreviewingDelegate>
@@ -33,6 +34,8 @@
 
 @property (nonatomic, strong) ZKHttpTools *httpTools;
 
+@property (nonatomic, assign) BOOL isNetWorking;
+
 @end
 
 
@@ -41,17 +44,19 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    
     self.title = @"首页";
-    
     _dataTools = [ZKDataTools sharedZKDataTools];
-    
     [self refreshHome];
- 
-    [self setUpSlideViewAndCollectionView];
-
+     [self setUpSlideViewAndCollectionView];
+    
 }
 
 - (void)setUpSlideViewAndCollectionView{
+    
+
     
     if (_slideView == nil) {
         _slideView = [[ZKSlideView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.width, 265)];
@@ -61,9 +66,14 @@
     
     WeakSelf;
     self.slideView.tapActionBlock=^(ZKHomeList *homeListModel){
-        ZKHomeList *model = homeListModel;
-        [weakSelf goToVideoControllerWithStrUrl:model.href];
+        if (weakSelf.isNetWorking) {
+            ZKHomeList *model = homeListModel;
+            [weakSelf goToVideoControllerWithStrUrl:model.href];
+        }else{
+            [MBProgressHUD showError:@"您的网络已断开"];
+        }
     };
+    
     
     if (!_collectionView) {
         _collectionView=({
@@ -77,26 +87,30 @@
             collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshHome)];
             collectionView;
         });
-    
+        
         [self.view addSubview:_collectionView];
     }
     
+
 }
 
 - (void)refreshHome{
     _httpTools = [ZKHttpTools sharedZKHttpTools];
+    
     WeakSelf;
     [_httpTools getDMListDatasuccess:^(NSArray *listArr) {
+        //判断是否通过网络成功加载值
         if (listArr.count > 1) {
             weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
             weakSelf.slideView.listArr = weakSelf.dmList;
             [_dataTools saveHomeDMListWithArry:listArr];
         }else{
-            weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
             [MBProgressHUD showError:@"无网络连接或网络错误"];
+            weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
         }
     }];
-       [self.collectionView.mj_header endRefreshing];
+    
+    [self.collectionView.mj_header endRefreshing];
 }
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{
@@ -129,10 +143,15 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    ZKHomeList *selectModel = _dmList[indexPath.row];
-    [self goToVideoControllerWithStrUrl:selectModel.href];
-    //进入即保存为播放记录
-    [_dataTools saveHistroyOrStartWithModel:selectModel withType:saveHome];
+    if (_isNetWorking) {
+        ZKHomeList *selectModel = _dmList[indexPath.row];
+        [self goToVideoControllerWithStrUrl:selectModel.href];
+        //进入即保存为播放记录
+        [_dataTools saveHistroyOrStartWithModel:selectModel withType:saveHome];
+    }else{
+        [MBProgressHUD showError:@"您的网络已断开"];
+    }
+    
     
 }
 
@@ -170,8 +189,16 @@
     [self showViewController:viewControllerToCommit sender:self];
 }
 
+- (void)isNetWork{
+    _isNetWorking = YES;
+}
+
+- (void)isNotNetWork{
+    _isNetWorking = NO;
+}
+
 -(void)dealloc{
-   
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

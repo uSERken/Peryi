@@ -48,7 +48,7 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
-
+@property (nonatomic, assign) BOOL isNetWorking;
 @end
 
 @implementation ZKVideoController
@@ -57,6 +57,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
     [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
@@ -84,7 +87,6 @@
             _strUrl = addresUrlStr;
             [self loadListDataWithstrUrl:addresUrlStr];
         }
-        
     }
     return self;
 }
@@ -99,31 +101,30 @@
 }
 
 - (void)setUpAllView{
-    [self.navigationController.navigationBar setHidden:YES];
      UIView *topView = [[UIView alloc] init];
      topView.backgroundColor = [UIColor blackColor];
      [self.view addSubview:topView];
     
      [topView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.equalTo(self.view);
-         make.height.equalTo(topView.mas_width);
+         make.height.equalTo(@20);
      }];
     
     //由于zfplayer里，没有写入url就不能初始化点击按钮。因此自定义一个以防视频url为加载出的等待
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:@"loading_bg"]];
-    imageView.backgroundColor = [UIColor blueColor];
     imageView.userInteractionEnabled = YES;
     [topView addSubview:imageView];
     
     UIButton *backBtn = [[UIButton alloc] init];
+    backBtn.enabled = YES;
     [backBtn setImage:[UIImage imageNamed:@"play_back"] forState:UIControlStateNormal];
     [backBtn addTarget:self action:@selector(backtoRootVC) forControlEvents:UIControlEventTouchUpInside];
-    [imageView addSubview:backBtn];
+    [self.view addSubview:backBtn];
     
     _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [_activity startAnimating];
-    [imageView addSubview:_activity];
+    [self.view addSubview:_activity];
     
     
     //加载播放界面
@@ -143,7 +144,7 @@
         }
     
       self.playView.playerLayerGravity = ZFPlayerLayerGravityResizeAspect;
-      __weak typeof(self) weakSelf = self;
+      WeakSelf;
       self.playView.goBackBlock = ^(){
           dispatch_async(dispatch_get_main_queue(), ^{
               [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -168,7 +169,7 @@
         };
         _detailListView.playAndDownView.action = ^(NSString *url){
             if (![url hasPrefix:@"http://"]) {
-                [weakSelf.activity bringSubviewToFront:weakSelf.playView];
+                [weakSelf.view bringSubviewToFront:weakSelf.activity];
                 [weakSelf.activity startAnimating];
                 [weakSelf getVideoInfoWithUrl:url];
             }else{
@@ -182,27 +183,29 @@
         //收藏按钮
         [_detailListView.infoView.start addTarget:self action:@selector(startOnClick) forControlEvents:UIControlEventTouchDown];
         [self.view addSubview:_detailListView];
-        
-        
-        [self.detailListView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.playView.mas_bottom);
-            make.left.right.equalTo(self.view);
-            make.bottom.equalTo(@0);
-        }];
-        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(topView).offset(20);
-            make.left.right.equalTo(topView);
-            make.height.equalTo(imageView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
-        }];
-        [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(imageView.mas_leading).offset(15);
-            make.top.equalTo(imageView.mas_top).offset(5);
-            make.width.height.mas_equalTo(30);
-        }];
-        [_activity mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(imageView);
-        }];
     }
+    
+    
+    [self.detailListView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.playView.mas_bottom);
+        make.left.right.equalTo(self.view);
+        make.bottom.equalTo(@0);
+    }];
+    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(topView).offset(20);
+        make.left.right.equalTo(topView);
+        make.height.equalTo(imageView.mas_width).multipliedBy(9.0f/16.0f).with.priority(750);
+    }];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(imageView.mas_leading).offset(15);
+        make.top.equalTo(imageView.mas_top).offset(5);
+        make.width.height.mas_equalTo(30);
+    }];
+    [_activity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(imageView);
+    }];
+    
+    
 }
 
 
@@ -216,8 +219,7 @@
     }];
 }
 
-
-
+//强制设置屏幕方向
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
          self.view.backgroundColor = [UIColor whiteColor];
@@ -245,7 +247,8 @@
 }
 //webview的代理。加载网页完成后获取播放地址并删除uiwebview
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-    [self open4GSetting];
+    //加载完网页后播放视频时才接收通知是否为4G网络
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isNotNet object:nil];
     //加载网页完成后还需加载视频连接
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
@@ -273,17 +276,6 @@
     });
 }
 #pragma mark - 其他
-/*
- -(void)playVideo{
- //防止多次点击
- NSInteger count = 0;
- if (count == 0) {
- self.playView.videoURL = self.videoUrl;
- }
- ++count;
- [self.playBtn  removeFromSuperview];
- }
- */
 
 - (void)timerToGetValue{
     [MBProgressHUD showMessage:@"正在加载,请稍候"];
@@ -319,6 +311,13 @@
 
 //收藏按钮点击
 - (void)startOnClick{
+    //初始化后执行的判断
+    if (_detailListView.infoView.start.selected) {
+        _isStart = YES;
+        
+    }else{
+        _isStart = NO;
+    }
      NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
     if (_isStart) {
         _detailListView.infoView.start.selected = NO;
@@ -334,11 +333,9 @@
         [_dataTools saveHistroyOrStartWithModel:listModel withType:saveStart];
         [MBProgressHUD showSuccess:@"已添加至收藏"];
     }
-
 }
 
 - (void)backtoRootVC{
-    
     //如果竖屏时强制改为横屏
     UIInterfaceOrientation oreientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (oreientation == UIInterfaceOrientationLandscapeRight || oreientation == UIInterfaceOrientationLandscapeLeft) {
@@ -351,39 +348,45 @@
             [invocation setArgument:&val atIndex:2];
             [invocation invoke];
         }
-        
     }else{
         [self.navigationController popViewControllerAnimated:YES];
         [self deleteAll];
     }
 }
 
-/**
- *  是否设置观看
- */
-- (void)open4GSetting{
+
+//启用4G网络的时候
+- (void)is4GWAAN{
     ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
-    if ([model.isOpenNetwork isEqualToString:@"Yes"]) {
-    }else{
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status == AFNetworkReachabilityStatusNotReachable) {
-                [MBProgressHUD showError:@"您的网络已断开"];
-            }else{
-                UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
-                [aler show];
-            }
-        }];
+    if (![model.isOpenNetwork isEqualToString:@"Yes"]) {
+        UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
+        [aler show];
+    }
+
+}
+
+- (void)isNetWork{
+    _isNetWorking = YES;
+    _detailListView.hidden = NO;
+    NSArray *dmPlay = _detailList[@"dmPlay"];
+    //若离线进入播放后网络可用即重新加载数据
+    if (dmPlay.count < 1) {
+        [self loadListDataWithstrUrl:_localHtml];
     }
 }
 
+- (void)isNotNetWork{
+    _isNetWorking = NO;
+    _detailListView.hidden = YES;
+}
+
+
+#pragma mark - alert代理
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0) {
-         [_playView pause];
-    }else{
-       
+        [_playView pause];
     }
 }
-
 
 /**
  *  删除所有view及数据

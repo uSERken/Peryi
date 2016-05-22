@@ -19,6 +19,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self detectionNetWorking];
+    //延迟调用网络检测以免检测出错
+//    [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.25f];
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -30,12 +33,7 @@
     [self.window setRootViewController:main];
     [self.window makeKeyAndVisible];
     [self addDatabaseToDocument];
-    
-    
-    
-    //延迟调用网络检测以免检测出错
-    [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.3f];
-    
+ 
     return YES;
 }
 
@@ -48,8 +46,7 @@
         model.isOpenNetwork = @"No";
         [ZKSettingModelTool saveSettingWithModel:model];
     }
-    //检测网络
-    [[AFNetworkReachabilityManager  sharedManager] startMonitoring];
+    
 }
 /**
  *  add database to ios document
@@ -76,7 +73,6 @@
     UIApplicationShortcutItem *shortItem1 = [[UIApplicationShortcutItem alloc] initWithType:@"搜索" localizedTitle:@"搜索" localizedSubtitle:nil icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeSearch] userInfo:nil];
 //    [shortItem1 ] initWithType:@"搜索" localizedTitle:@"搜索"
     UIApplicationShortcutItem *shortItem2 = [[UIApplicationShortcutItem alloc] initWithType:@"收藏列表" localizedTitle:@"收藏列表" localizedSubtitle:nil icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeFavorite] userInfo:nil];
-    
     
     NSArray *itemArr = [NSArray arrayWithObjects:shortItem1,shortItem2, nil];
     [[UIApplication sharedApplication] setShortcutItems:itemArr];

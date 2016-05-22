@@ -36,6 +36,15 @@
 
 #define close4GPlay @"close4GPlay"
 
+//网络打开
+#define isNet @"isNet"
+
+//网络断开
+#define isNotNet @"isNotNet"
+
+//蜂窝数据
+#define isWWAN @"isWWAN"
+
 #define  ZKSettingModelPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"settingModel.data"]
 
 #endif /* PrefixHeader_pch */

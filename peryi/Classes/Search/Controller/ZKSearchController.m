@@ -17,6 +17,7 @@
 #import "ZKTypeModel.h"
 #import "ZKPlayListCollectionHeader.h"
 #import "ZKDMListVC.h"
+#import "ZKDataTools.h"
 
 @interface ZKSearchController()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,UISearchBarDelegate,UISearchDisplayDelegate>
 @property (nonatomic, strong) ZKHttpTools *httpTools;
@@ -34,6 +35,9 @@
 
 @property (nonatomic, strong) NSArray *typeArr;
 
+@property (nonatomic, strong) ZKDataTools *dataTools;
+
+@property (nonatomic, assign) BOOL isNetWorking;
 
 @end
 
@@ -43,6 +47,8 @@
     [super viewWillAppear:animated];
     [self initView];
     [_searchBar setHidden:NO];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -52,16 +58,18 @@
 }
 
 - (void)viewDidLoad{
-
     [super viewDidLoad];
     self.title = @"搜索";
     _typeArr = @[@"类型",@"年份",@"语言",@"版本"];
     _httpTools = [ZKHttpTools sharedZKHttpTools];
-    [self getAllTypeList];
+     _dataTools = [ZKDataTools sharedZKDataTools];
+    
+    //初始化加载
+    [self isNetWork];
 }
 
 - (void)initView{
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchItemClicked:)];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search_normal"] style:UIBarButtonItemStylePlain target:self action:@selector(searchItemClicked:)];
     [self.navigationItem setRightBarButtonItem:rightBarItem animated:YES];
     if (!_collectionView) {
         _collectionView = ({
@@ -122,7 +130,7 @@
                 }else{
                     [MBProgressHUD hideHUD];
                     weakSelf.searchViewVC.active = NO;
-                    [MBProgressHUD showError:@"没有结果"];
+                    [MBProgressHUD showError:@"搜索无结果"];
                 }
             }];
         };
@@ -131,20 +139,16 @@
    
 }
 
-
-#pragma mark - 网络请求
+#pragma mark - 初始网络请求
 - (void)getAllTypeList{
-    [MBProgressHUD showMessage:@"请稍候..."];
-    WeakSelf;
-    [_httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
-        NSMutableArray *modelArr = [NSMutableArray array];
-        for (NSArray *arr in listArr) {
-            [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
-        }
-        weakSelf.typeList = modelArr;
-        [weakSelf.collectionView reloadData];
-        [MBProgressHUD hideHUD];
-    }];
+    
+   
+    if (_isNetWorking) {
+       
+    }else{
+        
+    }
+    
 }
 
 - (void)getSearchWithType:(NSString *)urlStr withTitle:(NSString *)title{
@@ -188,16 +192,20 @@
     ZKTypeModel *model = self.typeList[indexPath.section][indexPath.row];
     cell.title = model.title;
     cell.backgroundColor = [UIColor whiteColor];
+    
+    
+
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(nonnull NSIndexPath *)indexPath{
-//    ZKCollectionTypeCell *cell = (ZKCollectionTypeCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    cell.isHighlighted = YES
-    ZKTypeModel *model = _typeList[indexPath.section][indexPath.row];
-    [self getSearchWithType:model.href withTitle:model.title];
-    
-    
+
+    if (_isNetWorking) {
+        ZKTypeModel *model = _typeList[indexPath.section][indexPath.row];
+        [self getSearchWithType:model.href withTitle:model.title];
+    }else{
+         [MBProgressHUD showError:@"您的网络已断开"];
+    }
 }
 
 
@@ -234,19 +242,37 @@
 }
 
 
-//- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-//    
-//    NSMutableDictionary *text = [NSMutableDictionary dictionary];
-//    text[@"text"] = _searchBar.text;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"textChange" object:nil userInfo:<#(nullable NSDictionary *)#>];
-//    
-//    
-//    return YES;
-//}
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    
-    return YES;
+#pragma mark - 网络判断后加载数据
+- (void)isNetWork{
+    _isNetWorking = YES;
+    WeakSelf;
+    [weakSelf.httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
+        [weakSelf.dataTools saveSearchTypeWithArr:listArr];
+        NSMutableArray *modelArr = [NSMutableArray array];
+        for (NSArray *arr in listArr) {
+            [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
+        }
+        weakSelf.typeList = modelArr;
+        [weakSelf.collectionView reloadData];
+        [MBProgressHUD hideHUD];
+    }];
 }
+
+- (void)isNotNetWork{
+    _isNetWorking = NO;
+     WeakSelf;
+    NSMutableArray *modelArr = [NSMutableArray array];
+    for (NSArray *arr in [_dataTools getSearchType]) {
+        [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
+    }
+    weakSelf.typeList = modelArr;
+    [weakSelf.collectionView reloadData];
+}
+
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 @end

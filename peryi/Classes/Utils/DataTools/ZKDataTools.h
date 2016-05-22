@@ -79,4 +79,17 @@ SingletonH(ZKDataTools);
  *  @param str 若为nil 时删除全部
  */
 - (void)removeSearchHistoryWithStr:(NSString *)str;
+
+/**
+ *  存储搜索类型
+ *
+ */
+- (void)saveSearchTypeWithArr:(NSArray *)array;
+
+/**
+ *  获取搜索类型的数组
+ *
+ */
+- (NSArray *)getSearchType;
+
 @end

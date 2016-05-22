@@ -12,6 +12,7 @@
 #import "ZKHomeList.h"
 #import "ZKHistoryANDStartCell.h"
 #import "ZKVideoController.h"
+#import "MBProgressHUD+Extend.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface ZKPlayANDStarTableVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -24,6 +25,7 @@
 
 @property (nonatomic, assign) ZKPlayANDStarttType thisType;
 
+@property (nonatomic, assign) BOOL isNetWorking;
 
 @end
 
@@ -48,6 +50,11 @@
         _thisType = type;
         [self.tableView reloadData];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    //初始化为在线
+    _isNetWorking = YES;
     return self;
 }
 
@@ -61,6 +68,7 @@
         tableView;
         });
     [self.view addSubview:_tableView];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,9 +97,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    ZKHomeList *model = self.historyAndStartArr[indexPath.row];
-    ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (_isNetWorking) {
+        ZKHomeList *model = self.historyAndStartArr[indexPath.row];
+        ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        [MBProgressHUD showError:@"您的网络已断开"];
+    }
 }
 
 //header高
@@ -112,14 +124,6 @@
 
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -135,45 +139,16 @@
     }
 }
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+#pragma mark - 网络判断后加载数据
+- (void)isNetWork{
+    _isNetWorking = YES;
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+- (void)isNotNetWork{
+    _isNetWorking = NO;
 }
-*/
 
-/*
-#pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

@@ -8,13 +8,13 @@
 
 #import "ZKMainController.h"
 #import "ZKNavigationController.h"
-
 #import "ZKHomeController.h"
 #import "ZKSearchController.h"
 #import "ZKNewController.h"
 #import "ZKSettingsController.h"
 #import "ZKVideoController.h"
 #import "RDVTabBarItem.h"
+#import "MBProgressHUD+Extend.h"
 #import <ZFPlayer/ZFPlayer.h>
 
 @interface ZKMainController ()
@@ -27,6 +27,17 @@
     [super viewDidLoad];
     [self setupViewControllers];
     
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status == AFNetworkReachabilityStatusNotReachable || status == AFNetworkReachabilityStatusUnknown) {
+            [MBProgressHUD showError:@"您的网络已断开"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNotNet object:nil];
+        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
+            [[NSNotificationCenter defaultCenter] postNotificationName:isWWAN object:nil];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNet object:nil];
+        }
+    }];
 }
 
 // 哪些页面支持自动转屏
@@ -70,7 +81,7 @@
  */
 - (void)setCustomizeTabBar{
     UIImage *backgroundImage = [UIImage imageNamed:@"tabbar_background"];
-    NSArray *tabBarItemImages = @[@"project",@"task",@"me"];
+    NSArray *tabBarItemImages = @[@"home",@"search",@"setting"];
     NSArray *tabBarItemTitles = @[@"首页",@"搜索",@"设置"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[self tabBar] items]) {

@@ -42,7 +42,7 @@
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="like_unsel" translatesAutoresizingMaskIntoConstraints="NO" id="8WW-qX-Mla">
-                        <rect key="frame" x="192" y="28" width="30" height="25"/>
+                        <rect key="frame" x="192" y="28" width="25" height="25"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="第333集" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LKA-q0-7oA">
                         <rect key="frame" x="126" y="28" width="51" height="30"/>
@@ -63,7 +63,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1456653487" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZFp-gl-6yd">
-                        <rect key="frame" x="224" y="28" width="79" height="30"/>
+                        <rect key="frame" x="219" y="28" width="79" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="QPJ-ng-gJE"/>
                         </constraints>
@@ -117,6 +117,6 @@
     </objects>
     <resources>
         <image name="current" width="25" height="25"/>
-        <image name="like_unsel" width="30" height="30"/>
+        <image name="like_unsel" width="25" height="25"/>
     </resources>
 </document>
