@@ -23,4 +23,5 @@ typedef void(^ZKPlayAndDownloadViewActionBlock)(NSString *url);
 @property (nonatomic, copy) ZKPlayAndDownloadViewActionBlock action;
 
 
+
 @end

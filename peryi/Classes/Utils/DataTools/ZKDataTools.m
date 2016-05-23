@@ -39,11 +39,28 @@ SingletonM(ZKDataTools);
          arr = [ZKHomeList mj_objectArrayWithKeyValuesArray:arry];
          for (ZKHomeList *model in arr) {
               [_db executeUpdate:sql,model.current,model.href,model.src,model.title];
+             [self saveNewCurrentWithTitle:model.title withCurrent:model.current];
          }
     }
     [_db close];
 }
 
+//首页更新的数据如果包含已收藏和历史的记录则更新它们的当前更新集数
+- (void)saveNewCurrentWithTitle:(NSString *)title withCurrent:(NSString *)current{
+    NSString *HisSql = @"select * from history where title=?";
+    NSString *StartSql = @"select * from start where title=?";
+    FMResultSet *HisSet = [_db executeQuery:HisSql,title];
+    FMResultSet *Startset = [_db executeQuery:StartSql,title];
+    if ([HisSet next]) {
+        NSString *saveSql = @"update history set current=? where title=?";
+        [_db executeUpdate:saveSql,current,title];
+    }
+    if ([Startset next]) {
+        NSString *saveSql = @"update start set current=? where title=?";
+        [_db executeUpdate:saveSql,current,title];
+    }
+    
+}
 
 /**
  *  获得动漫首页数据
@@ -69,6 +86,27 @@ SingletonM(ZKDataTools);
 }
 
 #pragma mark - 存获播放历史，收藏历史记录
+/**
+ *  获取搜索类型的数组
+ *
+ */
+- (NSArray *)getSearchType{
+    NSString *dbpath = dbpaths;
+    _db = [FMDatabase databaseWithPath:dbpath];
+    NSMutableArray *arr = [NSMutableArray array];
+    if ([_db open]) {
+        
+        NSString *selectSql = @"select * from searchtype";
+        FMResultSet *set = [_db executeQuery:selectSql];
+        while ([set next]) {
+            NSArray *arrDict = [NSKeyedUnarchiver unarchiveObjectWithData:[set dataForColumn:@"type"]];
+            [arr addObject:arrDict];
+        }
+    }
+    [_db close];
+    return arr;
+}
+
 /**
  *  点击进播放页面即保存为播放记录
  *
@@ -187,7 +225,6 @@ SingletonM(ZKDataTools);
         [_db executeUpdate:sql,title];
     }
     [_db close];
-
 }
 
 /**
@@ -215,7 +252,7 @@ SingletonM(ZKDataTools);
 
 
 /**
- *  查询是否重复
+ *  查询是否重复以保存
  */
 - (BOOL)isRepateWithHistoryOrStartWithTitle:(NSString *)title withType:(ZKGetFromType)from{
     BOOL isNeedSave = NO;
@@ -240,6 +277,28 @@ SingletonM(ZKDataTools);
     return isNeedSave;
 }
 
+/**
+ *获取播放记录
+ */
+
+-(NSDictionary *)getDetailAboutWithTitle:(NSString *)title{
+     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    NSString *dispath = dbpaths;
+    _db = [FMDatabase databaseWithPath:dispath];
+    if ([_db open]) {
+        NSString *sql = @"select * from history where title=?";
+        FMResultSet *set = [_db executeQuery:sql,title];
+        if ([set next]) {
+            for (int i = 0; i < set.columnCount; i++) {
+                dict[[set columnNameForIndex:i]] = [set stringForColumnIndex:i];
+            }
+        }
+    }
+     return dict;
+}
+
+
+#pragma mark - 搜索记录
 
 /**
  *  插入搜索记录
@@ -322,27 +381,6 @@ SingletonM(ZKDataTools);
     [_db close];
 }
 
-/**
- *  获取搜索类型的数组
- *
- */
-- (NSArray *)getSearchType{
-    NSString *dbpath = dbpaths;
-    _db = [FMDatabase databaseWithPath:dbpath];
-    NSMutableArray *arr = [NSMutableArray array];
-    if ([_db open]) {
-        
-        NSString *selectSql = @"select * from searchtype";
-        FMResultSet *set = [_db executeQuery:selectSql];
-        while ([set next]) {
-            NSArray *arrDict = [NSKeyedUnarchiver unarchiveObjectWithData:[set dataForColumn:@"type"]];
-            [arr addObject:arrDict];
-        }
-    }
-    [_db close];
-    return arr;
-
-}
 
 
 @end

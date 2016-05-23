@@ -269,26 +269,29 @@
         _detailList = dict;
         _detailListView.detailList = dict;
     
+        NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
         //不是本地进入播放界面时
         if (!self.localHtml) {
-        //第一次进入时观看,保存至播放历史
-        NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
-        ZKDetailAbout *detailModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
-        detailModel.currentplaytitle = playVideoUrl[@"title"];
-        detailModel.href = _strUrl;
-        detailModel.currentplayhref = playVideoUrl[@"href"];
-        [_dataTools saveHistroyOrStartWithModel:detailModel withType:saveList];
-         //获取播放地址并播放
-        [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
-         
-         //收藏或播放历史中含有时
-            
-            
+        NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:aboutInfo[@"alt"]];
+            //收藏或播放历史中含有时
+            if (playHistory.count != 0) {
+                ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:playHistory];
+                [self getVideoInfoWithUrl:model.currentplayhref];
+            }else{
+                //第一次进入时观看,保存至播放历史
+                NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
+                ZKDetailAbout *detailModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
+                detailModel.currentplaytitle = playVideoUrl[@"title"];
+                detailModel.href = _strUrl;
+                detailModel.currentplayhref = playVideoUrl[@"href"];
+                [_dataTools saveHistroyOrStartWithModel:detailModel withType:saveList];
+                //获取播放地址并播放
+                [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
+            }
         }//判断是否本地进入结束
     
     
         //判断是否是收藏,显示收藏图标
-        NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
         _isStart = [_dataTools isStartWithTitle:aboutInfo[@"alt"]];
         if (_isStart) {
             _detailListView.infoView.start.selected = YES;

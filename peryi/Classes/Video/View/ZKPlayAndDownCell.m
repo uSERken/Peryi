@@ -19,14 +19,13 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self == [super initWithFrame:frame]) {
-        
+        self.cornerRadius = 5.0f;
         [self setUpView];
     }
     return self;
 }
 
 - (void)setUpView{
-
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.font = [UIFont systemFontOfSize:13];
@@ -39,14 +38,12 @@
     _title = title;
     _titleLabel.text = _title;
     
-    
     [self layoutIfNeeded];
 }
 
 
 - (void)setIsSelected:(BOOL)isSelected{
     _isSelected = isSelected;
-    
     if (isSelected) {
         self.backgroundColor = RGB(233, 198, 0);
     }else{

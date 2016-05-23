@@ -68,6 +68,13 @@ SingletonH(ZKDataTools);
 - (BOOL)isStartWithTitle:(NSString *)title;
 
 /**
+ *获取播放记录
+ */
+-(NSDictionary *)getDetailAboutWithTitle:(NSString *)title;
+
+
+
+/**
  *  插入搜索记录
  */
 - (void)saveSearchHistortWithStr:(NSString *)str;

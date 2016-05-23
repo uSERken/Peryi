@@ -13,6 +13,8 @@
 #import "ZKPlayListCollectionHeader.h"
 #import "ZKDetailDown.h"
 #import "ZKDataTools.h"
+#import "ZKDetailAbout.h"
+#import <MJExtension/MJExtension.h>
 
 #define identifier @"Cell"
 
@@ -28,12 +30,19 @@
 //是否是播放列表
 @property (nonatomic, assign) BOOL isPlay;
 
+
 //选中的section
 @property (nonatomic ,assign)NSInteger selectSection;
 //选中的row
 @property (nonatomic ,assign)NSInteger selectIndex;
+//根据数据库得到集数选中
+@property (nonatomic ,assign)NSInteger firstIndex;
+
+//第一次进入显示
+@property (nonatomic ,assign)BOOL firstSel;
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
+
 
 @end
 
@@ -52,6 +61,7 @@ static NSString *ID = identifier;
     _isPlay = YES;
     _useList = _playModelList;
     _dataTools = [ZKDataTools sharedZKDataTools];
+    
     WeakSelf;
     [self.segmentedControl setIndexChangeBlock:^(NSInteger index) {
         switch (index) {
@@ -77,6 +87,8 @@ static NSString *ID = identifier;
     _collectionView.dataSource = self;
     [_collectionView registerClass:[ZKPlayAndDownCell class] forCellWithReuseIdentifier:identifier];
     [_collectionView registerClass:[ZKPlayListCollectionHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
+    
+
 }
 
 - (void)layoutSubviews{
@@ -99,7 +111,17 @@ static NSString *ID = identifier;
       _useList = _downModelList;
     [_collectionView reloadData];
     }
-    
+}
+
+- (void)setTitle:(NSString *)title{
+    _title = title;
+        //获取记录
+        ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:[_dataTools getDetailAboutWithTitle:title]];        //获取播放集数的纯数字
+        NSString *playTitle= [[model.currentplaytitle componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
+    if (playTitle) {
+        self.firstIndex = [playTitle integerValue] - 1;
+        _firstSel = YES;
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -113,7 +135,7 @@ static NSString *ID = identifier;
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     
-     ZKPlayListCollectionHeader *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+    ZKPlayListCollectionHeader *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
     if (_isPlay) {
           view.titleStr = [NSString stringWithFormat:@"播放列表%ld",indexPath.section+1];
     }else{
@@ -141,7 +163,25 @@ static NSString *ID = identifier;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-   //解决服用颜色显示问题
+    if (_isPlay) {
+       ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
+        cell.title = playModel.title;
+    }else{
+        ZKDetailDown *down = self.useList[indexPath.row];
+        cell.title = down.title;
+    }
+    
+    //第一次进入默认选中
+    if (_firstSel) {
+        if (indexPath.row == _firstIndex) {
+            cell.isSelected = YES;
+        }
+    }else{
+        if (indexPath.row == _firstIndex) {
+            cell.isSelected = NO;
+        }
+    }
+    //解决复用颜色显示问题
     if (indexPath.section == _selectSection) {
         if (indexPath.row == _selectIndex) {
             cell.isSelected = YES;
@@ -149,31 +189,23 @@ static NSString *ID = identifier;
             cell.isSelected = NO;
         }
     }
-       if (_isPlay) {
-       ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
-        cell.title = playModel.title;
-    }else{
-        ZKDetailDown *down = self.useList[indexPath.row];
-        cell.title = down.title;
-    }
+    
     return cell;
 }
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.layer.cornerRadius = 5.0f;
     cell.isSelected = YES;
     NSString *url = nil;
-    
     //记录所选中相
     _selectSection = indexPath.section;
     _selectIndex = indexPath.row;
+
     //播放地址
     if (_isPlay) {
        ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
         url = playModel.href;
-
         //保存播放的集数
         [_dataTools saveCurrentPlayWithTitle:_title withplayTitle:playModel.title withHref:playModel.href];
     }else{//下载地址
@@ -184,6 +216,10 @@ static NSString *ID = identifier;
         _action(url);
     }
     
+    //选中其他时马上更新原有选中
+    _firstSel = NO;
+    [self setNeedsLayout];
+    
 }
 
 
@@ -192,6 +228,7 @@ static NSString *ID = identifier;
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.layer.cornerRadius = 5.0f;
     cell.isSelected = NO;
+    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
