@@ -12,7 +12,6 @@
 #import "ZKListModel.h"
 
 typedef enum : NSUInteger {
-    saveHome,
     saveList,
     saveStart,
 } ZKSaveFromType;
@@ -45,7 +44,11 @@ SingletonH(ZKDataTools);
  */
 - (void)saveHistroyOrStartWithModel:(id)model withType:(ZKSaveFromType)from;
 
-
+/**
+ *  根据名字保存播放的地址和集数
+ *
+ */
+- (void)saveCurrentPlayWithTitle:(NSString*)title withplayTitle:(NSString *)playTitle withHref:(NSString *)href;
 /**
  *  获取历史记录或收藏的字典数组
  *

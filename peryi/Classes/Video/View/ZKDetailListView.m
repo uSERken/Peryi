@@ -91,9 +91,14 @@
     self.detailPlayList = [NSMutableArray array];
     _infoView.synopsis = _detailList[@"dmSynopsis"];
     _infoView.infoModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
+    //猜你喜欢
     _likeListView.likeArr = [ZKDetailYourLike mj_objectArrayWithKeyValuesArray:_detailList[@"dmYourLike"]];
-    _playAndDownView.downModelList = [ZKDetailDown mj_objectArrayWithKeyValuesArray:_detailList[@"dmDownload"]];
     
+    //下载
+    _playAndDownView.downModelList = [ZKDetailDown mj_objectArrayWithKeyValuesArray:_detailList[@"dmDownload"]];
+    //当前动画名字
+    _playAndDownView.title = _detailList[@"dmAbout"][@"alt"];
+    //播放列表数组
     NSArray *playArr = _detailList[@"dmPlay"];
     for (int i = 0; i < playArr.count; i ++) {
         NSArray *modelArr = [ZKDetailPlay mj_objectArrayWithKeyValuesArray:playArr[i]];

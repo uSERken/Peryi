@@ -14,6 +14,7 @@ typedef void(^ZKPlayAndDownloadViewActionBlock)(NSString *url);
 
 +(instancetype)view;
 
+@property (nonatomic, strong) NSString *title;
 
 @property (nonatomic, strong) NSArray *playModelList;
 

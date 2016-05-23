@@ -15,10 +15,10 @@
 #import <RDVTabBarController/RDVTabBarController.h>
 #import "ZKDetailListView.h"
 #import "ZKDataTools.h"
-#import "ZKHomeList.h"
+#import "ZKDetailAbout.h"
 #import "ZKSettingModel.h"
 #import "ZKSettingModelTool.h"
-
+#import <MJExtension/MJExtension.h>
 @interface ZKVideoController()<UIWebViewDelegate,UIScrollViewDelegate,UIAlertViewDelegate>
 
 /**
@@ -75,7 +75,7 @@
     [[self rdv_tabBarController] setTabBarHidden:NO animated:YES];
 }
 
--(id) initWithAddress:(NSString *)addresUrlStr{
+-(id)initWithAddress:(NSString *)addresUrlStr{
     if (self = [super init]) {
         _isCreate = NO;
         [self setUpAllView];
@@ -95,11 +95,13 @@
     [super viewDidLoad];
 }
 
+//缓存的动漫加载相关数据
 - (void)setLocalHtml:(NSString *)localHtml{
      _localHtml = localHtml;
      [self loadListDataWithstrUrl:_localHtml];
 }
 
+//初始界面
 - (void)setUpAllView{
      UIView *topView = [[UIView alloc] init];
      topView.backgroundColor = [UIColor blackColor];
@@ -109,7 +111,6 @@
         make.top.left.right.equalTo(self.view);
          make.height.equalTo(@20);
      }];
-    
     //由于zfplayer里，没有写入url就不能初始化点击按钮。因此自定义一个以防视频url为加载出的等待
     UIImageView *imageView = [[UIImageView alloc] init];
     [imageView setImage:[UIImage imageNamed:@"loading_bg"]];
@@ -123,7 +124,6 @@
     [self.view addSubview:backBtn];
     
     _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [_activity startAnimating];
     [self.view addSubview:_activity];
     
     
@@ -205,35 +205,21 @@
         make.center.equalTo(imageView);
     }];
     
-    
 }
 
-
+//载入动漫相关数据
 - (void)loadListDataWithstrUrl:(NSString *)strUrl{
     ZKHttpTools *http = [ZKHttpTools sharedZKHttpTools];
     //加载列表数据
     WeakSelf;
+    [MBProgressHUD showMessage:@"请稍候，正在加载..."];
     [http getDetailDMWithURL:strUrl getDatasuccess:^(NSDictionary *listData) {
-        weakSelf.detailList = listData;
-        [weakSelf timerToGetValue];
+        
+        [weakSelf getDetailListWithlistdict:listData];
+        [MBProgressHUD hideHUD];
+        [weakSelf.activity startAnimating];
     }];
 }
-
-//强制设置屏幕方向
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-         self.view.backgroundColor = [UIColor whiteColor];
-        [self.playView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(20);
-        }];
-    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-        [self.playView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view).offset(0);
-        }];
-          self.view.backgroundColor = [UIColor blackColor];
-    }
-}
-
 
 //=========================================获取视屏网址================================//
 //由于需要网页加载后才可得到播放地址。因此添加uiwebview类根据url进入播放页面并得到数据。
@@ -245,7 +231,8 @@
     NSURLRequest* request = [NSURLRequest requestWithURL:videoUrl];//创建NSURLRequest
     [_webView loadRequest:request];//加载
 }
-//webview的代理。加载网页完成后获取播放地址并删除uiwebview
+
+#pragma mark - webview的代理。加载网页完成后获取播放地址并删除uiwebview
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
     //加载完网页后播放视频时才接收通知是否为4G网络
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isNotNet object:nil];
@@ -255,7 +242,6 @@
         [_activity stopAnimating];
         _playView.hidden = NO;
         //用于重置播放
-        
         if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
             _playView.urlStr = _strUrl;
@@ -275,29 +261,33 @@
         }
     });
 }
+
+
 #pragma mark - 其他
-
-- (void)timerToGetValue{
-    [MBProgressHUD showMessage:@"正在加载,请稍候"];
-    //定时器
-    self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    //加入循环进程
-    [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
-    //立即触发
-    [_timer fire];
-}
-
-- (void)timerAction{
-    if (self.detailList.count > 0) {
-        
-        _detailListView.detailList = self.detailList;
-        [MBProgressHUD hideHUD];
-        if (self.localHtml == nil) {
-            NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
-            [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
-            NSLog(@"%@",playVideoUrl[@"href"]);
-        }
-        //判断是否是收藏
+//将值传入其他界面显示,存储以及收藏按钮
+- (void)getDetailListWithlistdict:(NSDictionary *)dict{
+        _detailList = dict;
+        _detailListView.detailList = dict;
+    
+        //不是本地进入播放界面时
+        if (!self.localHtml) {
+        //第一次进入时观看,保存至播放历史
+        NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
+        ZKDetailAbout *detailModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
+        detailModel.currentplaytitle = playVideoUrl[@"title"];
+        detailModel.href = _strUrl;
+        detailModel.currentplayhref = playVideoUrl[@"href"];
+        [_dataTools saveHistroyOrStartWithModel:detailModel withType:saveList];
+         //获取播放地址并播放
+        [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
+         
+         //收藏或播放历史中含有时
+            
+            
+        }//判断是否本地进入结束
+    
+    
+        //判断是否是收藏,显示收藏图标
         NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
         _isStart = [_dataTools isStartWithTitle:aboutInfo[@"alt"]];
         if (_isStart) {
@@ -305,8 +295,6 @@
         }else{
             _detailListView.infoView.start.selected = NO;
         }
-         [self.timer invalidate];
-    }
 }
 
 //收藏按钮点击
@@ -325,36 +313,16 @@
         [MBProgressHUD showSuccess:@"已从收藏移除"];
     }else{
         _detailListView.infoView.start.selected = YES;
-        ZKHomeList *listModel = [[ZKHomeList alloc] init];
-        listModel.title = aboutInfo[@"alt"];
-        listModel.src =  aboutInfo[@"src"];
-        listModel.href = self.strUrl;
-        listModel.current = aboutInfo[@"about"][@"update"];
+        ZKDetailAbout *listModel = [[ZKDetailAbout alloc] init];
+        //收藏时，只需传入标题
+        listModel.alt = self.detailList[@"dmAbout"][@"alt"];
         [_dataTools saveHistroyOrStartWithModel:listModel withType:saveStart];
         [MBProgressHUD showSuccess:@"已添加至收藏"];
     }
 }
 
-- (void)backtoRootVC{
-    //如果竖屏时强制改为横屏
-    UIInterfaceOrientation oreientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (oreientation == UIInterfaceOrientationLandscapeRight || oreientation == UIInterfaceOrientationLandscapeLeft) {
-        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-            SEL selector             = NSSelectorFromString(@"setOrientation:");
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-            [invocation setSelector:selector];
-            [invocation setTarget:[UIDevice currentDevice]];
-            int val                  = UIInterfaceOrientationPortrait;
-            [invocation setArgument:&val atIndex:2];
-            [invocation invoke];
-        }
-    }else{
-        [self.navigationController popViewControllerAnimated:YES];
-        [self deleteAll];
-    }
-}
 
-
+#pragma mark - wifi 4g 网络处理
 //启用4G网络的时候
 - (void)is4GWAAN{
     ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
@@ -387,6 +355,44 @@
         [_playView pause];
     }
 }
+
+
+//返回按钮方法
+- (void)backtoRootVC{
+    //如果竖屏时强制改为横屏
+    UIInterfaceOrientation oreientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (oreientation == UIInterfaceOrientationLandscapeRight || oreientation == UIInterfaceOrientationLandscapeLeft) {
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector             = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val                  = UIInterfaceOrientationPortrait;
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+        [self deleteAll];
+    }
+}
+
+//强制设置屏幕方向
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+        self.view.backgroundColor = [UIColor whiteColor];
+        [self.playView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(20);
+        }];
+    }else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight || toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+        [self.playView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(0);
+        }];
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+}
+
+
 
 /**
  *  删除所有view及数据

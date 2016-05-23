@@ -1,7 +1,7 @@
 //
 //  ZKListModel.h
 //  peryi
-//
+//  用于搜索列表页面
 //  Created by k on 16/5/10.
 //  Copyright © 2016年 ZK. All rights reserved.
 //

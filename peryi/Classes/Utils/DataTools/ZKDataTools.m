@@ -8,7 +8,7 @@
 
 #import "ZKDataTools.h"
 #import <FMDB/FMDB.h>
-
+#import "ZKDetailAbout.h"
 #import <MJExtension/MJExtension.h>
 
 @interface ZKDataTools()
@@ -20,6 +20,8 @@
 static FMDatabase *_db;
 SingletonM(ZKDataTools);
 
+
+#pragma mark - 存获取首页数据
 /**
  *  存储首页的数据
  */
@@ -66,43 +68,75 @@ SingletonM(ZKDataTools);
     return  arr;
 }
 
+#pragma mark - 存获播放历史，收藏历史记录
 /**
  *  点击进播放页面即保存为播放记录
  *
  *  @param id 保存的模型
  */
-- (void)saveHistroyOrStartWithModel:(id)model withType:(ZKSaveFromType)from{
+- (void)saveHistroyOrStartWithModel:(ZKDetailAbout *)model withType:(ZKSaveFromType)from{
    
     NSString *dbpath = dbpaths;
     _db = [FMDatabase databaseWithPath:dbpath];
     if ([_db open]) {
-    NSString *sql = @"insert into history (title, src,current,href) values(?,?,?,?)";
-    if (from == saveHome) {
-        ZKHomeList *homeList = model;
-        if ([self isRepateWithHistoryOrStartWithTitle:homeList.title withType:getHistory]) {
-            [_db executeUpdate:sql,homeList.title,homeList.src,homeList.current,homeList.href];
-        }
-        
-    }else if (from == saveList){
-        ZKListModel *listModel = model;
-        if ([self isRepateWithHistoryOrStartWithTitle:listModel.alt withType:getHistory]) {
-        [_db executeUpdate:sql,listModel.alt,listModel.src,listModel.about[@"update"],listModel.href];
+     // 历史
+    if(from == saveList){
+        [self saveHistoryAndStartWithModel:model withType:saveList];
+    }else{ //收藏
+        //将默认存储的历史数据保存为收藏的数据
+        NSString *sql = @"select * from history where title=?";
+        FMResultSet *set = [_db executeQuery:sql,model.alt];
+        if ([set next]) {
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            for (int i = 0; i < set.columnCount; i++) {
+                dict[[set columnNameForIndex:i]] = [set stringForColumnIndex:i];
             }
-        
-    }else if(from == saveStart){
-        NSString *startSql = @"insert into start (title, src,current,href) values(?,?,?,?)";
-        ZKHomeList *homeList = model;
-        if ([self isRepateWithHistoryOrStartWithTitle:homeList.title withType:getStart]) {
-            [_db executeUpdate:startSql,homeList.title,homeList.src,homeList.current,homeList.href];
+            
+            ZKDetailAbout *saveModel = [ZKDetailAbout mj_objectWithKeyValues:dict];
+            //收藏时将历史里的数据保存至收藏
+            [self saveHistoryAndStartWithModel:saveModel withType:saveStart];
+          }
         }
     }
-        
-    }//数据库打开结束
-    
+    //数据库打开结束
     [_db close];
-    
-        
 }
+
+- (void)saveHistoryAndStartWithModel:(ZKDetailAbout*)model withType:(ZKSaveFromType)fromType{
+    NSString *savesSql =  nil;
+    if (fromType == saveList) {
+        if ([self isRepateWithHistoryOrStartWithTitle:model.alt withType:getHistory]) {
+            savesSql = @"insert into history (title, src,current,href,currentplaytitle,currentplayhref) values(?,?,?,?,?,?)";
+            [_db executeUpdate:savesSql,model.alt,model.src,model.about[@"update"],model.href,model.currentplaytitle,model.currentplayhref];
+        }
+    }else{
+        if ([self isRepateWithHistoryOrStartWithTitle:model.title withType:getStart]) {
+            savesSql = @"insert into start (title, src,current,href,currentplaytitle,currentplayhref) values(?,?,?,?,?,?)";
+            [_db executeUpdate:savesSql,model.title,model.src,model.current,model.href,model.currentplaytitle,model.currentplayhref];
+        }
+    }
+    
+}
+
+//根据名字保存播放的集数
+- (void)saveCurrentPlayWithTitle:(NSString*)title withplayTitle:(NSString *)playTitle withHref:(NSString *)href{
+    NSString *dbpath = dbpaths;
+    _db = [FMDatabase databaseWithPath:dbpath];
+    if ([_db open]) {
+        //更新历史
+        NSString *hissSql = @"update history set currentplaytitle=?, currentplayhref=? where title=?";
+        [_db executeUpdate:hissSql,playTitle,href,title];
+        //先查询在收藏是否有再更新
+        NSString *selStartSql = @"select * from start where title=?";
+        FMResultSet *startSet = [_db executeQuery:selStartSql,title];
+        if ([startSet next]) {
+            NSString *sql = @"update start set currentplaytitle=?, currentplayhref=? where title=?";
+            [_db executeUpdate:sql,playTitle,href,title];
+        }
+    }//数据库打开结束
+    [_db close];
+}
+
 
 /**
  *  获取历史记录或收藏的字典数组
@@ -178,6 +212,8 @@ SingletonM(ZKDataTools);
     return isStart;
 }
 
+
+
 /**
  *  查询是否重复
  */
@@ -196,7 +232,7 @@ SingletonM(ZKDataTools);
             sql =  @"select * from start where title=?";
             FMResultSet *set = [_db executeQuery:sql,title];
             if ([set next]) {
-                    isNeedSave = NO;
+                isNeedSave = NO;
             }else{
                isNeedSave = YES;
             }   

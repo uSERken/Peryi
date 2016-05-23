@@ -18,4 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *currentLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *playLabel;
+
+
 @end

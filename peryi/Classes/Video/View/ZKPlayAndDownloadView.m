@@ -12,6 +12,8 @@
 #import "ZKDetailPlay.h"
 #import "ZKPlayListCollectionHeader.h"
 #import "ZKDetailDown.h"
+#import "ZKDataTools.h"
+
 #define identifier @"Cell"
 
 @interface ZKPlayAndDownloadView()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
@@ -26,6 +28,12 @@
 //是否是播放列表
 @property (nonatomic, assign) BOOL isPlay;
 
+//选中的section
+@property (nonatomic ,assign)NSInteger selectSection;
+//选中的row
+@property (nonatomic ,assign)NSInteger selectIndex;
+
+@property (nonatomic, strong) ZKDataTools *dataTools;
 
 @end
 
@@ -39,8 +47,11 @@ static NSString *ID = identifier;
 
 - (void)awakeFromNib{
     [super awakeFromNib];
+    self.selectSection = MAXFLOAT;
+    self.selectIndex = MAXFLOAT;
     _isPlay = YES;
     _useList = _playModelList;
+    _dataTools = [ZKDataTools sharedZKDataTools];
     WeakSelf;
     [self.segmentedControl setIndexChangeBlock:^(NSInteger index) {
         switch (index) {
@@ -130,7 +141,15 @@ static NSString *ID = identifier;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-    if (_isPlay) {
+   //解决服用颜色显示问题
+    if (indexPath.section == _selectSection) {
+        if (indexPath.row == _selectIndex) {
+            cell.isSelected = YES;
+        }else{
+            cell.isSelected = NO;
+        }
+    }
+       if (_isPlay) {
        ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
         cell.title = playModel.title;
     }else{
@@ -142,15 +161,21 @@ static NSString *ID = identifier;
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.layer.cornerRadius = 5.0f;
+    cell.isSelected = YES;
     NSString *url = nil;
+    
+    //记录所选中相
+    _selectSection = indexPath.section;
+    _selectIndex = indexPath.row;
     //播放地址
     if (_isPlay) {
        ZKDetailPlay *playModel = self.useList[indexPath.section][indexPath.row];
         url = playModel.href;
-        cell.backgroundColor = RGB(233, 198, 0);
+
+        //保存播放的集数
+        [_dataTools saveCurrentPlayWithTitle:_title withplayTitle:playModel.title withHref:playModel.href];
     }else{//下载地址
         ZKDetailDown *downModel = self.useList[indexPath.row];
         url = downModel.href;
@@ -159,6 +184,14 @@ static NSString *ID = identifier;
         _action(url);
     }
     
+}
+
+
+//当选中其他时恢复颜色
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    ZKPlayAndDownCell *cell =(ZKPlayAndDownCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.cornerRadius = 5.0f;
+    cell.isSelected = NO;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

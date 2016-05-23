@@ -41,14 +41,18 @@
                     <nil key="highlightedColor"/>
                     <size key="shadowOffset" width="0.0" height="0.0"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BNP-6q-BkG">
-                    <rect key="frame" x="309" y="47" width="0.0" height="0.0"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BNP-6q-BkG">
+                    <rect key="frame" x="184" y="47" width="0.0" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.93902599811553955" green="0.70638656616210938" blue="0.037395644932985306" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPW-OG-gyu">
-                    <rect key="frame" x="333" y="41" width="25" height="25"/>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPW-OG-gyu">
+                    <rect key="frame" x="208" y="41" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="94R-jT-RO7"/>
+                        <constraint firstAttribute="height" constant="25" id="ZIa-w1-0qM"/>
+                    </constraints>
                     <state key="normal" image="like_unsel"/>
                     <state key="selected" image="like_sel"/>
                 </button>
@@ -80,7 +84,7 @@
         </view>
     </objects>
     <resources>
-        <image name="like_sel" width="25" height="25"/>
-        <image name="like_unsel" width="25" height="25"/>
+        <image name="like_sel" width="150" height="150"/>
+        <image name="like_unsel" width="150" height="150"/>
     </resources>
 </document>

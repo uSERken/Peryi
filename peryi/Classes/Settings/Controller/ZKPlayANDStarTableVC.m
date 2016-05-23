@@ -9,7 +9,7 @@
 #import "ZKPlayANDStarTableVC.h"
 #import "ZKDataTools.h"
 #import <MJExtension/MJExtension.h>
-#import "ZKHomeList.h"
+#import "ZKDetailAbout.h"
 #import "ZKHistoryANDStartCell.h"
 #import "ZKVideoController.h"
 #import "MBProgressHUD+Extend.h"
@@ -41,12 +41,12 @@
     _dataTools = [ZKDataTools sharedZKDataTools];
     if (type == ZKPlayANDStartHistoryType ) {
         self.title  =  @"播放历史";
-     _historyAndStartArr = [ZKHomeList  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getHistory]];
+     _historyAndStartArr = [ZKDetailAbout  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getHistory]];
         _thisType = type;
         [self.tableView reloadData];
     }else{
         self.title  =  @"收藏列表";
-        _historyAndStartArr = [ZKHomeList  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getStart]];
+        _historyAndStartArr = [ZKDetailAbout  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getStart]];
         _thisType = type;
         [self.tableView reloadData];
     }
@@ -88,17 +88,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     ZKHistoryANDStartCell *cell = [ZKHistoryANDStartCell cellWithTableView:tableView];
-    ZKHomeList *model = self.historyAndStartArr[indexPath.row];
+    ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
     [cell.imgView sd_setImageWithURL:[NSURL URLWithString:model.src] placeholderImage:[UIImage imageNamed:@"Management_Mask"]];
     cell.titleLabel.text = model.title;
-    cell.currentLabel.text = model.current;
+    cell.currentLabel.text = [NSString stringWithFormat:@"更新至 %@",model.current];
+    cell.playLabel.text = [NSString stringWithFormat:@"观看至 %@",model.currentplaytitle];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (_isNetWorking) {
-        ZKHomeList *model = self.historyAndStartArr[indexPath.row];
+        ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
         [self.navigationController pushViewController:vc animated:YES];
     }else{
@@ -121,8 +122,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 90;
 }
-
-
 
 
 // Override to support editing the table view.

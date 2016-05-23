@@ -32,7 +32,6 @@
 
 - (void)setImgUrl:(NSString *)imgUrl{
     _imgUrl = imgUrl;
-    
     [_img sd_setImageWithURL:[NSURL URLWithString:_imgUrl] placeholderImage:[UIImage imageNamed:@"Management_Mask"]];
 }
 
@@ -51,12 +50,13 @@
 -(void)setUpAllView{
     if (!_img) {
         _img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - 30)];
+        
         [self addSubview:_img];
     }
+    _img.layer.cornerRadius = 5.0f;
     
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_img.frame), (self.width/3 )*2, 30)];
-        _titleLabel.text = @"美少女组合美少女组合";
         _titleLabel.font = [UIFont systemFontOfSize:12];
          _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.numberOfLines = 0;
@@ -67,7 +67,6 @@
     
     if (!_currentLabel) {
         _currentLabel = [[UILabel alloc] init];
-        _currentLabel.text = @"更新至第1集";
         _currentLabel.font = [UIFont systemFontOfSize:11];
         _currentLabel.textAlignment = NSTextAlignmentCenter;
         [_currentLabel sizeToFit];

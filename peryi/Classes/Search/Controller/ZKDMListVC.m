@@ -155,10 +155,6 @@
     
     if (_isNetWorking) {
         ZKListModel *model = self.dmListArr[indexPath.row];
-        
-        ZKDataTools *datatools = [ZKDataTools sharedZKDataTools];
-        //点击了即保存数据
-        [datatools saveHistroyOrStartWithModel:model withType:saveList];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
         [self.navigationController pushViewController:vc animated:YES];
     }else{

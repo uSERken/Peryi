@@ -146,8 +146,6 @@
     if (_isNetWorking) {
         ZKHomeList *selectModel = _dmList[indexPath.row];
         [self goToVideoControllerWithStrUrl:selectModel.href];
-        //进入即保存为播放记录
-        [_dataTools saveHistroyOrStartWithModel:selectModel withType:saveHome];
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
     }
