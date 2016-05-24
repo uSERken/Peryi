@@ -135,7 +135,7 @@
         cell.sessionModel = downloadObject;
         [ZFDownloadManager sharedInstance].delegate = self;
         cell.downloadBlock = ^ {
-            [[ZFDownloadManager sharedInstance] download:downloadObject.url withHtmlStr:(NSString *)downloadObject.urlStr progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {} state:^(DownloadState state) {}];
+            [[ZFDownloadManager sharedInstance] download:downloadObject.url withHtmlStr:(NSString *)downloadObject.urlStr withAbout:downloadObject.aboutDict progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {} state:^(DownloadState state) {}];
         };
         return cell;
     }

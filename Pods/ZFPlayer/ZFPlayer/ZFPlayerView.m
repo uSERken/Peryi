@@ -612,7 +612,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 NSError *error = [self.player.currentItem error];
                 NSLog(@"视频加载失败===%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
-                self.controlView.horizontalLabel.text = @"视频加载失败";
+                self.controlView.horizontalLabel.text = @"视频加载失败，请更换列表尝试!";
 
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {
@@ -1204,10 +1204,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
     [self seekToTime:0 completionHandler:nil];
 }
 
-- (void)downloadVideo:(UIButton *)sender
-{
+- (void)downloadVideo:(UIButton *)sender{
     __weak UIButton *btn = sender;
-    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString  withHtmlStr:(NSString *)_urlStr progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+    [[ZFDownloadManager sharedInstance] download:self.videoURL.absoluteString  withHtmlStr:(NSString *)_urlStr withAbout:_aboutDict progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
         dispatch_async(dispatch_get_main_queue(), ^{ btn.enabled = NO; });
     } state:^(DownloadState state) {}];
 }

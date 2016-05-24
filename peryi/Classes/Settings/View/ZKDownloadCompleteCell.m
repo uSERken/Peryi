@@ -7,7 +7,8 @@
 //
 
 #import "ZKDownloadCompleteCell.h"
-
+#import <MJExtension/MJExtension.h>
+#import "ZKDetailAbout.h"
 @implementation ZKDownloadCompleteCell
 
 
@@ -26,7 +27,8 @@
 
 - (void)setSessionModel:(ZFSessionModel *)sessionModel{
     _sessionModel = sessionModel;
-    _fileNameLabel.text = sessionModel.fileName;
+    ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:sessionModel.aboutDict];
+    _fileNameLabel.text = [NSString stringWithFormat:@"%@ - %@",model.title,model.currentplaytitle];
     _sizeLabel.text = sessionModel.totalSize;
 }
 

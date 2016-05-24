@@ -63,6 +63,7 @@
     [aCoder encodeInteger:self.totalLength forKey:@"totalLength"];
     [aCoder encodeObject:self.totalSize forKey:@"totalSize"];
     [aCoder encodeObject:self.urlStr forKey:@"urlStr"];
+    [aCoder encodeObject:self.aboutDict forKey:@"aboutDict"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder //将属性进行解码
@@ -74,6 +75,7 @@
         self.totalLength = [aDecoder decodeIntegerForKey:@"totalLength"];
         self.totalSize = [aDecoder decodeObjectForKey:@"totalSize"];
          self.urlStr = [aDecoder decodeObjectForKey:@"urlStr"];
+        self.aboutDict = [aDecoder decodeObjectForKey:@"aboutDict"];
     }
     return self;
 }

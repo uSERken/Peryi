@@ -154,7 +154,7 @@ static ZFDownloadManager *_downloadManager;
 /**
  *  开启任务下载资源
  */
-- (void)download:(NSString *)url withHtmlStr:(NSString *)urlStr progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock
+- (void)download:(NSString *)url withHtmlStr:(NSString *)urlStr withAbout:(NSDictionary *)dict progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock
 {
     if (!url) return;
     if ([self isCompletion:url]) {
@@ -196,6 +196,7 @@ static ZFDownloadManager *_downloadManager;
         ZFSessionModel *sessionModel = [[ZFSessionModel alloc] init];
         sessionModel.url = url;
         sessionModel.urlStr = urlStr;
+        sessionModel.aboutDict = dict;
         sessionModel.progressBlock = progressBlock;
         sessionModel.stateBlock = stateBlock;
         sessionModel.stream = stream;
@@ -211,6 +212,7 @@ static ZFDownloadManager *_downloadManager;
             if ([sessionModel.url isEqualToString:url]) {
                 sessionModel.url = url;
                 sessionModel.urlStr = urlStr;
+                sessionModel.aboutDict = dict;
                 sessionModel.progressBlock = progressBlock;
                 sessionModel.stateBlock = stateBlock;
                 sessionModel.stream = stream;

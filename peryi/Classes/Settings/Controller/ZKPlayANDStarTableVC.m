@@ -50,6 +50,15 @@
         _thisType = type;
         [self.tableView reloadData];
     }
+    if (_historyAndStartArr.count == 0 ) {
+        UILabel *label = [[UILabel alloc] init];
+        label.size = CGSizeMake(120, 60);
+        label.center = self.view.center;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = @"暂无记录！";
+        [self.view addSubview:label];
+        
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];

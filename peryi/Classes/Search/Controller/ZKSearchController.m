@@ -219,6 +219,7 @@
     
 }
 
+/*
 #pragma mark - searchbar 代理
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
@@ -240,7 +241,7 @@
         }
     }];
 }
-
+*/
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{

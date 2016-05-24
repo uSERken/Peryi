@@ -73,6 +73,7 @@
 		0AC466A41CEAE9E800646E68 /* ZKPageTips.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC466A31CEAE9E800646E68 /* ZKPageTips.m */; };
 		0AC466A61CEAE9FA00646E68 /* ZKPageTips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AC466A51CEAE9FA00646E68 /* ZKPageTips.xib */; };
 		0AC466A91CEAF94100646E68 /* NSFileManager+ZKCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC466A81CEAF94100646E68 /* NSFileManager+ZKCache.m */; };
+		0AD84E691CF3E72500DB0357 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD84E681CF3E72500DB0357 /* MessageUI.framework */; };
 		0AE40AFE1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */; };
 		0AE40B011CD9A7B50069FB80 /* ZKSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */; };
 		0AE40B041CD9B21B0069FB80 /* ZKPlayAndDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B031CD9B21B0069FB80 /* ZKPlayAndDownCell.m */; };
@@ -237,6 +238,7 @@
 		0AC466A51CEAE9FA00646E68 /* ZKPageTips.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPageTips.xib; sourceTree = "<group>"; };
 		0AC466A71CEAF94000646E68 /* NSFileManager+ZKCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+ZKCache.h"; sourceTree = "<group>"; };
 		0AC466A81CEAF94100646E68 /* NSFileManager+ZKCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+ZKCache.m"; sourceTree = "<group>"; };
+		0AD84E681CF3E72500DB0357 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPlayAndDownloadView.xib; sourceTree = "<group>"; };
 		0AE40AFF1CD9A7B50069FB80 /* ZKSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSegmentedControl.h; sourceTree = "<group>"; };
 		0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSegmentedControl.m; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD84E691CF3E72500DB0357 /* MessageUI.framework in Frameworks */,
 				0AEA0D881CED9FDB00660989 /* SystemConfiguration.framework in Frameworks */,
 				0AF675CF1CD20D6A002CE56B /* AVFoundation.framework in Frameworks */,
 				0AF675CD1CD20D63002CE56B /* MediaPlayer.framework in Frameworks */,
@@ -848,6 +851,7 @@
 		FF4CE4924EEE38AD3C04F073 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0AD84E681CF3E72500DB0357 /* MessageUI.framework */,
 				0AEA0D871CED9FDB00660989 /* SystemConfiguration.framework */,
 				0AF675CE1CD20D6A002CE56B /* AVFoundation.framework */,
 				0AF675CC1CD20D63002CE56B /* MediaPlayer.framework */,

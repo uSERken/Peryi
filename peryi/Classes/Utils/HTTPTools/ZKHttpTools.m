@@ -313,7 +313,6 @@ SingletonM(ZKHttpTools)
     }else{
         url = [NSString stringWithFormat:@"%@/search.php?searchword=%@&page=%@",baseURL,keyword,pageStr];
     }
-    
  
     [self getHtmlDataWithUrl:url getDatasuccess:^(NSData *listData) {
         dict([self getTypePageListWithData:listData]);
@@ -358,7 +357,7 @@ SingletonM(ZKHttpTools)
         NSMutableDictionary *otherAboutDict = [NSMutableDictionary dictionary];
         TFHppleElement *otherList = element.children[j];
 //        NSLog(@"otherList:%@",element);
-        if (j > 1 && otherList.raw != nil) {
+        if (j > 0 && otherList.raw != nil) {
             TFHppleElement *otherUrl = [otherList firstChildWithTagName:@"a"];
             [otherAboutDict addEntriesFromDictionary:otherUrl.attributes];
             TFHppleElement *otherImg = [otherUrl firstChildWithTagName:@"img"];

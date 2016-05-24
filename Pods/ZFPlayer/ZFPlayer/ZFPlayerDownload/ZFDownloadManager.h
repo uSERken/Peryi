@@ -82,7 +82,7 @@
  *  @param progressBlock 回调下载进度
  *  @param stateBlock    下载状态
  */
-- (void)download:(NSString *)url withHtmlStr:(NSString *)urlStr progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock;
+- (void)download:(NSString *)url withHtmlStr:(NSString *)urlStr withAbout:(NSDictionary *)dict progress:(ZFDownloadProgressBlock)progressBlock state:(ZFDownloadStateBlock)stateBlock;
 
 /**
  *  查询该资源的下载进度值

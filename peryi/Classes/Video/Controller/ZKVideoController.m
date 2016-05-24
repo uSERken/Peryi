@@ -244,7 +244,10 @@
         //用于重置播放
         if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
-            _playView.urlStr = _strUrl;
+            //从保存里的当前播放数据传递给下载
+            NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:_detailList[@"dmAbout"][@"alt"]];
+            _playView.aboutDict = playHistory;
+            _playView.urlStr = playHistory[@"href"];
         }else{
             _playView.hasDownload = NO;
         }
@@ -269,17 +272,23 @@
         _detailList = dict;
         _detailListView.detailList = dict;
     
-        NSDictionary *aboutInfo = self.detailList[@"dmAbout"];
+        NSDictionary *aboutInfo = _detailList[@"dmAbout"];
         //不是本地进入播放界面时
         if (!self.localHtml) {
         NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:aboutInfo[@"alt"]];
-            //收藏或播放历史中含有时
+            //收藏或播放历史中含有时动漫时从历史开始播放
             if (playHistory.count != 0) {
                 ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:playHistory];
                 [self getVideoInfoWithUrl:model.currentplayhref];
             }else{
                 //第一次进入时观看,保存至播放历史
-                NSDictionary *playVideoUrl = self.detailList[@"dmPlay"][0][0];
+                NSDictionary *playVideoUrl = [NSDictionary dictionary];
+                NSArray *playArr = self.detailList[@"dmPlay"];
+                if (playArr.count > 2) {// 若播放列表超过1个则默认播放第二个列表第一个
+                    playVideoUrl = playArr[1][0];
+                }else{
+                    playVideoUrl = playArr[0][0];
+                }
                 ZKDetailAbout *detailModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
                 detailModel.currentplaytitle = playVideoUrl[@"title"];
                 detailModel.href = _strUrl;

@@ -15,8 +15,9 @@
 #import "MBProgressHUD+Extend.h"
 #import "ZKSettingModel.h"
 #import "ZKSettingModelTool.h"
+#import <MessageUI/MessageUI.h>
 
-@interface ZKSettingsController()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate>
+@interface ZKSettingsController()<UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate,MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tabelView;
 
@@ -75,7 +76,7 @@
     }else if(section == 2){
         return 2;
     }else{
-        return 1;
+        return 2;
     }
 }
 
@@ -112,8 +113,11 @@
             }
         }
     }else{
-//        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-         cell.textLabel.text = @"关于";
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"吐槽反馈";
+        }else{
+            cell.textLabel.text = @"关于";
+        }
     }
     return cell;
 }
@@ -121,17 +125,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    UIViewController *viewVC = [UIViewController new];
+
     if (indexPath.section == 0) {
         ZKDownLoadController *downC = [[ZKDownLoadController alloc] init];
-        viewVC = downC;
+        [self pushControllerWithController:downC];
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             ZKPlayANDStarTableVC *StartVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartCollectionType];
-            viewVC = StartVC;
+            [self pushControllerWithController:StartVC];
         }else{
             ZKPlayANDStarTableVC *HisttoryVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartHistoryType];
-            viewVC = HisttoryVC;
+             [self pushControllerWithController:HisttoryVC];
         }
     }else if(indexPath.section == 2){
         if (indexPath.row == 0) {
@@ -139,19 +143,27 @@
             [aler show];
          }
     }else{
-        ZKAboutVC  *aboutVC = [[ZKAboutVC alloc] init];
-        viewVC = aboutVC;
+        if (indexPath.row == 0) {
+            [self tucao];
+        }else{
+            ZKAboutVC  *aboutVC = [[ZKAboutVC alloc] init];
+            [self pushControllerWithController:aboutVC];
+        }
     }
-    if (indexPath.section != 2) {
-     [self.navigationController pushViewController:viewVC animated:YES];
-    }
+
     
+}
+
+- (void)pushControllerWithController:(UIViewController *)VC{
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     
     return @"";
 }
+
+
 
 - (void)updateSwitchAtIndexPath:(id)sender{
     UISwitch *switchView = (UISwitch *)sender;
@@ -178,6 +190,42 @@
         [NSFileManager clearPicture];
         [self.tabelView reloadData];
     }
+}
+
+
+#pragma mark - 反馈吐槽
+/**
+ *  反馈吐槽
+ */
+- (void)tucao{
+    MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+    mc.mailComposeDelegate = self;
+    [mc setSubject:@"Peryi-反馈吐槽"];
+    [mc setToRecipients:[NSArray arrayWithObjects:@"1413144585@qq.com", nil]];
+    [self presentViewController:mc animated:YES completion:nil];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error {
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"取消发送");
+            break;
+        case MFMailComposeResultSaved:
+            [MBProgressHUD showSuccess:@"保存成功"];
+            break;
+        case MFMailComposeResultSent:
+            [MBProgressHUD showSuccess:@"邮件已发送"];
+            break;
+        case MFMailComposeResultFailed:
+            [MBProgressHUD showError:@"发送失败，请重新发送"];
+            break;
+        default:
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)dealloc{

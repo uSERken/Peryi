@@ -7,6 +7,9 @@
 //
 
 #import "ZKDownLoadingCell.h"
+#import <MJExtension/MJExtension.h>
+#import "ZKDetailAbout.h"
+
 
 @interface ZKDownLoadingCell()
 
@@ -73,7 +76,7 @@
 
 - (void)setSessionModel:(ZFSessionModel *)sessionModel{
     _sessionModel = sessionModel;
-    _fileNameLabel.text = sessionModel.fileName;
+//    _fileNameLabel.text = sessionModel.fileName;
     
     NSUInteger receivedSize = ZFDownloadLength(sessionModel.url);
     NSString *writtenSize = [NSString stringWithFormat:@"%.2f %@",
@@ -84,7 +87,8 @@
     _progress.progress = progress;
     _speedLabel.text = @"已暂停";
     
-    
+    ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:sessionModel.aboutDict];
+    _fileNameLabel.text = [NSString stringWithFormat:@"%@ - %@",model.title,model.currentplaytitle];
 }
 
 

@@ -87,8 +87,6 @@ static NSString *ID = identifier;
     _collectionView.dataSource = self;
     [_collectionView registerClass:[ZKPlayAndDownCell class] forCellWithReuseIdentifier:identifier];
     [_collectionView registerClass:[ZKPlayListCollectionHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
-    
-
 }
 
 - (void)layoutSubviews{
@@ -117,11 +115,13 @@ static NSString *ID = identifier;
     _title = title;
         //获取记录
         ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:[_dataTools getDetailAboutWithTitle:title]];        //获取播放集数的纯数字
-        NSString *playTitle= [[model.currentplaytitle componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
+    NSString *playTitle= [[model.currentplaytitle componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
     if (playTitle) {
         self.firstIndex = [playTitle integerValue] - 1;
-        _firstSel = YES;
+    }else{
+        self.firstIndex = 0;
     }
+    _firstSel = YES;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -171,14 +171,23 @@ static NSString *ID = identifier;
         cell.title = down.title;
     }
     
+    [self selectCellBgWithCell:cell withIndexPath:indexPath];
+    
+    return cell;
+}
+
+//背景选中样式判断
+- (void)selectCellBgWithCell:(ZKPlayAndDownCell *)cell withIndexPath:(NSIndexPath *)indexPath{
     //第一次进入默认选中
     if (_firstSel) {
-        if (indexPath.row == _firstIndex) {
-            cell.isSelected = YES;
-        }
-    }else{
-        if (indexPath.row == _firstIndex) {
-            cell.isSelected = NO;
+        if (_useList.count > 1  && indexPath.section == 1) {//如果列表大于1个则默认选中第二个
+            if (indexPath.row == _firstIndex) {
+                cell.isSelected = YES;
+            }
+        }else if(_useList.count < 2 && indexPath.section == 0 ){ //如果只有一个，则默认选中第一个列表的
+            if (indexPath.row == _firstIndex) {
+                cell.isSelected = YES;
+            }
         }
     }
     //解决复用颜色显示问题
@@ -189,8 +198,6 @@ static NSString *ID = identifier;
             cell.isSelected = NO;
         }
     }
-    
-    return cell;
 }
 
 

@@ -80,6 +80,7 @@ SingletonM(ZKDataTools);
             [arr addObject:dict];
         }
      }
+    
     [_db close];
     
     return  arr;
@@ -104,6 +105,8 @@ SingletonM(ZKDataTools);
         }
     }
     [_db close];
+    //倒序
+    arr = (NSMutableArray *)[[arr reverseObjectEnumerator] allObjects];
     return arr;
 }
 
@@ -202,7 +205,8 @@ SingletonM(ZKDataTools);
         }
     }
     [_db close];
-    
+    //倒序
+    arr = (NSMutableArray *)[[arr reverseObjectEnumerator] allObjects];
     return arr;
 }
 
@@ -231,7 +235,6 @@ SingletonM(ZKDataTools);
  *  判断是否是收藏
  */
 - (BOOL)isStartWithTitle:(NSString *)title{
-    
     BOOL isStart;
     NSString *sql = @"select * from start where title=?";
     NSString *dbpath = dbpaths;
@@ -278,9 +281,8 @@ SingletonM(ZKDataTools);
 }
 
 /**
- *获取播放记录
+ *获取历史播放记录
  */
-
 -(NSDictionary *)getDetailAboutWithTitle:(NSString *)title{
      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     NSString *dispath = dbpaths;
@@ -325,14 +327,18 @@ SingletonM(ZKDataTools);
     NSString *selectSql =  @"select * from search";
     FMResultSet *set = [_db executeQuery:selectSql];
    
+  
+        
     while ([set next]) {
+      
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         for (int i = 0; i<set.columnCount; i++) {
             dict[[set columnNameForIndex:i]] = [set stringForColumnIndex:i];
         }
         [arr addObject:dict];
     }
-        
+    //倒序
+    arr = (NSMutableArray *)[[arr reverseObjectEnumerator] allObjects];
         }
     [_db close];
     return arr;

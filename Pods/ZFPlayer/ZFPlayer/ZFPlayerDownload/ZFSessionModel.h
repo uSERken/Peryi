@@ -50,6 +50,9 @@ typedef void(^ZFDownloadStateBlock)(DownloadState state);
 /** 所对应的html页面 **/
 @property (nonatomic, copy) NSString *urlStr;
 
+/** 所对应的动漫信息 */
+@property (nonatomic, strong) NSDictionary *aboutDict;
+
 /** 获得服务器这次请求 返回数据的总长度 */
 @property (nonatomic, assign) NSInteger totalLength;
 
