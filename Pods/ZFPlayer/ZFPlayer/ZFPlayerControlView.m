@@ -178,7 +178,7 @@
     }];
     
     [self.horizontalLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(160);
+        make.width.mas_equalTo(self);
         make.height.mas_equalTo(40);
         make.center.equalTo(self);
     }];

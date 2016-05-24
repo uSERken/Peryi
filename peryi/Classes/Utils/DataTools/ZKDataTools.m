@@ -105,8 +105,6 @@ SingletonM(ZKDataTools);
         }
     }
     [_db close];
-    //倒序
-    arr = (NSMutableArray *)[[arr reverseObjectEnumerator] allObjects];
     return arr;
 }
 

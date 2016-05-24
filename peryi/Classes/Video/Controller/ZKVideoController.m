@@ -212,7 +212,7 @@
     ZKHttpTools *http = [ZKHttpTools sharedZKHttpTools];
     //加载列表数据
     WeakSelf;
-    [MBProgressHUD showMessage:@"请稍候，正在加载..."];
+    [MBProgressHUD showMessage:@"正在加载，请稍候..."];
     [http getDetailDMWithURL:strUrl getDatasuccess:^(NSDictionary *listData) {
         
         [weakSelf getDetailListWithlistdict:listData];
@@ -314,7 +314,6 @@
     //初始化后执行的判断
     if (_detailListView.infoView.start.selected) {
         _isStart = YES;
-        
     }else{
         _isStart = NO;
     }
@@ -403,7 +402,6 @@
         self.view.backgroundColor = [UIColor blackColor];
     }
 }
-
 
 
 /**

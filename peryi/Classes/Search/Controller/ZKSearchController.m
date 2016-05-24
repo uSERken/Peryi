@@ -39,6 +39,8 @@
 
 @property (nonatomic, assign) BOOL isNetWorking;
 
+@property (nonatomic, strong) UILabel *tipLabel;
+
 @end
 
 @implementation ZKSearchController
@@ -63,8 +65,7 @@
     _typeArr = @[@"类型",@"年份",@"语言",@"版本"];
     _httpTools = [ZKHttpTools sharedZKHttpTools];
      _dataTools = [ZKDataTools sharedZKDataTools];
-    
-    //初始化加载
+    //初始化
     [self isNetWork];
 }
 
@@ -99,6 +100,7 @@
             searchBar.tintColor = [UIColor whiteColor];
             searchBar.placeholder = @"请输入动漫名称";
             searchBar.keyboardType = UIKeyboardTypeWebSearch;
+            searchBar.tintColor=[UIColor blackColor];
             searchBar;
         });
     }
@@ -116,23 +118,26 @@
     
         WeakSelf;
         _searchViewVC.actionBlock=^(NSString *text){
-            [MBProgressHUD showMessage:@"请稍候..."];
-            [weakSelf.httpTools serarchWithString:text withPage:nil getDatasuccess:^(NSDictionary *listDict) {
-                NSArray *arr = listDict[@"list"];
-                if (arr.count != 0) {
-                    ZKDMListVC *vc = [[ZKDMListVC alloc] init];
-                    vc.dmListDict = listDict;
-                    vc.pageStyle = text;
-                    vc.navTitle = text;
-                    weakSelf.searchViewVC.active = NO;
-                    [weakSelf.navigationController pushViewController:vc animated:YES];
-                    [MBProgressHUD hideHUD];
-                }else{
-                    [MBProgressHUD hideHUD];
-                    weakSelf.searchViewVC.active = NO;
-                    [MBProgressHUD showError:@"搜索无结果"];
-                }
-            }];
+            if (weakSelf.isNetWorking) {
+                [MBProgressHUD showMessage:@"请稍候..."];
+                [weakSelf.httpTools serarchWithString:text withPage:nil getDatasuccess:^(NSDictionary *listDict) {
+                    NSArray *arr = listDict[@"list"];
+                    if (arr.count != 0) {
+                        ZKDMListVC *vc = [[ZKDMListVC alloc] init];
+                        vc.dmListDict = listDict;
+                        vc.pageStyle = text;
+                        vc.navTitle = text;
+                        weakSelf.searchViewVC.active = NO;
+                        [weakSelf.navigationController pushViewController:vc animated:YES];
+                        [MBProgressHUD hideHUD];
+                    }else{
+                        [MBProgressHUD hideHUD];
+                        [MBProgressHUD showError:@"搜索无结果"];
+                    }
+                }];
+            }else{
+                 [MBProgressHUD showError:@"您的网络已断开"];
+            }
         };
     }
     [_searchBar becomeFirstResponder];
@@ -140,16 +145,6 @@
 }
 
 #pragma mark - 初始网络请求
-- (void)getAllTypeList{
-    
-   
-    if (_isNetWorking) {
-       
-    }else{
-        
-    }
-    
-}
 
 - (void)getSearchWithType:(NSString *)urlStr withTitle:(NSString *)title{
     [MBProgressHUD showMessage:@"请稍候..."];
@@ -246,28 +241,43 @@
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
     _isNetWorking = YES;
+    [_tipLabel removeFromSuperview];
     WeakSelf;
     [weakSelf.httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
-        [weakSelf.dataTools saveSearchTypeWithArr:listArr];
         NSMutableArray *modelArr = [NSMutableArray array];
         for (NSArray *arr in listArr) {
             [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
         }
-        weakSelf.typeList = modelArr;
+         weakSelf.typeList = modelArr;
         [weakSelf.collectionView reloadData];
-        [MBProgressHUD hideHUD];
+        //初始化无网络后执行从数据库提取
+        if (modelArr.count == 0) {
+            [weakSelf isNotNetWork];
+        }else{//有值保存
+            [weakSelf.dataTools saveSearchTypeWithArr:listArr];
+        }
     }];
 }
 
 - (void)isNotNetWork{
     _isNetWorking = NO;
-     WeakSelf;
+
     NSMutableArray *modelArr = [NSMutableArray array];
     for (NSArray *arr in [_dataTools getSearchType]) {
         [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
     }
-    weakSelf.typeList = modelArr;
-    [weakSelf.collectionView reloadData];
+    NSLog(@"%ld",modelArr.count);
+     self.typeList = modelArr;
+    [self.collectionView reloadData];
+    
+    if (modelArr.count == 0) {//数据库中无值提示
+        _tipLabel = [[UILabel alloc] init];
+        _tipLabel.size = CGSizeMake(120, 30);
+        _tipLabel.center = self.view.center;
+        _tipLabel.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:_tipLabel];
+    }
+    
 }
 
 

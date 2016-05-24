@@ -356,8 +356,8 @@ SingletonM(ZKHttpTools)
     for (NSInteger j = 0; j<element.children.count; j++) {
         NSMutableDictionary *otherAboutDict = [NSMutableDictionary dictionary];
         TFHppleElement *otherList = element.children[j];
-//        NSLog(@"otherList:%@",element);
-        if (j > 0 && otherList.raw != nil) {
+      
+        if (j > 0 && [otherList.tagName isEqualToString:@"div"]) {
             TFHppleElement *otherUrl = [otherList firstChildWithTagName:@"a"];
             [otherAboutDict addEntriesFromDictionary:otherUrl.attributes];
             TFHppleElement *otherImg = [otherUrl firstChildWithTagName:@"img"];
@@ -396,7 +396,7 @@ SingletonM(ZKHttpTools)
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             listData(data);
-            [MBProgressHUD showError:@"网络错误"];
+//            [MBProgressHUD showError:@"网络错误"];
         }else{
             listData(data);
         }

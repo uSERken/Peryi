@@ -208,6 +208,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
  */
 - (void)resetToPlayNewURL
 {
+    self.controlView.horizontalLabel.hidden = YES;
     self.repeatToPlay = YES;
     [self resetPlayer];
 }
@@ -612,7 +613,7 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 NSError *error = [self.player.currentItem error];
                 NSLog(@"视频加载失败===%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
-                self.controlView.horizontalLabel.text = @"视频加载失败，请更换列表尝试!";
+                self.controlView.horizontalLabel.text = @"视频加载失败，请更换源尝试!";
 
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {

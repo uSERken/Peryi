@@ -43,7 +43,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-
+    _isNetWorking = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     
@@ -55,8 +55,6 @@
 }
 
 - (void)setUpSlideViewAndCollectionView{
-    
-
     
     if (_slideView == nil) {
         _slideView = [[ZKSlideView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.width, 265)];
@@ -131,7 +129,6 @@
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     static NSString *ID = identifier;
     ZKHomeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
     ZKHomeList *model = _dmList[indexPath.row];
@@ -168,7 +165,6 @@
 
 #pragma mark - 3DTouch
 - (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
-    
     
     NSIndexPath *indexPath = [_collectionView indexPathForCell:(ZKHomeCollectionCell*)[previewingContext sourceView]];
     ZKHomeList *model = _dmList[indexPath.row];

@@ -13,6 +13,7 @@
 #import "ZKHistoryANDStartCell.h"
 #import "ZKVideoController.h"
 #import "MBProgressHUD+Extend.h"
+#import "ZKHttpTools.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface ZKPlayANDStarTableVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -27,6 +28,7 @@
 
 @property (nonatomic, assign) BOOL isNetWorking;
 
+
 @end
 
 @implementation ZKPlayANDStarTableVC
@@ -37,6 +39,9 @@
 
 - (id)initControllerWithType:(ZKPlayANDStarttType)type{
     self = [super init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    _isNetWorking = YES;
     [self setUpView];
     _dataTools = [ZKDataTools sharedZKDataTools];
     if (type == ZKPlayANDStartHistoryType ) {
@@ -57,13 +62,10 @@
         label.textAlignment = NSTextAlignmentCenter;
         label.text = @"暂无记录！";
         [self.view addSubview:label];
-        
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
-    //初始化为在线
-    _isNetWorking = YES;
+ [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.5f];
+    
     return self;
 }
 
@@ -78,6 +80,16 @@
         });
     [self.view addSubview:_tableView];
     
+}
+
+ //初始化无法获得网络状态,暂时使用此方法判断网络
+- (void)detectionNetWorking{
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://m.baidu.com/"]];
+    if (data) {
+        _isNetWorking = YES;
+    }else{
+        _isNetWorking = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,6 +123,7 @@
         ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
         [self.navigationController pushViewController:vc animated:YES];
+
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
     }

@@ -131,7 +131,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
     ZKSearchModel *searchModel = _histroryArr[indexPath.row];
     if (indexPath.section == 0) {
         if (_actionBlock) {

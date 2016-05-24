@@ -7,8 +7,10 @@
 //
 
 #import "ZKAboutVC.h"
-
+#import "ZKAboutView.h"
 @interface ZKAboutVC ()
+
+@property (nonatomic, strong) UIView *aboutView;
 
 @end
 
@@ -20,6 +22,8 @@
     // Do any additional setup after loading the view.
     self.title = @"关于Peryi";
     
+    ZKAboutView *aboutView = [[ZKAboutView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:aboutView];
 }
 
 

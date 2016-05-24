@@ -19,6 +19,7 @@
 #import "ZKHomeList.h"
 #import "ZKDetailAbout.h"
 #import <MJExtension/MJExtension.h>
+#import "MBProgressHUD+Extend.h"
 @interface ZKDMListTouchVC ()
 
 @property (nonatomic, strong) NSString *urlStr;
@@ -62,7 +63,8 @@
 
 - (void)setDetailList:(NSDictionary *)detailList{
     _detailList = detailList;
-    if (_detailList != nil) {
+    NSDictionary *dict = _detailList[@"dmAbout"][@"about"];
+    if (dict.count > 0) {
         _infoView.hidden = NO;
         ZKDetailAbout *about = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
         _infoView.titleLabel.text = about.alt;
@@ -85,8 +87,14 @@
 #pragma mark - 选择代理
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems{
     UIPreviewAction *watch = [UIPreviewAction actionWithTitle:@"观看" style:UIPreviewActionStyleDestructive handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-        ZKVideoController *viewVc = [[ZKVideoController alloc] initWithAddress:self.urlStr];
-        [(UINavigationController *)[self topViewController] pushViewController:viewVc animated:YES];
+        NSDictionary *dict = _detailList[@"dmAbout"][@"about"];
+        if (dict.count > 0) {
+            ZKVideoController *viewVc = [[ZKVideoController alloc] initWithAddress:self.urlStr];
+            [(UINavigationController *)[self topViewController] pushViewController:viewVc animated:YES];
+        }else{
+            [MBProgressHUD showError:@"您的网络断开了"];
+        }
+       
     }];
     NSArray * actions = @[watch];
     

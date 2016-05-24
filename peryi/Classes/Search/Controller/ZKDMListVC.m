@@ -42,6 +42,7 @@
     [super viewDidLoad];
     self.title = _navTitle;
     [self setUpView];
+    self.view.backgroundColor = [UIColor whiteColor];
     _pageTipsView.lastPageStr = _lastPage;
     _page = 2;
     _httpTools = [ZKHttpTools sharedZKHttpTools];

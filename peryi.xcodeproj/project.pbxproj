@@ -74,6 +74,8 @@
 		0AC466A61CEAE9FA00646E68 /* ZKPageTips.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AC466A51CEAE9FA00646E68 /* ZKPageTips.xib */; };
 		0AC466A91CEAF94100646E68 /* NSFileManager+ZKCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC466A81CEAF94100646E68 /* NSFileManager+ZKCache.m */; };
 		0AD84E691CF3E72500DB0357 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD84E681CF3E72500DB0357 /* MessageUI.framework */; };
+		0AD84E6B1CF4176D00DB0357 /* ZKAboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AD84E6A1CF4176D00DB0357 /* ZKAboutView.xib */; };
+		0AD84E6E1CF41A6A00DB0357 /* ZKAboutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD84E6D1CF41A6A00DB0357 /* ZKAboutView.m */; };
 		0AE40AFE1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */; };
 		0AE40B011CD9A7B50069FB80 /* ZKSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */; };
 		0AE40B041CD9B21B0069FB80 /* ZKPlayAndDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE40B031CD9B21B0069FB80 /* ZKPlayAndDownCell.m */; };
@@ -239,6 +241,9 @@
 		0AC466A71CEAF94000646E68 /* NSFileManager+ZKCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+ZKCache.h"; sourceTree = "<group>"; };
 		0AC466A81CEAF94100646E68 /* NSFileManager+ZKCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+ZKCache.m"; sourceTree = "<group>"; };
 		0AD84E681CF3E72500DB0357 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0AD84E6A1CF4176D00DB0357 /* ZKAboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKAboutView.xib; sourceTree = "<group>"; };
+		0AD84E6C1CF41A6A00DB0357 /* ZKAboutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKAboutView.h; sourceTree = "<group>"; };
+		0AD84E6D1CF41A6A00DB0357 /* ZKAboutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKAboutView.m; sourceTree = "<group>"; };
 		0AE40AFD1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZKPlayAndDownloadView.xib; sourceTree = "<group>"; };
 		0AE40AFF1CD9A7B50069FB80 /* ZKSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZKSegmentedControl.h; sourceTree = "<group>"; };
 		0AE40B001CD9A7B50069FB80 /* ZKSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZKSegmentedControl.m; sourceTree = "<group>"; };
@@ -667,6 +672,9 @@
 				0A9605DA1CED4FF100D04AC1 /* ZKDownloadCompleteCell.h */,
 				0A9605DB1CED4FF100D04AC1 /* ZKDownloadCompleteCell.m */,
 				0A9605DF1CED500D00D04AC1 /* ZKDownloadCompleteCell.xib */,
+				0AD84E6C1CF41A6A00DB0357 /* ZKAboutView.h */,
+				0AD84E6D1CF41A6A00DB0357 /* ZKAboutView.m */,
+				0AD84E6A1CF4176D00DB0357 /* ZKAboutView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -970,6 +978,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD84E6B1CF4176D00DB0357 /* ZKAboutView.xib in Resources */,
 				0A5ED5BE1CEF042800946D9F /* setting_normal@2x.png in Resources */,
 				0A5ED5BA1CEF042800946D9F /* home_normal@2x.png in Resources */,
 				0A5ED5BB1CEF042800946D9F /* search_normal@2x.png in Resources */,
@@ -1115,6 +1124,7 @@
 				0AE40B091CDB26EC0069FB80 /* ZKPlayListCollectionHeader.m in Sources */,
 				0A98B0081CCDE8D700721956 /* ZKSettingsController.m in Sources */,
 				0AF6756E1CCF28F3002CE56B /* UIImage+Common.m in Sources */,
+				0AD84E6E1CF41A6A00DB0357 /* ZKAboutView.m in Sources */,
 				0A5B8ED41CE076D3001C1940 /* ZKCollectionTypeCell.m in Sources */,
 				0AC234781CD3572C000D6141 /* ZKInfoView.m in Sources */,
 				0AEA0D901CEDB42600660989 /* ZKSettingModel.m in Sources */,
