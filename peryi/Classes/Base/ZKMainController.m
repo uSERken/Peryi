@@ -15,7 +15,7 @@
 #import "ZKVideoController.h"
 #import "RDVTabBarItem.h"
 #import "MBProgressHUD+Extend.h"
-#import <ZFPlayer/ZFPlayer.h>
+#import "ZFPlayer.h"
 
 @interface ZKMainController ()
 @end

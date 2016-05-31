@@ -63,10 +63,21 @@
         label.text = @"暂无记录！";
         [self.view addSubview:label];
     }
-    
- [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.5f];
+ [self performSelector:@selector(detectionNetWork) withObject:nil afterDelay:0.5f];
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutVideoNoti) name:@"outVideo" object:nil];
     
     return self;
+}
+
+//从记录进入播放后返回时更新数据
+- (void)getOutVideoNoti{
+    if (_thisType ==  ZKPlayANDStartHistoryType) {
+        _historyAndStartArr = [ZKDetailAbout  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getHistory]];
+        [self.tableView reloadData];
+    }else{
+        _historyAndStartArr = [ZKDetailAbout  mj_objectArrayWithKeyValuesArray:[_dataTools getHistoryOrStartListArrWithType:getStart]];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)setUpView{
@@ -83,7 +94,7 @@
 }
 
  //初始化无法获得网络状态,暂时使用此方法判断网络
-- (void)detectionNetWorking{
+- (void)detectionNetWork{
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://m.baidu.com/"]];
     if (data) {
         _isNetWorking = YES;

@@ -52,7 +52,7 @@
             tableView.dataSource = self;
             tableView.scrollEnabled = NO;
             tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-            tableView.tableFooterView =[[UIView alloc] initWithFrame:CGRectZero];
+//            tableView.tableFooterView =[[UIView alloc] initWithFrame:CGRectZero];
             tableView;
         });
         [self.view addSubview:_tabelView];
@@ -125,7 +125,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-
     if (indexPath.section == 0) {
         ZKDownLoadController *downC = [[ZKDownLoadController alloc] init];
         [self pushControllerWithController:downC];
@@ -144,7 +143,12 @@
          }
     }else{
         if (indexPath.row == 0) {
-            [self tucao];
+        #if TARGET_IPHONE_SIMULATOR//模拟器
+            NSLog(@"模拟器无邮件服务");
+        #elif TARGET_OS_IPHONE//真机
+           [self tucao];
+        #endif
+           
         }else{
             ZKAboutVC  *aboutVC = [[ZKAboutVC alloc] init];
             [self pushControllerWithController:aboutVC];
@@ -168,14 +172,12 @@
 - (void)updateSwitchAtIndexPath:(id)sender{
     UISwitch *switchView = (UISwitch *)sender;
     if ([switchView isOn]){
-        
         ZKSettingModel *model = [[ZKSettingModel alloc] init];
         model.isOpenNetwork = @"Yes";
         [ZKSettingModelTool saveSettingWithModel:model];
         [MBProgressHUD showSuccess:@"开启3G/4G播放"];
     }
     else{
-        
         ZKSettingModel *model = [[ZKSettingModel alloc] init];
         model.isOpenNetwork = @"No";
         [ZKSettingModelTool saveSettingWithModel:model];
@@ -194,7 +196,7 @@
 
 
 #pragma mark - 反馈吐槽
-/**
+/** 模拟器回调试失败
  *  反馈吐槽
  */
 - (void)tucao{
@@ -229,7 +231,7 @@
 }
 
 - (void)dealloc{
-    
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

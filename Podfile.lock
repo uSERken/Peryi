@@ -5,7 +5,7 @@ PODS:
   - HMSegmentedControl (1.5.2)
   - hpple (0.2.0)
   - JazzHands (2.0.8)
-  - Masonry (1.0.0)
+  - Masonry (1.0.1)
   - MJExtension (3.0.10)
   - MJRefresh (3.1.0)
   - RDVTabBarController (1.1.9)
@@ -13,8 +13,6 @@ PODS:
     - SDWebImage/Core (= 3.7.6)
   - SDWebImage/Core (3.7.6)
   - SMPageControl (1.2)
-  - ZFPlayer (1.1.3):
-    - Masonry
 
 DEPENDENCIES:
   - FMDB
@@ -27,19 +25,17 @@ DEPENDENCIES:
   - RDVTabBarController
   - SDWebImage
   - SMPageControl
-  - ZFPlayer
 
 SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
   hpple: 3b765f96fc2cd56ad1a49aef6f7be5cb2aa64b57
   JazzHands: 355dc5c2b6fc38ee460d0ed7836c69539263f477
-  Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
+  Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MJExtension: d86aacb740c87519d20e3cca55b6fa4be6cc7548
   MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
   RDVTabBarController: 67794f7a7a37f8e32f046f85ac67d06ab92d624a
   SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
   SMPageControl: 922892813001cfaf059e86e6801f46a967e9ee29
-  ZFPlayer: 6633131d8f013a8dc8656799109d1021b05deff2
 
 COCOAPODS: 0.39.0

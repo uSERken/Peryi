@@ -7,7 +7,7 @@
 //
 
 #import "ZKDownLoadController.h"
-#import <ZFPlayer/ZFPlayer.h>
+#import "ZFPlayer.h"
 #import "ZKDownLoadingCell.h"
 #import "ZKDownloadCompleteCell.h"
 #import "ZKVideoController.h"

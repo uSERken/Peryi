@@ -19,6 +19,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //配置数据库文件
+    [self addDatabaseToDocument];
+    
     [self detectionNetWorking];
     //延迟调用网络检测以免检测出错
 //    [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.25f];
@@ -32,7 +35,7 @@
     main.tabBar.translucent = YES;
     [self.window setRootViewController:main];
     [self.window makeKeyAndVisible];
-    [self addDatabaseToDocument];
+    
  
     return YES;
 }
@@ -54,15 +57,10 @@
  */
 - (void)addDatabaseToDocument{
     NSString *dbpath = dbpaths;
-    
     NSString *dbBackUppath =[[NSBundle mainBundle] pathForResource:@"DMLIST" ofType:@"db"];
-    
     BOOL isDbFileExist =  [[NSFileManager defaultManager] fileExistsAtPath:dbpath];
-    
     if (!isDbFileExist) {
-        
         [[NSFileManager defaultManager] copyItemAtPath:dbBackUppath toPath:dbpath error:nil];
-        
     }
 }
 

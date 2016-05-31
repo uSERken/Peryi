@@ -9,7 +9,7 @@
 #import "ZKVideoController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
-#import <ZFPlayer/ZFPlayer.h>
+#import "ZFPlayer.h"
 #import "ZKHttpTools.h"
 #import "MBProgressHUD+Extend.h"
 #import <RDVTabBarController/RDVTabBarController.h>
@@ -147,6 +147,8 @@
       WeakSelf;
       self.playView.goBackBlock = ^(){
           dispatch_async(dispatch_get_main_queue(), ^{
+              //退出当前控制器的通知
+              [weakSelf outViewControllerNoti];
               [weakSelf.navigationController popViewControllerAnimated:YES];
               [weakSelf deleteAll];
           });
@@ -383,6 +385,8 @@
             [invocation invoke];
         }
     }else{
+        //退出当前控制器的通知
+        [self outViewControllerNoti];
         [self.navigationController popViewControllerAnimated:YES];
         [self deleteAll];
     }
@@ -403,6 +407,9 @@
     }
 }
 
+- (void)outViewControllerNoti{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"outVideo" object:nil];
+}
 
 /**
  *  删除所有view及数据
