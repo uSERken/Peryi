@@ -8,7 +8,7 @@
 
 #import "ZKTypeCollection.h"
 
-@interface ZKTypeCollection()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@interface ZKTypeCollection()<UICollectionViewDelegateFlowLayout>
 
 @end
 

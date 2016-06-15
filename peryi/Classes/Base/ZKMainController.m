@@ -22,28 +22,28 @@
 
 @implementation ZKMainController
 
-- (instancetype)init{
-    self = [super init];
-    if (self) {
-        [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            if (status == AFNetworkReachabilityStatusNotReachable || status == AFNetworkReachabilityStatusUnknown) {
-                [MBProgressHUD showError:@"您的网络已断开"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:isNotNet object:nil];
-            }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
-                [[NSNotificationCenter defaultCenter] postNotificationName:isWWAN object:nil];
-            }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:isNet object:nil];
-            }
-        }];
-    }
-    return self;
-}
-
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     [self setupViewControllers];
+    
+    [self thisNetWork];
+}
+
+//通知当前网络状态
+- (void)thisNetWork{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status == AFNetworkReachabilityStatusNotReachable || status == AFNetworkReachabilityStatusUnknown) {
+            [MBProgressHUD showError:@"您的网络已断开"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNotNet object:nil];
+        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
+            NSLog(@"4G");
+            [[NSNotificationCenter defaultCenter] postNotificationName:isWWAN object:nil];
+        }else{
+            NSLog(@"WIFI");
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNet object:nil];
+        }
+    }];
 }
 
 // 哪些页面支持自动转屏

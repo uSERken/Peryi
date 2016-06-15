@@ -60,14 +60,16 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    //加载完网页后播放视频时才接收通知是否为4G网络
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isNotNet object:nil];
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
     [[self rdv_tabBarController] setTabBarHidden:YES animated:YES];
 
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
     [UIApplication sharedApplication].statusBarHidden = NO;
@@ -236,8 +238,7 @@
 
 #pragma mark - webview的代理。加载网页完成后获取播放地址并删除uiwebview
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-    //加载完网页后播放视频时才接收通知是否为4G网络
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isNotNet object:nil];
+
     //加载网页完成后还需加载视频连接
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
@@ -338,6 +339,7 @@
 #pragma mark - wifi 4g 网络处理
 //启用4G网络的时候
 - (void)is4GWAAN{
+   
     ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
     if (![model.isOpenNetwork isEqualToString:@"Yes"]) {
         UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
