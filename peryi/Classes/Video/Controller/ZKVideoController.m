@@ -49,6 +49,8 @@
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
 @property (nonatomic, assign) BOOL isNetWorking;
+
+@property (nonatomic,strong)ZKSettingModel *model;
 @end
 
 @implementation ZKVideoController
@@ -61,7 +63,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     //加载完网页后播放视频时才接收通知是否为4G网络
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isNotNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+    _model = [ZKSettingModelTool getSettingWithModel];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
@@ -95,6 +98,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    if (_is4G) {
+        [self is4GsetVideoToPause];
+    }
 }
 
 //缓存的动漫加载相关数据
@@ -254,7 +260,7 @@
         }else{
             _playView.hasDownload = NO;
         }
-        if (_isCreate) {
+        if (_isCreate) {//第一次创建
             [self.playView resetToPlayNewURL];
             self.playView.videoURL = [NSURL URLWithString:docStr];
         }else{
@@ -339,13 +345,18 @@
 #pragma mark - wifi 4g 网络处理
 //启用4G网络的时候
 - (void)is4GWAAN{
-   
-    ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
-    if (![model.isOpenNetwork isEqualToString:@"Yes"]) {
+    [_playView pause];
+    
+    [self is4GsetVideoToPause];
+
+}
+
+//如果是4G 网络则暂停
+- (void)is4GsetVideoToPause{
+    if (![_model.isOpenNetwork isEqualToString:@"Yes"]) {
         UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
         [aler show];
     }
-
 }
 
 - (void)isNetWork{
@@ -368,6 +379,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0) {
         [_playView pause];
+        NSLog(@"取消");
+    }else{
+        [_playView play];
     }
 }
 

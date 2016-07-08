@@ -36,6 +36,8 @@
 
 @property (nonatomic, assign) BOOL isNetWorking;
 
+@property (nonatomic,assign)BOOL is4G;
+
 @end
 
 
@@ -44,6 +46,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
+    
+    _isNetWorking = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -54,9 +62,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    _isNetWorking = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+
     
     self.title = @"首页";
     _dataTools = [ZKDataTools sharedZKDataTools];
@@ -124,6 +130,7 @@
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{
     ZKVideoController *viewCtr = [[ZKVideoController alloc] initWithAddress:strUrl];
+    viewCtr.is4G = _is4G;
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
 
@@ -200,6 +207,11 @@
 
 - (void)isNotNetWork{
     _isNetWorking = NO;
+    _is4G = YES;
+}
+
+- (void)is4GWAAN{
+    _is4G = YES;
 }
 
 -(void)dealloc{

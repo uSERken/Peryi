@@ -19,9 +19,7 @@ static  ZKSettingModel *_settingModel;
 }
 //读取数据
 + (ZKSettingModel *)getSettingWithModel{
-    if (_settingModel == nil) {
-        _settingModel = [NSKeyedUnarchiver unarchiveObjectWithFile:ZKSettingModelPath];
-    }
+    _settingModel = [NSKeyedUnarchiver unarchiveObjectWithFile:ZKSettingModelPath];
     return _settingModel;
 }
 

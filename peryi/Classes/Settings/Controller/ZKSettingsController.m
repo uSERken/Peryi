@@ -24,13 +24,14 @@
 @property (nonatomic, strong) NSArray *functionArr;
 
 @property (nonatomic, strong) ZKSettingModel *model;
+
 @end
 
 @implementation ZKSettingsController
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+    _model = [ZKSettingModelTool getSettingWithModel];
     [self.tabelView reloadData];
 }
 
@@ -38,8 +39,6 @@
     [super viewDidLoad];
     self.title = @"设置";
     [self initView];
-    
-    
 }
 
 - (void)initView{
@@ -105,8 +104,7 @@
          [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
          cell.accessoryView = switchview;
          cell.textLabel.text = @"是否允许3G/4G播放";
-        ZKSettingModel *model = [ZKSettingModelTool getSettingWithModel];
-            if ([model.isOpenNetwork isEqualToString:@"Yes"]) {
+            if ([_model.isOpenNetwork isEqualToString:@"Yes"]) {
                 switchview.on = YES;
             }else{
                 switchview.on = NO;
@@ -171,19 +169,18 @@
 
 - (void)updateSwitchAtIndexPath:(id)sender{
     UISwitch *switchView = (UISwitch *)sender;
+    ZKSettingModel *model = [[ZKSettingModel alloc] init];
     if ([switchView isOn]){
-        ZKSettingModel *model = [[ZKSettingModel alloc] init];
         model.isOpenNetwork = @"Yes";
         [ZKSettingModelTool saveSettingWithModel:model];
         [MBProgressHUD showSuccess:@"开启3G/4G播放"];
     }
     else{
-        ZKSettingModel *model = [[ZKSettingModel alloc] init];
         model.isOpenNetwork = @"No";
         [ZKSettingModelTool saveSettingWithModel:model];
         [MBProgressHUD showSuccess:@"关闭3G/4G播放"];
-        
     }
+    _model = nil;
 }
 
 #pragma mark - 提示代理

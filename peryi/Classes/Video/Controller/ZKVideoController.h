@@ -18,4 +18,6 @@ typedef NS_ENUM(NSInteger, requestType) {
 
 @property (nonatomic, strong) NSString *localHtml;
 
+@property (nonatomic,assign)BOOL is4G;
+
 @end
