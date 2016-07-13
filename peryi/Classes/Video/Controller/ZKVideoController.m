@@ -35,12 +35,9 @@
 
 @property (nonatomic, strong) NSURL *videoUrl;
 
-@property (nonatomic, strong) NSTimer *timer;
-
 @property (nonatomic, strong) ZKDetailListView *detailListView;
 
 @property (nonatomic, assign) BOOL isCreate;
-
 
 @property (nonatomic, assign) BOOL isStart;
 
@@ -54,7 +51,6 @@
 @end
 
 @implementation ZKVideoController
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -85,7 +81,7 @@
         _isCreate = NO;
         [self setUpAllView];
         _dataTools = [ZKDataTools sharedZKDataTools];
-        if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {
+        if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {//检查 URL 是否包含 html 否为本地视屏
             _playView.videoURL = [NSURL URLWithString:addresUrlStr];
             _playView.hidden = NO;
             }else{
@@ -224,10 +220,17 @@
     WeakSelf;
     [MBProgressHUD showMessage:@"正在加载，请稍候..."];
     [http getDetailDMWithURL:strUrl getDatasuccess:^(NSDictionary *listData) {
-        
-        [weakSelf getDetailListWithlistdict:listData];
-        [MBProgressHUD hideHUD];
-        [weakSelf.activity startAnimating];
+        NSArray *dmAbout = listData[@"dmAbout"];//如果不能获取数据则返回主界面
+        if (dmAbout.count != 0) {
+            [weakSelf getDetailListWithlistdict:listData];
+            [MBProgressHUD hideHUD];
+            [weakSelf.activity startAnimating];
+        }else{//没有数据时
+            [MBProgressHUD hideHUD];
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"网络超时" message:@"您的网络出现问题，请检查您的网络！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            aler.tag = 1;
+            [aler show];
+        }
     }];
 }
 
@@ -280,11 +283,10 @@
 - (void)getDetailListWithlistdict:(NSDictionary *)dict{
         _detailList = dict;
         _detailListView.detailList = dict;
-    
         NSDictionary *aboutInfo = _detailList[@"dmAbout"];
         //不是本地进入播放界面时
         if (!self.localHtml) {
-        NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:aboutInfo[@"alt"]];
+            NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:aboutInfo[@"alt"]];
             //收藏或播放历史中含有时动漫时从历史开始播放
             if (playHistory.count != 0) {
                 ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:playHistory];
@@ -307,8 +309,6 @@
                 [self getVideoInfoWithUrl:playVideoUrl[@"href"]];
             }
         }//判断是否本地进入结束
-    
-    
         //判断是否是收藏,显示收藏图标
         _isStart = [_dataTools isStartWithTitle:aboutInfo[@"alt"]];
         if (_isStart) {
@@ -355,6 +355,7 @@
 - (void)is4GsetVideoToPause{
     if (![_model.isOpenNetwork isEqualToString:@"Yes"]) {
         UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
+        aler.tag = 0;
         [aler show];
     }
 }
@@ -377,12 +378,16 @@
 
 #pragma mark - alert代理
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0) {
-        [_playView pause];
-        NSLog(@"取消");
-    }else{
-        [_playView play];
+    if (alertView.tag == 0) {//视屏播放时网络状态
+        if (buttonIndex == 0) {
+            [_playView pause];
+        }else{
+            [_playView play];
+        }
+    }else if (alertView.tag ==1){
+        [self.navigationController popViewControllerAnimated:YES];
     }
+
 }
 
 
@@ -436,7 +441,6 @@
     _detailList = nil;
     _webView = nil;
     _videoUrl = nil;
-    _timer = nil;
     _detailListView = nil;
     _dataTools = nil;
 }

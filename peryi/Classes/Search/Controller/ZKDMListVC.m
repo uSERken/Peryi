@@ -55,8 +55,20 @@
 - (void)setDmListDict:(NSDictionary *)dmListDict{
     _dmListDict = dmListDict;
     _lastPage = _dmListDict[@"lastPage"];
-    _dmListArr = [ZKListModel mj_objectArrayWithKeyValuesArray:_dmListDict[@"list"]];
-    [_tableView reloadData];
+    NSArray *dmAbout = _dmListDict[@"list"];//如果不能获取数据则提示网络错误
+    if (dmAbout.count != 0) {
+        _dmListArr = [ZKListModel mj_objectArrayWithKeyValuesArray:_dmListDict[@"list"]];
+        [_tableView reloadData];
+    }else{//没有数据时
+        self.tableView.mj_footer = nil;
+        self.pageTipsView = nil;
+        [MBProgressHUD hideHUD];
+        UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.height / 2)-80, self.view.width, 30)];
+        errorLabel.text = @"网络错误,暂无数据！";
+        errorLabel.textAlignment = NSTextAlignmentCenter;
+        [self.tableView addSubview:errorLabel];
+    }
+
 }
 
 - (void)setUpView{
@@ -73,7 +85,6 @@
         tableView;
         });
     [self.view addSubview:_tableView];
-    
     _pageTipsView = [ZKPageTips initView];
     [_pageTipsView setOrigin:CGPointMake((self.view.width - 80)/2, (self.view.height - 80))];
     [self.view addSubview:_pageTipsView];

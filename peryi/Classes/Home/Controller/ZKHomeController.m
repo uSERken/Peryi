@@ -38,6 +38,10 @@
 
 @property (nonatomic,assign)BOOL is4G;
 
+@property (nonatomic,strong)NSTimer *timer;
+
+@property (nonatomic,assign)BOOL isRefresh;
+
 @end
 
 
@@ -62,23 +66,23 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-
-    
     self.title = @"首页";
+    _isRefresh = NO;
+    _httpTools = [ZKHttpTools sharedZKHttpTools];
     _dataTools = [ZKDataTools sharedZKDataTools];
-    [self refreshHome];
+    _dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
      [self setUpSlideViewAndCollectionView];
-    
+    //进入界面后自动刷新
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)setUpSlideViewAndCollectionView{
-    
     if (_slideView == nil) {
         _slideView = [[ZKSlideView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.width, 265)];
         _slideView.listArr = self.dmList;
         [self.view addSubview:_slideView];
     }
-    
     WeakSelf;
     self.slideView.tapActionBlock=^(ZKHomeList *homeListModel){
         if (weakSelf.isNetWorking) {
@@ -88,8 +92,6 @@
             [MBProgressHUD showError:@"您的网络已断开"];
         }
     };
-    
-    
     if (!_collectionView) {
         _collectionView=({
             UICollectionViewFlowLayout *collectionViewFlow = [[UICollectionViewFlowLayout alloc] init];
@@ -110,22 +112,34 @@
 }
 
 - (void)refreshHome{
-    _httpTools = [ZKHttpTools sharedZKHttpTools];
-    
+     _isRefresh = YES;
     WeakSelf;
     [_httpTools getDMListDatasuccess:^(NSArray *listArr) {
         //判断是否通过网络成功加载值
         if (listArr.count > 1) {
-            weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
-            weakSelf.slideView.listArr = weakSelf.dmList;
-            [_dataTools saveHomeDMListWithArry:listArr];
+            [weakSelf getDmListFromNetWithArr:listArr];
         }else{
             [MBProgressHUD showError:@"无网络连接或网络错误"];
             weakSelf.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
         }
     }];
-    
     [self.collectionView.mj_header endRefreshing];
+}
+
+- (void)getDmListFromNetWithArr:(NSArray *)listArr{
+    self.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
+    self.slideView.listArr = self.dmList;
+    [_dataTools saveHomeDMListWithArry:listArr];
+    }
+
+-(void)timerAction{
+    [self.collectionView.mj_header beginRefreshing];
+    if (_isRefresh == YES) {
+        if (self.timer != nil) {
+            [_timer invalidate];
+        }
+    }
+
 }
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{

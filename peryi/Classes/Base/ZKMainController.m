@@ -50,7 +50,6 @@
 - (BOOL)shouldAutorotate{
     
     UINavigationController *nav = self.viewControllers[self.selectedIndex];
-    
     if ([nav.topViewController isKindOfClass:[ZKVideoController class]]) {
         // 调用ZFPlayerSingleton单例记录播放状态是否锁定屏幕方向
         return !ZFPlayerShared.isLockScreen;

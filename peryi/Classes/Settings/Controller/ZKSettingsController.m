@@ -25,6 +25,7 @@
 
 @property (nonatomic, strong) ZKSettingModel *model;
 
+@property (nonatomic,assign)BOOL isNetWorking;
 @end
 
 @implementation ZKSettingsController
@@ -32,6 +33,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     _model = [ZKSettingModelTool getSettingWithModel];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWrok) name:isNotNet object:nil];
     [self.tabelView reloadData];
 }
 
@@ -129,6 +132,7 @@
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             ZKPlayANDStarTableVC *StartVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartCollectionType];
+            StartVC.isNetWorking = _isNetWorking;
             [self pushControllerWithController:StartVC];
         }else{
             ZKPlayANDStarTableVC *HisttoryVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartHistoryType];
@@ -227,6 +231,14 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+- (void)isNetWork{
+    _isNetWorking = YES;
+}
+
+- (void)isNotNetWrok{
+    _isNetWorking = NO;
+}
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }

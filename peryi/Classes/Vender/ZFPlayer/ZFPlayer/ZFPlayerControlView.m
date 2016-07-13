@@ -419,6 +419,7 @@
         _horizontalLabel.textAlignment   = NSTextAlignmentCenter;
         // 设置快进快退label
         _horizontalLabel.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ZFPlayerSrcName(@"Management_Mask")]];
+        [_horizontalLabel sizeToFit];
     }
     return _horizontalLabel;
 }

@@ -155,7 +155,7 @@
         vc.pageStyle = urlStr;
         vc.navTitle = title;
         [weakSelf.navigationController pushViewController:vc animated:YES];
-         [MBProgressHUD hideHUD];
+        [MBProgressHUD hideHUD];
     }];
 }
 
@@ -187,9 +187,6 @@
     ZKTypeModel *model = self.typeList[indexPath.section][indexPath.row];
     cell.title = model.title;
     cell.backgroundColor = [UIColor whiteColor];
-    
-    
-
     return cell;
 }
 
@@ -244,41 +241,50 @@
     [_tipLabel removeFromSuperview];
     WeakSelf;
     [weakSelf.httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
-        NSMutableArray *modelArr = [NSMutableArray array];
-        for (NSArray *arr in listArr) {
-            [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
-        }
-         weakSelf.typeList = modelArr;
-        [weakSelf.collectionView reloadData];
-        //初始化无网络后执行从数据库提取
-        if (modelArr.count == 0) {
-            [weakSelf isNotNetWork];
-        }else{//有值保存
-            [weakSelf.dataTools saveSearchTypeWithArr:listArr];
+        if (listArr.count != 0) {
+            NSMutableArray *modelArr = [NSMutableArray array];
+            for (NSArray *arr in listArr) {
+                [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
+            }
+            weakSelf.typeList = modelArr;
+            [weakSelf.collectionView reloadData];
+            //初始化无网络后执行从数据库提取
+            if (modelArr.count == 0) {
+                [weakSelf isNotNetWork];
+            }else{//有值保存
+                [weakSelf.dataTools saveSearchTypeWithArr:listArr];
+            }
+        }else{
+            [self getTypeListFromDB];
         }
     }];
 }
 
 - (void)isNotNetWork{
     _isNetWorking = NO;
+    [self getTypeListFromDB];
+}
 
+/**
+ *  从数据库中获取类型的列表
+ */
+- (void)getTypeListFromDB{
     NSMutableArray *modelArr = [NSMutableArray array];
     for (NSArray *arr in [_dataTools getSearchType]) {
         [modelArr addObject:[ZKTypeModel mj_objectArrayWithKeyValuesArray:arr]];
     }
-    NSLog(@"%ld",modelArr.count);
-     self.typeList = modelArr;
+    self.typeList = modelArr;
     [self.collectionView reloadData];
-    
     if (modelArr.count == 0) {//数据库中无值提示
         _tipLabel = [[UILabel alloc] init];
         _tipLabel.size = CGSizeMake(120, 30);
         _tipLabel.center = self.view.center;
+        _tipLabel.text = @"暂无数据！";
         _tipLabel.textAlignment = NSTextAlignmentCenter;
         [self.view addSubview:_tipLabel];
     }
-    
 }
+
 
 
 -(void)dealloc{

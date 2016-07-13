@@ -15,5 +15,6 @@ typedef enum : NSUInteger {
 
 @interface ZKPlayANDStarTableVC : UIViewController
 - (id)initControllerWithType:(ZKPlayANDStarttType)type;
+@property (nonatomic, assign) BOOL isNetWorking;
 
 @end

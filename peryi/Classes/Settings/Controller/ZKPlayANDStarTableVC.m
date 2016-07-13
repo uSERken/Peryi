@@ -26,9 +26,6 @@
 
 @property (nonatomic, assign) ZKPlayANDStarttType thisType;
 
-@property (nonatomic, assign) BOOL isNetWorking;
-
-
 @end
 
 @implementation ZKPlayANDStarTableVC
@@ -63,7 +60,6 @@
         label.text = @"暂无记录！";
         [self.view addSubview:label];
     }
- [self performSelector:@selector(detectionNetWork) withObject:nil afterDelay:0.5f];
  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOutVideoNoti) name:@"outVideo" object:nil];
     
     return self;
@@ -93,15 +89,7 @@
     
 }
 
- //初始化无法获得网络状态,暂时使用此方法判断网络
-- (void)detectionNetWork{
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://m.baidu.com/"]];
-    if (data) {
-        _isNetWorking = YES;
-    }else{
-        _isNetWorking = NO;
-    }
-}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
