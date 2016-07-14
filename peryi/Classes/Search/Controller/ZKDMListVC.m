@@ -59,9 +59,9 @@
     if (dmAbout.count != 0) {
         _dmListArr = [ZKListModel mj_objectArrayWithKeyValuesArray:_dmListDict[@"list"]];
         [_tableView reloadData];
-    }else{//没有数据时
-        self.tableView.mj_footer = nil;
-        self.pageTipsView = nil;
+    }else{//没有数据时的提示
+        [self.tableView.mj_footer removeFromSuperview];
+        [self.pageTipsView removeFromSuperview];
         [MBProgressHUD hideHUD];
         UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.view.height / 2)-80, self.view.width, 30)];
         errorLabel.text = @"网络错误,暂无数据！";
@@ -148,7 +148,6 @@
     ZKListModel *model = self.dmListArr[indexPath.row];
     
      [self registerForPreviewingWithDelegate:self sourceView:cell];
-
     cell.titleLabel.text = model.alt;
     [cell.imgView sd_setImageWithURL:[NSURL URLWithString:model.src] placeholderImage:[UIImage imageNamed:@"Management_Mask"]];
     cell.updateLabel.text = model.about[@"update"];
