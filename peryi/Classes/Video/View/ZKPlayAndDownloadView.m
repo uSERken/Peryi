@@ -180,11 +180,7 @@ static NSString *ID = identifier;
 - (void)selectCellBgWithCell:(ZKPlayAndDownCell *)cell withIndexPath:(NSIndexPath *)indexPath{
     //第一次进入默认选中
     if (_firstSel) {
-        if (_useList.count > 1  && indexPath.section == 1) {//如果列表大于1个则默认选中第二个
-            if (indexPath.row == _firstIndex) {
-                cell.isSelected = YES;
-            }
-        }else if(_useList.count < 2 && indexPath.section == 0 ){ //如果只有一个，则默认选中第一个列表的
+        if (_useList.count > 1  && indexPath.section == 0) {//如果列表大于1个则默认选中第二个
             if (indexPath.row == _firstIndex) {
                 cell.isSelected = YES;
             }

@@ -35,7 +35,7 @@ SingletonM(ZKDataTools);
         [_db executeUpdate:deleteSql];
         
          NSString *sql = @"insert into home (current, href,src,title) values(?,?,?,?)";
-         NSMutableArray *arr = [NSMutableArray array];
+         NSMutableArray *arr = [[NSMutableArray alloc] init];
          arr = [ZKHomeList mj_objectArrayWithKeyValuesArray:arry];
          for (ZKHomeList *model in arr) {
               [_db executeUpdate:sql,model.current,model.href,model.src,model.title];
@@ -233,7 +233,7 @@ SingletonM(ZKDataTools);
  *  判断是否是收藏
  */
 - (BOOL)isStartWithTitle:(NSString *)title{
-    BOOL isStart;
+    BOOL isStart = nil;
     NSString *sql = @"select * from start where title=?";
     NSString *dbpath = dbpaths;
     _db = [FMDatabase databaseWithPath:dbpath];
@@ -247,6 +247,7 @@ SingletonM(ZKDataTools);
         }
     }
     [_db close];
+    
     return isStart;
 }
 

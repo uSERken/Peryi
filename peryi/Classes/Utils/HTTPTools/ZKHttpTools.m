@@ -104,7 +104,6 @@ SingletonM(ZKHttpTools)
         infoDict[@"souce"] = source.text;
     }
     dmDetial[@"dmAbout"] = infoDict;
-    
     //播放列表 list 开始
     //    NSMutableArray *plistArr = [NSMutableArray array];
     NSMutableArray *playListdic = [NSMutableArray array];
@@ -123,11 +122,14 @@ SingletonM(ZKHttpTools)
             }// 第一个for 结束
             if (listarr.count != 0 && listarr != nil) {
                 [playListdic addObject:listarr];
+                if (playListdic.count > 1) {
+                    //优先使用网页列表中的第二播放源 - -资源更好
+                    [playListdic exchangeObjectAtIndex:0 withObjectAtIndex:1];
+                }
             }
         }// 第二个for 结束
     }//播放列表 list结束
     dmDetial[@"dmPlay"] = playListdic;
-    
     //下载列表]
     NSString *infoText = nil;
     NSMutableArray *downloadList = [NSMutableArray array];
@@ -143,7 +145,6 @@ SingletonM(ZKHttpTools)
                     }
                 }
             }//if结束
-            
             if (i < 4) {
                 if (i == 3) {
                     TFHppleElement *jianjie = downElement.children[i];
@@ -356,7 +357,6 @@ SingletonM(ZKHttpTools)
     for (NSInteger j = 0; j<element.children.count; j++) {
         NSMutableDictionary *otherAboutDict = [NSMutableDictionary dictionary];
         TFHppleElement *otherList = element.children[j];
-      
         if (j > 0 && [otherList.tagName isEqualToString:@"div"]) {
             TFHppleElement *otherUrl = [otherList firstChildWithTagName:@"a"];
             [otherAboutDict addEntriesFromDictionary:otherUrl.attributes];
@@ -390,9 +390,8 @@ SingletonM(ZKHttpTools)
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"GET";
-    NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionConfiguration *urlConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-    session = [NSURLSession sessionWithConfiguration:urlConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:urlConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             listData(data);

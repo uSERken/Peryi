@@ -70,7 +70,6 @@
     //加载完网页后播放视频时才接收通知是否为4G网络
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
     _model = [ZKSettingModelTool getSettingWithModel];
-    NSLog(@"是否支持4g状态：%@",_model.isOpenNetwork);
     if ([_model.isOpenNetwork isEqualToString:@"Yes"]) {
         _canUse4GPlay = YES;
     }else{
@@ -300,8 +299,6 @@
             }else{
                 
             }
-
-            
         }
         if (docStr != nil){
             [self.webView removeFromSuperview];
@@ -325,14 +322,8 @@
                 ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:playHistory];
                 [self getVideoInfoWithUrl:model.currentplayhref];
             }else{
-                //第一次进入时观看,保存至播放历史
-                NSDictionary *playVideoUrl = [NSDictionary dictionary];
                 NSArray *playArr = self.detailList[@"dmPlay"];
-                if (playArr.count > 2) {// 若播放列表超过1个则默认播放第二个列表第一个
-                    playVideoUrl = playArr[1][0];
-                }else{
-                    playVideoUrl = playArr[0][0];
-                }
+                NSDictionary *playVideoUrl = playArr[0][0];
                 ZKDetailAbout *detailModel = [ZKDetailAbout mj_objectWithKeyValues:_detailList[@"dmAbout"]];
                 detailModel.currentplaytitle = playVideoUrl[@"title"];
                 detailModel.href = _strUrl;

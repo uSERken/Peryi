@@ -22,9 +22,8 @@
                                                                                     options:0
                                                                                       error:nil];
    NSString *dealHtml=[regularExpretion stringByReplacingMatchesInString:html options:NSMatchingReportProgress range:NSMakeRange(0, html.length) withTemplate:@""];
-    NSArray *arr=[NSArray array];
     //分割
-    arr =  [dealHtml componentsSeparatedByString:@"&#13;"];
+     NSArray *arr =  [dealHtml componentsSeparatedByString:@"&#13;"];
     NSMutableArray *marr=[NSMutableArray arrayWithArray:arr];
     [marr removeObject:@""];
     
@@ -101,9 +100,8 @@
                                                                                     options:0
                                                                                       error:nil];
     NSString *dealHtml=[regularExpretion stringByReplacingMatchesInString:html options:NSMatchingReportProgress range:NSMakeRange(0, html.length) withTemplate:@","];
-    NSArray *arr=[NSArray array];
     //分割
-    arr =  [dealHtml componentsSeparatedByString:@","];
+    NSArray *arr =  [dealHtml componentsSeparatedByString:@","];
     NSMutableArray *marr=[NSMutableArray arrayWithArray:arr];
     [marr removeObject:@" "];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];

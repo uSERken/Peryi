@@ -149,7 +149,8 @@
             [_imageArr addObject:imageView];
         }
     }
-    UIImageView *imageVIew = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height)];
+    UIImageView *imageVIew = [[UIImageView alloc] init];
+    imageVIew.frame = CGRectMake(0, 0, self.width, self.height);
     NSInteger  currentPageIndex = self.slideView.currentPageIndex;
     if (pageIndex == currentPageIndex) {
         imageVIew = _imageArr[1];

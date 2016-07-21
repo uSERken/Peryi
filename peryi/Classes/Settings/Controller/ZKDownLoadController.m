@@ -130,7 +130,7 @@
         ZKDownloadCompleteCell *cell = [ZKDownloadCompleteCell cellWithTableView:tableView];
         cell.sessionModel = downloadObject;
         return cell;
-    }else if (indexPath.section == 1) {
+    }else{
         ZKDownLoadingCell *cell = [ZKDownLoadingCell cellWithTableView:tableView];
         cell.sessionModel = downloadObject;
         [ZFDownloadManager sharedInstance].delegate = self;
@@ -139,8 +139,8 @@
         };
         return cell;
     }
-    return nil;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
