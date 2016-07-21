@@ -217,11 +217,12 @@
 
 - (void)isNetWork{
     _isNetWorking = YES;
+    _is4G = NO;
 }
 
 - (void)isNotNetWork{
     _isNetWorking = NO;
-    _is4G = YES;
+    _is4G = nil;
 }
 
 - (void)is4GWAAN{

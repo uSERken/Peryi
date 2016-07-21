@@ -78,7 +78,7 @@
     }else if(section == 2){
         return 2;
     }else{
-        return 2;
+        return 3;
     }
 }
 
@@ -116,6 +116,8 @@
     }else{
         if (indexPath.row == 0) {
             cell.textLabel.text = @"吐槽反馈";
+        }else if(indexPath.row == 1){
+            cell.textLabel.text = @"给我们好评";
         }else{
             cell.textLabel.text = @"关于";
         }
@@ -151,6 +153,8 @@
            [self tucao];
         #endif
            
+        }else if(indexPath.row == 1){
+            
         }else{
             ZKAboutVC  *aboutVC = [[ZKAboutVC alloc] init];
             [self pushControllerWithController:aboutVC];

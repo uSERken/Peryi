@@ -36,18 +36,27 @@
 @property (nonatomic, strong) NSURL *videoUrl;
 
 @property (nonatomic, strong) ZKDetailListView *detailListView;
-
+//判断player是否第一次创建
 @property (nonatomic, assign) BOOL isCreate;
-
+//判断是否收藏
 @property (nonatomic, assign) BOOL isStart;
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
-@property (nonatomic, assign) BOOL isNetWorking;
-
+//用户配置模型
 @property (nonatomic,strong)ZKSettingModel *model;
+
+//最终播放的地址
+@property (nonatomic,strong) NSString *finalPlayWithUrl;
+
+//判断用户是否开启4G 播放
+@property (nonatomic,assign)   BOOL canUse4GPlay;
+//判断仅是4G状态
+@property (nonatomic,assign)   BOOL isWIFIPlay;
+//判断是否player 已加载视频并播放
+@property (nonatomic,assign) BOOL isPlay;
 @end
 
 @implementation ZKVideoController
@@ -61,6 +70,19 @@
     //加载完网页后播放视频时才接收通知是否为4G网络
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
     _model = [ZKSettingModelTool getSettingWithModel];
+    NSLog(@"是否支持4g状态：%@",_model.isOpenNetwork);
+    if ([_model.isOpenNetwork isEqualToString:@"Yes"]) {
+        _canUse4GPlay = YES;
+    }else{
+        _canUse4GPlay = NO;
+    }
+    if (_is4G) {
+        _isWIFIPlay = NO;
+    }else if(_is4G == NO){
+        _isWIFIPlay = YES;
+    }else{
+        _isWIFIPlay = NO;
+    }
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     self.navigationController.navigationBarHidden = YES;
@@ -253,6 +275,7 @@
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
         [_activity stopAnimating];
         _playView.hidden = NO;
+        _finalPlayWithUrl = docStr;
         //用于重置播放
         if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
@@ -263,12 +286,22 @@
         }else{
             _playView.hasDownload = NO;
         }
-        if (_isCreate) {//第一次创建
+        if (_isCreate) {
             [self.playView resetToPlayNewURL];
             self.playView.videoURL = [NSURL URLWithString:docStr];
-        }else{
+        }else{//第一次创建
             _isCreate = YES;
-            self.playView.videoURL = [NSURL URLWithString:docStr];
+            //wifi 或者 用户开启4G 网络时才可播放
+            if ( (_isWIFIPlay == YES && _is4G == NO ) ||  (_canUse4GPlay && _is4G ) ) {
+              self.playView.videoURL = [NSURL URLWithString:docStr];
+                self.isPlay = YES;
+            } else if(!_canUse4GPlay && _is4G ){
+                [self is4GsetVideoToPause];
+            }else{
+                
+            }
+
+            
         }
         if (docStr != nil){
             [self.webView removeFromSuperview];
@@ -341,19 +374,21 @@
     }
 }
 
-
 #pragma mark - wifi 4g 网络处理
 //启用4G网络的时候
 - (void)is4GWAAN{
-    [_playView pause];
-    
+    _isWIFIPlay = NO;
+    _is4G = YES;
+    if (_isPlay) {
+       [_playView pause];
+    }
     [self is4GsetVideoToPause];
 
 }
 
 //如果是4G 网络则暂停
 - (void)is4GsetVideoToPause{
-    if (![_model.isOpenNetwork isEqualToString:@"Yes"]) {
+    if (!_canUse4GPlay) {
         UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"您正在使用2G/3G/4G网络" message:@"观看视频会好非大量流量，可能导致运营商向您收取更多费用，强烈建议您连接Wi-Fi后再观看视频。" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"继续播放", nil];
         aler.tag = 0;
         [aler show];
@@ -361,7 +396,8 @@
 }
 
 - (void)isNetWork{
-    _isNetWorking = YES;
+    _isWIFIPlay = YES;
+    _is4G = NO;
     _detailListView.hidden = NO;
     NSArray *dmPlay = _detailList[@"dmPlay"];
     //若离线进入播放后网络可用即重新加载数据
@@ -371,7 +407,8 @@
 }
 
 - (void)isNotNetWork{
-    _isNetWorking = NO;
+    _isWIFIPlay = NO;
+     _is4G = nil;
     _detailListView.hidden = YES;
 }
 
@@ -380,14 +417,21 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (alertView.tag == 0) {//视屏播放时网络状态
         if (buttonIndex == 0) {
-            [_playView pause];
+            if (_isCreate) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [_playView pause];
+            }
         }else{
-            [_playView play];
+            if (_isPlay) {
+               [_playView play];
+            }else{
+                self.playView.videoURL = [NSURL URLWithString:_finalPlayWithUrl];
+                _isPlay = YES;
+            }
         }
     }else if (alertView.tag ==1){
-        [self.navigationController popViewControllerAnimated:YES];
     }
-
 }
 
 
@@ -443,6 +487,9 @@
     _videoUrl = nil;
     _detailListView = nil;
     _dataTools = nil;
+    _isPlay = nil;
+    _isCreate = nil;
+    
 }
 
 

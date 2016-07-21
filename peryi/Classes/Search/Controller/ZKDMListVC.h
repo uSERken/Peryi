@@ -23,4 +23,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign)  ZKGetDataType getDataType;
 
+//判定网络状态，4G时为 YES，WIFI 时为 NO，无网络时为 nil
+@property (nonatomic, assign) BOOL is4G;
+
 @end

@@ -33,7 +33,7 @@
 
 @property (nonatomic, strong) ZKPageTips *pageTipsView;
 
-@property (nonatomic, assign) BOOL isNetWorking;
+@property (nonatomic, assign) BOOL isNetWork;
 @end
 
 @implementation ZKDMListVC
@@ -46,10 +46,10 @@
     _pageTipsView.lastPageStr = _lastPage;
     _page = 2;
     _httpTools = [ZKHttpTools sharedZKHttpTools];
-    _isNetWorking = YES;
     //网络状态改变通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
 }
 
 - (void)setDmListDict:(NSDictionary *)dmListDict{
@@ -164,15 +164,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    if (_isNetWorking) {
+    if (_isNetWork) {
         ZKListModel *model = self.dmListArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
+        vc.is4G = _is4G;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
     }
-    
-
 }
 
 //header高
@@ -238,12 +237,18 @@
 }
 
 
-- (void)isNetWork{
-    _isNetWorking = YES;
+- (void)isWork{
+    _is4G = NO;
+    _isNetWork = YES;
 }
 
 - (void)isNotNetWork{
-    _isNetWorking = NO;
+    _is4G = nil;
+    _isNetWork = NO;
+}
+
+-(void)is4GWAAN{
+    _is4G = YES;
 }
 
 -(void)dealloc{

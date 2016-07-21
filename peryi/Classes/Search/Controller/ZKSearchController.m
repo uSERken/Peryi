@@ -37,9 +37,12 @@
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
 
+//判断是否有网络
 @property (nonatomic, assign) BOOL isNetWorking;
-
+//无数据时的提醒文字
 @property (nonatomic, strong) UILabel *tipLabel;
+//判定网络状态，4G时为 YES，WIFI 时为 NO，无网络时为 nil
+@property (nonatomic,assign)BOOL is4G;
 
 @end
 
@@ -51,6 +54,8 @@
     [_searchBar setHidden:NO];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -154,6 +159,7 @@
         vc.dmListDict = listDict;
         vc.pageStyle = urlStr;
         vc.navTitle = title;
+        vc.is4G = _is4G;
         [weakSelf.navigationController pushViewController:vc animated:YES];
         [MBProgressHUD hideHUD];
     }];
@@ -238,6 +244,7 @@
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
     _isNetWorking = YES;
+    _is4G = NO;
     [_tipLabel removeFromSuperview];
     WeakSelf;
     [weakSelf.httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
@@ -261,8 +268,13 @@
 }
 
 - (void)isNotNetWork{
+    _is4G = nil;
     _isNetWorking = NO;
     [self getTypeListFromDB];
+}
+
+-(void)is4GWAAN{
+    _is4G = YES;
 }
 
 /**
