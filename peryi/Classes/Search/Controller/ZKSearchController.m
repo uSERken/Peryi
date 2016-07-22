@@ -200,7 +200,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(nonnull NSIndexPath *)indexPath{
-
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     if (_isNetWorking) {
         ZKTypeModel *model = _typeList[indexPath.section][indexPath.row];
         [self getSearchWithType:model.href withTitle:model.title];
