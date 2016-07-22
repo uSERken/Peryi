@@ -43,10 +43,18 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"TouchInfoPage"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [MobClick endLogPageView:@"TouchInfoPage"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    
 }
 
 - (void)setUpView{

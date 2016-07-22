@@ -38,6 +38,16 @@
 
 @implementation ZKDMListVC
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"DMListPage"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [MobClick endLogPageView:@"DMListPage"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = _navTitle;
@@ -51,6 +61,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
 }
+
 
 - (void)setDmListDict:(NSDictionary *)dmListDict{
     _dmListDict = dmListDict;
@@ -93,7 +104,7 @@
 
 - (void)getMoreData{
     if (_page <= [_lastPage integerValue]) {
-      NSString *pageStr = [NSString stringWithFormat:@"%ld",_page];
+      NSString *pageStr = [NSString stringWithFormat:@"%ld",(long)_page];
         WeakSelf;
         //判断是网页类型搜索还是关键词语搜索
     if ([_pageStyle rangeOfString:@"searchtype"].location != NSNotFound) {

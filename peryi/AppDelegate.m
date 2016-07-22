@@ -9,9 +9,11 @@
 #import "AppDelegate.h"
 #import "ZKSettingModel.h"
 #import "ZKSettingModelTool.h"
+#import "ZKDataTools.h"
 #import "ZKMainController.h"
 #import "ZKPlayANDStarTableVC.h"
 #import "ZKNavigationController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -20,11 +22,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //配置数据库文件
-    [self addDatabaseToDocument];
+    [ZKDataTools sharedZKDataTools];
+//    [self addDatabaseToDocument];
     
     [self detectionNetWorking];
-    //延迟调用网络检测以免检测出错
-//    [self performSelector:@selector(detectionNetWorking) withObject:nil afterDelay:0.25f];
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
@@ -35,9 +36,25 @@
     main.tabBar.translucent = YES;
     [self.window setRootViewController:main];
     [self.window makeKeyAndVisible];
+    //友盟应用分析
+    [self steupBugCrash];
     
- 
     return YES;
+}
+
+/*
+ *友盟应用分析
+*/
+-(void)steupBugCrash{
+    UMConfigInstance.appKey = @"579178df67e58e24c8004d09";
+    UMConfigInstance.channelId = @"APP Store";
+    NSString *UUID = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    [MobClick profileSignInWithPUID:UUID];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    [MobClick setEncryptEnabled:YES];
+    [MobClick setLogEnabled:NO];
+    [MobClick startWithConfigure:UMConfigInstance];
 }
 
 -(void)detectionNetWorking{

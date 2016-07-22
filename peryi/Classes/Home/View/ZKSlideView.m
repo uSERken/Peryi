@@ -123,8 +123,8 @@
             SMPageControl *pageControl = [[SMPageControl alloc] init];
             pageControl.userInteractionEnabled = NO;
             pageControl.backgroundColor = [UIColor clearColor];
-            pageControl.pageIndicatorImage = [UIImage imageNamed:@"banner__page_unselected"];
-            pageControl.currentPageIndicatorImage = [UIImage imageNamed:@"banner__page_selected"];
+//            pageControl.pageIndicatorImage = [UIImage imageNamed:@"banner_page_selected"];
+            pageControl.currentPageIndicatorImage = [UIImage imageNamed:@"banner_page_selected"];
             pageControl.numberOfPages = _listArr.count;
             pageControl.currentPage = 0;
             pageControl.alignment = SMPageControlAlignmentCenter;

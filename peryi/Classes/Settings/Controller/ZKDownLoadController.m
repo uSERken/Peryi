@@ -14,14 +14,26 @@
 @interface ZKDownLoadController ()<UITableViewDelegate,UITableViewDataSource,ZFDownloadDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-
-
 @property (nonatomic, strong) NSMutableArray *donwloadArr;
+//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
+@property (nonatomic,assign)BOOL is4G;
 
 @end
 
 @implementation ZKDownLoadController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"DownLoadPage"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [MobClick endLogPageView:@"DownLoadPage"];
+}
 - (void)viewDidLoad {
      [super viewDidLoad];
       self.title = @"离线缓存";
@@ -150,6 +162,7 @@
     NSString *url = [NSString stringWithFormat:@"file://%@",ZFFileFullpath(model.fileName)];
     ZKVideoController *videoVC = [[ZKVideoController alloc] initWithAddress:url];
     videoVC.localHtml = model.urlStr;
+    videoVC.is4G = _is4G;
     [self.navigationController pushViewController:videoVC animated:YES];
     
 }
@@ -179,6 +192,22 @@
     return @[@"下载完成",@"下载中"][section];
 }
 
+#pragma mark - 网络判断后加载数据
+- (void)isNetWork{
+    _is4G = NO;
+}
+
+- (void)isNotNetWork{
+    _is4G = nil;
+}
+
+- (void)is4GWAAN{
+    _is4G = YES;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

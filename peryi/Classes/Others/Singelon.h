@@ -31,7 +31,13 @@ return _instace; \
 } \
 \
 + (instancetype)shared##methodName \
-{ \
+{\
+NSString *dbpath = dbpaths;\
+NSString *dbBackUppath =[[NSBundle mainBundle] pathForResource:@"DMLIST" ofType:@"db"];\
+BOOL isDbFileExist =  [[NSFileManager defaultManager] fileExistsAtPath:dbpath];\
+if (!isDbFileExist) {\
+[[NSFileManager defaultManager] copyItemAtPath:dbBackUppath toPath:dbpath error:nil];\
+}\
 return [[self alloc] init]; \
 } \
 + (id)copyWithZone:(struct _NSZone *)zone \

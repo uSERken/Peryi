@@ -32,7 +32,6 @@
 @implementation ZKSearchDisplayController
 
 
-
 - (void)setActive:(BOOL)visible animated:(BOOL)animated{
     
     if (!visible) {

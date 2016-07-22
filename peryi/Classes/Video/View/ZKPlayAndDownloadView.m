@@ -180,11 +180,13 @@ static NSString *ID = identifier;
 - (void)selectCellBgWithCell:(ZKPlayAndDownCell *)cell withIndexPath:(NSIndexPath *)indexPath{
     //第一次进入默认选中
     if (_firstSel) {
-        if (_useList.count > 1  && indexPath.section == 0) {//如果列表大于1个则默认选中第二个
+        if (_useList.count > 0  && indexPath.section == 0) {//如果列表大于1个则默认选中第二个
             if (indexPath.row == _firstIndex) {
                 cell.isSelected = YES;
             }
         }
+    }else{
+        cell.isSelected = NO;
     }
     //解决复用颜色显示问题
     if (indexPath.section == _selectSection) {

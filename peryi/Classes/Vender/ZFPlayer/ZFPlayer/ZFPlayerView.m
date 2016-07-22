@@ -611,9 +611,9 @@ typedef NS_ENUM(NSInteger, ZFPlayerState) {
                 
                 self.state = ZFPlayerStateFailed;
                 NSError *error = [self.player.currentItem error];
-                NSLog(@"视频加载失败===%@",error.description);
+                NSLog(@"视频加载失败：%@",error.description);
                 self.controlView.horizontalLabel.hidden = NO;
-                self.controlView.horizontalLabel.text = @"视频加载失败，请更换源尝试!";
+                self.controlView.horizontalLabel.text = @"视频加载失败，请尝试更换列表!";
 
             }
         } else if ([keyPath isEqualToString:@"loadedTimeRanges"]) {

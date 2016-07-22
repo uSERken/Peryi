@@ -109,8 +109,6 @@
 		0AF675731CCF28F3002CE56B /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF675541CCF28F3002CE56B /* UIView+Frame.m */; };
 		0AF675741CCF28F3002CE56B /* UIView+PressMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF675561CCF28F3002CE56B /* UIView+PressMenu.m */; };
 		0AF675751CCF28F3002CE56B /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF675581CCF28F3002CE56B /* UIViewController+BackButtonHandler.m */; };
-		0AF675A21CCF2EA8002CE56B /* banner__page_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF675A11CCF2EA8002CE56B /* banner__page_unselected@2x.png */; };
-		0AF675A41CCF2EB6002CE56B /* banner__page_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF675A31CCF2EB6002CE56B /* banner__page_selected@2x.png */; };
 		0AF675AD1CCF40E9002CE56B /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF675AC1CCF40E9002CE56B /* NSString+Common.m */; };
 		0AF675B91CCF6B35002CE56B /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0AF675B41CCF6B35002CE56B /* MBProgressHUD.bundle */; };
 		0AF675BA1CCF6B35002CE56B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF675B61CCF6B35002CE56B /* MBProgressHUD.m */; };
@@ -129,6 +127,12 @@
 		AB36DF631CFD287C00D7816A /* ZFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF591CFD287C00D7816A /* ZFDownloadManager.m */; };
 		AB36DF641CFD287C00D7816A /* ZFSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF5B1CFD287C00D7816A /* ZFSessionModel.m */; };
 		AB36DF651CFD287C00D7816A /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF5D1CFD287C00D7816A /* ZFPlayerView.m */; };
+		AB81BD801D40A6BF00E2A83B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD7F1D40A6BF00E2A83B /* libz.tbd */; };
+		AB81BD881D41AB9A00E2A83B /* banner_page_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB81BD861D41AB9A00E2A83B /* banner_page_selected@2x.png */; };
+		AB81BD8A1D41B10200E2A83B /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD891D41B10200E2A83B /* UMMobClick.framework */; };
+		AB81BD8C1D41C15000E2A83B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD8B1D41C15000E2A83B /* CoreTelephony.framework */; };
+		AB81BD8E1D41C16300E2A83B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD8D1D41C16300E2A83B /* Security.framework */; };
+		AB81BD901D41C18600E2A83B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD8F1D41C18600E2A83B /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,8 +315,6 @@
 		0AF675561CCF28F3002CE56B /* UIView+PressMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PressMenu.m"; sourceTree = "<group>"; };
 		0AF675571CCF28F3002CE56B /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
 		0AF675581CCF28F3002CE56B /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
-		0AF675A11CCF2EA8002CE56B /* banner__page_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner__page_unselected@2x.png"; sourceTree = "<group>"; };
-		0AF675A31CCF2EB6002CE56B /* banner__page_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner__page_selected@2x.png"; sourceTree = "<group>"; };
 		0AF675AB1CCF40E9002CE56B /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
 		0AF675AC1CCF40E9002CE56B /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
 		0AF675B41CCF6B35002CE56B /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
@@ -341,6 +343,13 @@
 		AB36DF5B1CFD287C00D7816A /* ZFSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFSessionModel.m; sourceTree = "<group>"; };
 		AB36DF5C1CFD287C00D7816A /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
 		AB36DF5D1CFD287C00D7816A /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
+		AB81BD7D1D40A6B400E2A83B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		AB81BD7F1D40A6BF00E2A83B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		AB81BD861D41AB9A00E2A83B /* banner_page_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_page_selected@2x.png"; sourceTree = "<group>"; };
+		AB81BD891D41B10200E2A83B /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMMobClick.framework; sourceTree = "<group>"; };
+		AB81BD8B1D41C15000E2A83B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		AB81BD8D1D41C16300E2A83B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		AB81BD8F1D41C18600E2A83B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B30C00AEA65989715D7217E4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E5072E4E02B11ED1DD3C68AE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -350,10 +359,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AD84E691CF3E72500DB0357 /* MessageUI.framework in Frameworks */,
+				AB81BD901D41C18600E2A83B /* libsqlite3.tbd in Frameworks */,
+				AB81BD8E1D41C16300E2A83B /* Security.framework in Frameworks */,
+				AB81BD8C1D41C15000E2A83B /* CoreTelephony.framework in Frameworks */,
 				0AEA0D881CED9FDB00660989 /* SystemConfiguration.framework in Frameworks */,
+				AB81BD801D40A6BF00E2A83B /* libz.tbd in Frameworks */,
+				0AD84E691CF3E72500DB0357 /* MessageUI.framework in Frameworks */,
 				0AF675CF1CD20D6A002CE56B /* AVFoundation.framework in Frameworks */,
 				0AF675CD1CD20D63002CE56B /* MediaPlayer.framework in Frameworks */,
+				AB81BD8A1D41B10200E2A83B /* UMMobClick.framework in Frameworks */,
 				062C2D588407A7288D3D827A /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -789,8 +803,7 @@
 		0AF675771CCF2E9E002CE56B /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				0AF675A31CCF2EB6002CE56B /* banner__page_selected@2x.png */,
-				0AF675A11CCF2EA8002CE56B /* banner__page_unselected@2x.png */,
+				AB81BD861D41AB9A00E2A83B /* banner_page_selected@2x.png */,
 				0AF675781CCF2E9E002CE56B /* tabbar */,
 			);
 			path = Image;
@@ -919,6 +932,12 @@
 		FF4CE4924EEE38AD3C04F073 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB81BD8F1D41C18600E2A83B /* libsqlite3.tbd */,
+				AB81BD8D1D41C16300E2A83B /* Security.framework */,
+				AB81BD8B1D41C15000E2A83B /* CoreTelephony.framework */,
+				AB81BD891D41B10200E2A83B /* UMMobClick.framework */,
+				AB81BD7F1D40A6BF00E2A83B /* libz.tbd */,
+				AB81BD7D1D40A6B400E2A83B /* libc++.tbd */,
 				0AD84E681CF3E72500DB0357 /* MessageUI.framework */,
 				0AEA0D871CED9FDB00660989 /* SystemConfiguration.framework */,
 				0AF675CE1CD20D6A002CE56B /* AVFoundation.framework */,
@@ -1050,15 +1069,14 @@
 				AB36DF611CFD287C00D7816A /* ZFPlayer.bundle in Resources */,
 				0AF13A731CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib in Resources */,
 				0AF585D71CE5A56100DE8950 /* DMLIST.db in Resources */,
-				0AF675A41CCF2EB6002CE56B /* banner__page_selected@2x.png in Resources */,
 				0A9605DE1CED4FFA00D04AC1 /* ZKDownLoadingCell.xib in Resources */,
 				0A5ED5BD1CEF042800946D9F /* setting_selected@2x.png in Resources */,
 				0A98AFBC1CCDE59D00721956 /* LaunchScreen.storyboard in Resources */,
-				0AF675A21CCF2EA8002CE56B /* banner__page_unselected@2x.png in Resources */,
 				0A5ED5BC1CEF042800946D9F /* search_selected@2x.png in Resources */,
 				0AF675B91CCF6B35002CE56B /* MBProgressHUD.bundle in Resources */,
 				AB36DF5E1CFD287C00D7816A /* LICENSE in Resources */,
 				0AF13A7A1CDC8B1B00C9BF93 /* ZKLikeListView.xib in Resources */,
+				AB81BD881D41AB9A00E2A83B /* banner_page_selected@2x.png in Resources */,
 				0A5B8EE21CE1A66B001C1940 /* ZKDMListCell.xib in Resources */,
 				0AEEF1951CD997E80096BC59 /* Assets.xcassets in Resources */,
 				0AC466A61CEAE9FA00646E68 /* ZKPageTips.xib in Resources */,
@@ -1292,6 +1310,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1336,6 +1355,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1359,6 +1379,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/peryi",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = peryi/Classes/Others/PeryiHeader.pch;
 				INFOPLIST_FILE = peryi/Info.plist;
@@ -1375,6 +1400,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/peryi",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = peryi/Classes/Others/PeryiHeader.pch;
 				INFOPLIST_FILE = peryi/Info.plist;

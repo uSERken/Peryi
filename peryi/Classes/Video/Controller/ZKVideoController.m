@@ -53,7 +53,7 @@
 
 //判断用户是否开启4G 播放
 @property (nonatomic,assign)   BOOL canUse4GPlay;
-//判断仅是4G状态
+//判断是否适合 wifi 播放
 @property (nonatomic,assign)   BOOL isWIFIPlay;
 //判断是否player 已加载视频并播放
 @property (nonatomic,assign) BOOL isPlay;
@@ -64,6 +64,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [MobClick beginLogPageView:@"VideoPage"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
@@ -91,6 +93,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"VideoPage"];
     self.navigationController.navigationBarHidden = NO;
     [UIApplication sharedApplication].statusBarHidden = NO;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
@@ -102,7 +105,7 @@
         _isCreate = NO;
         [self setUpAllView];
         _dataTools = [ZKDataTools sharedZKDataTools];
-        if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {//检查 URL 是否包含 html 否为本地视屏
+        if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {//检查 URL 是否包含 html 否为网络视屏
             _playView.videoURL = [NSURL URLWithString:addresUrlStr];
             _playView.hidden = NO;
             }else{
@@ -478,8 +481,6 @@
     _videoUrl = nil;
     _detailListView = nil;
     _dataTools = nil;
-    _isPlay = nil;
-    _isCreate = nil;
     
 }
 

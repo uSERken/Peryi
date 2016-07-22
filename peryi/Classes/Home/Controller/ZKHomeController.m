@@ -35,7 +35,7 @@
 @property (nonatomic, strong) ZKHttpTools *httpTools;
 
 @property (nonatomic, assign) BOOL isNetWorking;
-
+//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
 @property (nonatomic,assign)BOOL is4G;
 
 @property (nonatomic,strong)NSTimer *timer;
@@ -50,7 +50,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
-    
+    [MobClick beginLogPageView:@"HomePage"];
     _isNetWorking = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
@@ -59,6 +59,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
+    [MobClick endLogPageView:@"HomePage"];
     [super viewWillDisappear:animated];
     [self.navigationController.navigationBar setHidden:NO];
 }
@@ -129,6 +130,7 @@
 - (void)getDmListFromNetWithArr:(NSArray *)listArr{
     self.dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:listArr];
     self.slideView.listArr = self.dmList;
+    [self.collectionView reloadData];
     [_dataTools saveHomeDMListWithArry:listArr];
     }
 

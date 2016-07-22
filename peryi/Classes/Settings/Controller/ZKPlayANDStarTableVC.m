@@ -25,7 +25,8 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, assign) ZKPlayANDStarttType thisType;
-
+//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
+@property (nonatomic,assign)BOOL is4G;
 @end
 
 @implementation ZKPlayANDStarTableVC
@@ -33,11 +34,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"PlayAndStartPage"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [MobClick endLogPageView:@"PlayAndStartPage"];
+}
 
 - (id)initControllerWithType:(ZKPlayANDStarttType)type{
     self = [super init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
     _isNetWorking = YES;
     [self setUpView];
     _dataTools = [ZKDataTools sharedZKDataTools];
@@ -121,6 +132,7 @@
     if (_isNetWorking) {
         ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
+        vc.is4G = _is4G;
         [self.navigationController pushViewController:vc animated:YES];
 
     }else{
@@ -170,11 +182,17 @@
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
+    _is4G = NO;
     _isNetWorking = YES;
 }
 
 - (void)isNotNetWork{
+    _is4G = nil;
     _isNetWorking = NO;
+}
+
+- (void)is4GWAAN{
+    _is4G = YES;
 }
 
 -(void)dealloc{
