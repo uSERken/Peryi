@@ -108,8 +108,10 @@
          cell.accessoryView = switchview;
          cell.textLabel.text = @"是否允许3G/4G播放";
             if ([_model.isOpenNetwork isEqualToString:@"Yes"]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"open4G" object:nil];
                 switchview.on = YES;
             }else{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"close4G" object:nil];
                 switchview.on = NO;
             }
         }

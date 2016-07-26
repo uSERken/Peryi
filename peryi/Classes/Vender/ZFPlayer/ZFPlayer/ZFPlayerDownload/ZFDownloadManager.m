@@ -22,6 +22,12 @@
 // THE SOFTWARE.
 
 #import "ZFDownloadManager.h"
+#import "MBProgressHUD+Extend.h"
+
+typedef NS_ENUM(NSInteger, downState){
+    downStateStart = 0,     /** 下载中 */
+    downStateSuspended,     /** 下载暂停 */
+};
 
 @interface ZFDownloadManager()<NSCopying, NSURLSessionDelegate>
 
@@ -35,7 +41,12 @@
 @property (nonatomic, strong) NSMutableArray *downloadedArray;
 /** 下载中的模型数组*/
 @property (nonatomic, strong) NSMutableArray *downloadingArray;
+/** 判断是否打开4G */
+@property (nonatomic, assign) BOOL isOpen4G;
+/** 记录当前下载的url */
+@property (nonatomic, strong) NSString *downUrl;
 
+@property (nonatomic, assign) downState downState;
 
 @end
 
@@ -45,6 +56,11 @@
 {
     if (!_tasks) {
         _tasks = [NSMutableDictionary dictionary];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isWifi) name:isNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(open4G) name:@"open4G" object:nil];
+         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(close4G) name:@"close4G" object:nil];
     }
     return _tasks;
 }
@@ -231,6 +247,7 @@ static ZFDownloadManager *_downloadManager;
 - (void)handle:(NSString *)url
 {
     NSURLSessionDataTask *task = [self getTask:url];
+    _downUrl = url;
     if (task.state == NSURLSessionTaskStateRunning) {
         [self pause:url];
     } else {
@@ -244,8 +261,8 @@ static ZFDownloadManager *_downloadManager;
 - (void)start:(NSString *)url
 {
     NSURLSessionDataTask *task = [self getTask:url];
+    _downState = downStateStart;
     [task resume];
-    
     [self getSessionModel:task.taskIdentifier].stateBlock(DownloadStateStart);
 }
 
@@ -255,8 +272,8 @@ static ZFDownloadManager *_downloadManager;
 - (void)pause:(NSString *)url
 {
     NSURLSessionDataTask *task = [self getTask:url];
+    _downState = downStateSuspended;
     [task suspend];
-    
     [self getSessionModel:task.taskIdentifier].stateBlock(DownloadStateSuspended);
 }
 
@@ -518,6 +535,42 @@ static ZFDownloadManager *_downloadManager;
     if (![self.downloadedArray containsObject:sessionModel]) {
         [self.downloadedArray addObject:sessionModel];
     }
+}
+
+-(void)isWifi{
+    if (_downState == downStateSuspended) {
+        [self start:_downUrl];
+    }else{
+        [self pause:_downUrl];
+    }
+}
+
+- (void)isNotNetWork{
+    [self pause:_downUrl];
+}
+
+- (void)is4GWAAN{
+    if (!_isOpen4G) {
+        if (_downState == downStateSuspended) {
+            [self start:_downUrl];
+         }
+    }else{
+        [self pause:_downUrl];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注意" message:@"您正在使用4G网络，下载已暂停。开启设置后可继续使用4G下载。" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+
+- (void)open4G{
+    _isOpen4G = YES;
+}
+
+- (void)close4G{
+    _isOpen4G = NO;
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
