@@ -202,6 +202,7 @@ static ZFDownloadManager *_downloadManager;
         sessionModel.stream = stream;
         sessionModel.startTime = [NSDate date];
         sessionModel.fileName = ZFFileName(url);
+        sessionModel.isDownComplete = NO;
         [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
         [self.sessionModelsArray addObject:sessionModel];
         [self.downloadingArray addObject:sessionModel];
@@ -218,6 +219,7 @@ static ZFDownloadManager *_downloadManager;
                 sessionModel.stream = stream;
                 sessionModel.startTime = [NSDate date];
                 sessionModel.fileName = ZFFileName(url);
+                sessionModel.isDownComplete = YES;
                 [self.sessionModels setValue:sessionModel forKey:@(task.taskIdentifier).stringValue];
             }
         }
@@ -493,9 +495,11 @@ static ZFDownloadManager *_downloadManager;
     if ([self isCompletion:sessionModel.url]) {
         // 下载完成
         sessionModel.stateBlock(DownloadStateCompleted);
+        sessionModel.isDownComplete = YES;
     } else if (error){
         // 下载失败
         sessionModel.stateBlock(DownloadStateFailed);
+         sessionModel.isDownComplete = NO;
     }
     // 清除任务
     [self.tasks removeObjectForKey:ZFFileName(sessionModel.url)];

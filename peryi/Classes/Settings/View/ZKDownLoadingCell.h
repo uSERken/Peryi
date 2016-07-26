@@ -30,7 +30,5 @@ typedef void(^ZFDownloadBlock)(void);
 
 @property (nonatomic, strong) ZFSessionModel *sessionModel;
 
-- (void)addDownloadAnimation;
-- (void)removeDownloadAnimtion;
 
 @end

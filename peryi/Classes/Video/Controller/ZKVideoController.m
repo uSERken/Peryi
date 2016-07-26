@@ -118,7 +118,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    if (_is4G) {
+    if ((_is4G = nil)) {
         [self is4GsetVideoToPause];
     }
 }
@@ -251,7 +251,7 @@
             [weakSelf.activity startAnimating];
         }else{//没有数据时
             [MBProgressHUD hideHUD];
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"网络超时" message:@"您的网络出现问题，请检查您的网络！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"网络超时" message:@"您的网络连接断开，请检查您的网络！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             aler.tag = 1;
             [aler show];
         }

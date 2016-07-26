@@ -122,13 +122,13 @@ SingletonM(ZKHttpTools)
             }// 第一个for 结束
             if (listarr.count != 0 && listarr != nil) {
                 [playListdic addObject:listarr];
-                if (playListdic.count > 1) {
-                    //优先使用网页列表中的第二播放源 - -资源更好
-                    [playListdic exchangeObjectAtIndex:0 withObjectAtIndex:1];
-                }
             }
         }// 第二个for 结束
     }//播放列表 list结束
+    //如果播放源超过两条则优先使用网页列表中的第二播放源 - -资源更好
+    if (playListdic.count > 1) {
+        [playListdic exchangeObjectAtIndex:0 withObjectAtIndex:1];
+    }
     dmDetial[@"dmPlay"] = playListdic;
     //下载列表]
     NSString *infoText = nil;
@@ -178,8 +178,6 @@ SingletonM(ZKHttpTools)
         [likelist addObject:likeDict];
     }
     dmDetial[@"dmYourLike"] = likelist;
-    
-//    [dmDetial writeToFile:@"/Users/k/Desktop/dmList.plist" atomically:YES];
     return dmDetial;
 }
 
@@ -228,12 +226,10 @@ SingletonM(ZKHttpTools)
             }//内循环
         }//外循环 top3结束
         newDict[@"top3"] = topArr;
-        
         newDict[@"other"] = [self commondCellWithelement:allList];
         
     }//遍历 conent结束
     return newDict;
-//    [newDict writeToFile:@"/Users/k/Desktop/new.plist" atomically:YES];
 }
 
 

@@ -81,47 +81,6 @@
 }
 
 
-#pragma mark - 下载代理
-- (void)downloadResponse:(ZFSessionModel *)sessionModel{
-    if (self.donwloadArr) {
-        // 取到对应的cell上的model
-        NSArray *downloadings = self.donwloadArr[1];
-        for (ZFSessionModel *model in downloadings) {
-            if ([model.url isEqualToString:sessionModel.url]) {
-                // 取到当前下载model在数组的位置，来确定cell的具体位置
-                NSInteger index = [downloadings indexOfObject:model];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:1];
-                __weak ZKDownLoadingCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-                __weak typeof(self) weakSelf = self;
-                sessionModel.progressBlock = ^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,totalSize,progress*100];
-                        cell.speedLabel.text    = speed;
-                        cell.progress.progress  = progress;
-                    });
-                };
-                sessionModel.stateBlock = ^(DownloadState state){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (state == DownloadStateStart) {
-                            [cell addDownloadAnimation];
-                        }else if (state == DownloadStateCompleted) {
-                            // 更新数据源
-                            [weakSelf initData];
-                            [cell removeDownloadAnimtion];
-                        }else if (state == DownloadStateSuspended) {
-                            [cell removeDownloadAnimtion];
-                            cell.speedLabel.text = @"已暂停";
-                        }
-                    });
-                };
-            }
-        }
-    }
-
-    
-}
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -156,14 +115,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ZFSessionModel *model= self.donwloadArr[indexPath.section][indexPath.row];
-    NSString *url = [NSString stringWithFormat:@"file://%@",ZFFileFullpath(model.fileName)];
-    ZKVideoController *videoVC = [[ZKVideoController alloc] initWithAddress:url];
-    videoVC.localHtml = model.urlStr;
-    videoVC.is4G = _is4G;
-    [self.navigationController pushViewController:videoVC animated:YES];
+    if (model.isDownComplete) {
+        NSString *url = [NSString stringWithFormat:@"file://%@",ZFFileFullpath(model.fileName)];
+        NSLog(@"视屏地址%@",url);
+            ZKVideoController *videoVC = [[ZKVideoController alloc] initWithAddress:url];
+            videoVC.localHtml = model.urlStr;
+            videoVC.is4G = _is4G;
+            [self.navigationController pushViewController:videoVC animated:YES];
+        }
+  
+    
+
     
 }
 
@@ -191,6 +155,52 @@
 {
     return @[@"下载完成",@"下载中"][section];
 }
+
+
+#pragma mark - 下载代理
+- (void)downloadResponse:(ZFSessionModel *)sessionModel{
+    if (self.donwloadArr) {
+        // 取到对应的cell上的model
+        NSArray *downloadings = self.donwloadArr[1];
+        for (ZFSessionModel *model in downloadings) {
+            if ([model.url isEqualToString:sessionModel.url]) {
+                // 取到当前下载model在数组的位置，来确定cell的具体位置
+                NSInteger index = [downloadings indexOfObject:model];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:1];
+                __weak ZKDownLoadingCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+                __weak typeof(self) weakSelf = self;
+                sessionModel.progressBlock = ^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.progressLabel.text = [NSString stringWithFormat:@"%@/%@ (%.2f%%)",writtenSize,totalSize,progress*100];
+                        cell.speedLabel.text    = speed;
+                        cell.progress.progress  = progress;
+                        cell.downloadBtn.selected = YES;
+                    });
+                };
+               
+                sessionModel.stateBlock = ^(DownloadState state){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (state == DownloadStateStart) {
+                        }else if (state == DownloadStateCompleted) {
+                            // 更新数据源
+                            [weakSelf initData];
+                        }else if (state == DownloadStateSuspended) {
+                            //延迟0.1秒，以免下载进程关闭后仍未完全关闭
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                    cell.speedLabel.text = @"已暂停";
+                                    cell.downloadBtn.selected = NO;
+                            });
+                        }
+                    });
+                };
+            }
+        }
+    }
+    
+    
+}
+
+
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{

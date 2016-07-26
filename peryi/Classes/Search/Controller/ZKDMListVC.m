@@ -52,6 +52,7 @@
     [super viewDidLoad];
     self.title = _navTitle;
     [self setUpView];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     _pageTipsView.lastPageStr = _lastPage;
     _page = 2;
@@ -175,7 +176,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    if (_isNetWork) {
+    //为 wifi 或4g 的情况下加载动漫
+    if ((_is4G == YES) || (_is4G == NO)) {
         ZKListModel *model = self.dmListArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
         vc.is4G = _is4G;

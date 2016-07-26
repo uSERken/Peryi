@@ -35,38 +35,16 @@
 - (void)awakeFromNib{
     
     self.downloadBtn.clipsToBounds = YES;
-    
     [self.downloadBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.downloadBtn setTitle:@"🕘" forState:UIControlStateNormal];
+    [self.downloadBtn setTitle:@"↓" forState:UIControlStateSelected];
     
 }
 
-- (void)addDownloadAnimation{
-    if (self.downloadBtn && !self.hasDownloadAnimation) {
-        CAKeyframeAnimation *keyframeAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-        
-        NSValue *key1 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.centerX, self.downloadBtn.centerY)];
-        
-        NSValue *key2 = [NSValue valueWithCGPoint:CGPointMake(self.downloadBtn.centerX, self.downloadBtn.height+self.downloadBtn.y)];
-        
-        NSArray *varlues = @[key1,key2];
-        
-        keyframeAnimation.values = varlues;
-        
-        keyframeAnimation.duration = 1;
-        keyframeAnimation.repeatCount = MAXFLOAT;
-        
-        [self.downloadBtn.layer addAnimation:keyframeAnimation forKey:@"downloadBtn"];
-        [self.downloadBtn setTitle:@"↓" forState:UIControlStateNormal];
-        
-    }
-    
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
 }
 
-- (void)removeDownloadAnimtion{
-    _hasDownloadAnimation = NO;
-    [self.downloadBtn.layer removeAnimationForKey:@"downloadBtn"];
-    [self.downloadBtn setTitle:@"🕛" forState:UIControlStateNormal];
-}
 
 - (IBAction)clickDownloading:(id)sender {
     if (self.downloadBlock) {
@@ -76,7 +54,6 @@
 
 - (void)setSessionModel:(ZFSessionModel *)sessionModel{
     _sessionModel = sessionModel;
-//    _fileNameLabel.text = sessionModel.fileName;
     
     NSUInteger receivedSize = ZFDownloadLength(sessionModel.url);
     NSString *writtenSize = [NSString stringWithFormat:@"%.2f %@",

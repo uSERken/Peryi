@@ -59,8 +59,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    [MobClick endLogPageView:@"HomePage"];
     [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"HomePage"];
     [self.navigationController.navigationBar setHidden:NO];
 }
 

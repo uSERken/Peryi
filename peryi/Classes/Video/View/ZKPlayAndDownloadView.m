@@ -30,14 +30,12 @@
 //是否是播放列表
 @property (nonatomic, assign) BOOL isPlay;
 
-
 //选中的section
 @property (nonatomic ,assign)NSInteger selectSection;
 //选中的row
 @property (nonatomic ,assign)NSInteger selectIndex;
 //根据数据库得到集数选中
 @property (nonatomic ,assign)NSInteger firstIndex;
-
 //第一次进入显示
 @property (nonatomic ,assign)BOOL firstSel;
 
@@ -179,12 +177,14 @@ static NSString *ID = identifier;
 //背景选中样式判断
 - (void)selectCellBgWithCell:(ZKPlayAndDownCell *)cell withIndexPath:(NSIndexPath *)indexPath{
     //第一次进入默认选中
-    if (_firstSel) {
+    if (_isPlay) {
+      if (_firstSel) {
         if (_useList.count > 0  && indexPath.section == 0) {//如果列表大于1个则默认选中第二个
             if (indexPath.row == _firstIndex) {
                 cell.isSelected = YES;
             }
         }
+     }
     }else{
         cell.isSelected = NO;
     }
