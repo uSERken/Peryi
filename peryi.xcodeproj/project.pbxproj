@@ -127,6 +127,12 @@
 		AB36DF631CFD287C00D7816A /* ZFDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF591CFD287C00D7816A /* ZFDownloadManager.m */; };
 		AB36DF641CFD287C00D7816A /* ZFSessionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF5B1CFD287C00D7816A /* ZFSessionModel.m */; };
 		AB36DF651CFD287C00D7816A /* ZFPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB36DF5D1CFD287C00D7816A /* ZFPlayerView.m */; };
+		AB7E3A031D48ACB90034B0C7 /* home_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E39FD1D48ACB90034B0C7 /* home_normal@3x.png */; };
+		AB7E3A041D48ACB90034B0C7 /* home_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E39FE1D48ACB90034B0C7 /* home_selected@3x.png */; };
+		AB7E3A051D48ACB90034B0C7 /* search_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E39FF1D48ACB90034B0C7 /* search_normal@3x.png */; };
+		AB7E3A061D48ACB90034B0C7 /* search_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E3A001D48ACB90034B0C7 /* search_selected@3x.png */; };
+		AB7E3A071D48ACB90034B0C7 /* setting_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E3A011D48ACB90034B0C7 /* setting_normal@3x.png */; };
+		AB7E3A081D48ACB90034B0C7 /* setting_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7E3A021D48ACB90034B0C7 /* setting_selected@3x.png */; };
 		AB81BD801D40A6BF00E2A83B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD7F1D40A6BF00E2A83B /* libz.tbd */; };
 		AB81BD881D41AB9A00E2A83B /* banner_page_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB81BD861D41AB9A00E2A83B /* banner_page_selected@2x.png */; };
 		AB81BD8A1D41B10200E2A83B /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB81BD891D41B10200E2A83B /* UMMobClick.framework */; };
@@ -343,6 +349,12 @@
 		AB36DF5B1CFD287C00D7816A /* ZFSessionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFSessionModel.m; sourceTree = "<group>"; };
 		AB36DF5C1CFD287C00D7816A /* ZFPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFPlayerView.h; sourceTree = "<group>"; };
 		AB36DF5D1CFD287C00D7816A /* ZFPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFPlayerView.m; sourceTree = "<group>"; };
+		AB7E39FD1D48ACB90034B0C7 /* home_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_normal@3x.png"; sourceTree = "<group>"; };
+		AB7E39FE1D48ACB90034B0C7 /* home_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home_selected@3x.png"; sourceTree = "<group>"; };
+		AB7E39FF1D48ACB90034B0C7 /* search_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_normal@3x.png"; sourceTree = "<group>"; };
+		AB7E3A001D48ACB90034B0C7 /* search_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search_selected@3x.png"; sourceTree = "<group>"; };
+		AB7E3A011D48ACB90034B0C7 /* setting_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_normal@3x.png"; sourceTree = "<group>"; };
+		AB7E3A021D48ACB90034B0C7 /* setting_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_selected@3x.png"; sourceTree = "<group>"; };
 		AB81BD7D1D40A6B400E2A83B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		AB81BD7F1D40A6BF00E2A83B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		AB81BD861D41AB9A00E2A83B /* banner_page_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner_page_selected@2x.png"; sourceTree = "<group>"; };
@@ -812,6 +824,12 @@
 		0AF675781CCF2E9E002CE56B /* tabbar */ = {
 			isa = PBXGroup;
 			children = (
+				AB7E39FD1D48ACB90034B0C7 /* home_normal@3x.png */,
+				AB7E39FE1D48ACB90034B0C7 /* home_selected@3x.png */,
+				AB7E39FF1D48ACB90034B0C7 /* search_normal@3x.png */,
+				AB7E3A001D48ACB90034B0C7 /* search_selected@3x.png */,
+				AB7E3A011D48ACB90034B0C7 /* setting_normal@3x.png */,
+				AB7E3A021D48ACB90034B0C7 /* setting_selected@3x.png */,
 				0A5ED5B31CEF042800946D9F /* home_selected@2x.png */,
 				0A5ED5B41CEF042800946D9F /* home_normal@2x.png */,
 				0A5ED5B51CEF042800946D9F /* search_normal@2x.png */,
@@ -1058,13 +1076,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AD84E6B1CF4176D00DB0357 /* ZKAboutView.xib in Resources */,
+				AB7E3A071D48ACB90034B0C7 /* setting_normal@3x.png in Resources */,
 				0A5ED5BE1CEF042800946D9F /* setting_normal@2x.png in Resources */,
 				0A5ED5BA1CEF042800946D9F /* home_normal@2x.png in Resources */,
 				0A5ED5BB1CEF042800946D9F /* search_normal@2x.png in Resources */,
 				0AE40AFE1CD9A59F0069FB80 /* ZKPlayAndDownloadView.xib in Resources */,
 				0A5ED5A31CEEB19000946D9F /* ZKDMListTouchView.xib in Resources */,
+				AB7E3A081D48ACB90034B0C7 /* setting_selected@3x.png in Resources */,
+				AB7E3A031D48ACB90034B0C7 /* home_normal@3x.png in Resources */,
 				0AEF51EB1CE5D14600FF7892 /* ZKHistoryANDStartCell.xib in Resources */,
+				AB7E3A051D48ACB90034B0C7 /* search_normal@3x.png in Resources */,
 				0AC2347A1CD35745000D6141 /* ZKInfoView.xib in Resources */,
+				AB7E3A041D48ACB90034B0C7 /* home_selected@3x.png in Resources */,
 				0A5ED5B91CEF042800946D9F /* home_selected@2x.png in Resources */,
 				AB36DF611CFD287C00D7816A /* ZFPlayer.bundle in Resources */,
 				0AF13A731CDC6F2C00C9BF93 /* ZKLikeCollectionViewCell.xib in Resources */,
@@ -1076,6 +1099,7 @@
 				0AF675B91CCF6B35002CE56B /* MBProgressHUD.bundle in Resources */,
 				AB36DF5E1CFD287C00D7816A /* LICENSE in Resources */,
 				0AF13A7A1CDC8B1B00C9BF93 /* ZKLikeListView.xib in Resources */,
+				AB7E3A061D48ACB90034B0C7 /* search_selected@3x.png in Resources */,
 				AB81BD881D41AB9A00E2A83B /* banner_page_selected@2x.png in Resources */,
 				0A5B8EE21CE1A66B001C1940 /* ZKDMListCell.xib in Resources */,
 				0AEEF1951CD997E80096BC59 /* Assets.xcassets in Resources */,

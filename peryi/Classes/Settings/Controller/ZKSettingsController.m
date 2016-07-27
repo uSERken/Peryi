@@ -52,7 +52,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.title = @"设置";
+    self.title = @"我的";
     [self initView];
 }
 

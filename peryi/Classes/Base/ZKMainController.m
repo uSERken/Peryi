@@ -74,7 +74,7 @@
 - (void)setCustomizeTabBar{
     UIImage *backgroundImage = [UIImage imageNamed:@"tabbar_background"];
     NSArray *tabBarItemImages = @[@"home",@"search",@"setting"];
-    NSArray *tabBarItemTitles = @[@"首页",@"搜索",@"设置"];
+    NSArray *tabBarItemTitles = @[@"首页",@"搜索",@"我的"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[self tabBar] items]) {
         item.titlePositionAdjustment = UIOffsetMake(0, 3);

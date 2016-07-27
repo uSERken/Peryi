@@ -67,35 +67,36 @@
 
 #pragma mark 添加本地通知
 -(void)addLocalNotification{
+
+        //定义本地通知对象
+        UILocalNotification *notification=[[UILocalNotification alloc]init];
+        //设置调用时间
     
-    //定义本地通知对象
-    UILocalNotification *notification=[[UILocalNotification alloc]init];
-    //设置调用时间
-    notification.timeZone = [NSTimeZone defaultTimeZone];//本地时区
-    //每个周末调用通知
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *comp = [calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]];
-    NSInteger weekDay=[comp weekday];
-    if (weekDay == 7 || weekDay == 1) {
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *comp = [calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]];
+        NSInteger weekDay=[comp weekday];
+        if (weekDay != 7 || weekDay != 1) {
+            
+        }
+    
+        notification.repeatCalendar = calendar;
+        notification.timeZone = [NSTimeZone defaultTimeZone];//本地时区
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm:ss"];
-        NSDate *now = [formatter dateFromString:@"09:30:00"];//触发通知的时间
+        NSDate *now = [formatter dateFromString:@"17:13:00"];//触发通知的时间
         notification.fireDate = now;
-        
-    }
-    notification.repeatInterval=2;//通知重复次数
-     //notification.repeatCalendar=[NSCalendar currentCalendar];//当前日历，使用前最好设置时区等信息以便能够自动同步时间
-    //设置通知属性
-    notification.alertBody=@"又到周末啦~快来看一看(●'◡'●)ﾉ♥？"; //通知主体
-    notification.alertAction = NSLocalizedString(@"查看", nil);
-    notification.applicationIconBadgeNumber=1;//应用程序图标右上角显示的消息数
-    notification.alertAction=@"打开应用"; //待机界面的滑动动作提示
-    notification.alertLaunchImage=@"Default";//通过点击通知打开应用时的启动图片,这里使用程序启动图片
-    notification.soundName=UILocalNotificationDefaultSoundName;//收到通知时播放的声音，默认消息声音
-    //设置用户信息
-//    notification.userInfo=@{@"id":@1,@"user":@"Kenshin Cui"};//绑定到通知上的其他附加信息
+        notification.repeatInterval=1;//通知重复次数
+        //notification.repeatCalendar=[NSCalendar currentCalendar];//当前日历，使用前最好设置时区等信息以便能够自动同步时间
+        //设置通知属性
+        notification.alertBody=@"又到周末啦~快来看一看(●'◡'●)ﾉ♥？"; //通知主体
+        notification.alertAction = NSLocalizedString(@"查看", nil);
+        notification.alertAction=@"打开应用"; //待机界面的滑动动作提示
+        notification.alertLaunchImage=@"Default";//通过点击通知打开应用时的启动图片,这里使用程序启动图片
+        notification.soundName=UILocalNotificationDefaultSoundName;//收到通知时播放的声音，默认消息声音
+        notification.applicationIconBadgeNumber=1;//应用程序图标右上角显示的消息数
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+
 }
 
 -(void)detectionNetWorking{
