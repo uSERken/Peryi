@@ -47,15 +47,22 @@
 
 @implementation ZKHomeController
 
+
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getNotificationAction) name:getNoti object:nil];
+    }
+    return self;
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setHidden:YES];
     [MobClick beginLogPageView:@"HomePage"];
-    _isNetWorking = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -73,7 +80,7 @@
     _dataTools = [ZKDataTools sharedZKDataTools];
     _dmList = [ZKHomeList mj_objectArrayWithKeyValuesArray:[_dataTools getHomeDMlist]];
      [self setUpSlideViewAndCollectionView];
-    //进入界面后自动刷新
+    //进入界面后 延迟自动刷新
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
@@ -229,6 +236,10 @@
 
 - (void)is4GWAAN{
     _is4G = YES;
+}
+
+- (void)getNotificationAction{
+    [self.collectionView.mj_header beginRefreshing];
 }
 
 -(void)dealloc{

@@ -55,8 +55,7 @@ typedef void(^ZFDownloadStateBlock)(DownloadState state);
 
 /** 获得服务器这次请求 返回数据的总长度 */
 @property (nonatomic, assign) NSInteger totalLength;
-/** 判断下载是否完成 */
-@property (nonatomic,assign) BOOL isDownComplete;
+
 /** 下载进度 */
 @property (nonatomic, copy) ZFDownloadProgressBlock progressBlock;
 

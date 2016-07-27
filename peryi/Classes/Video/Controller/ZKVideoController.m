@@ -102,12 +102,12 @@
 
 -(id)initWithAddress:(NSString *)addresUrlStr{
     if (self = [super init]) {
-        _isCreate = NO;
         [self setUpAllView];
         _dataTools = [ZKDataTools sharedZKDataTools];
         if ([addresUrlStr rangeOfString:@"html"].location == NSNotFound) {//检查 URL 是否包含 html 否为网络视屏
+             _playView.hidden = NO;
             _playView.videoURL = [NSURL URLWithString:addresUrlStr];
-            _playView.hidden = NO;
+            _isCreate = YES;
             }else{
             _strUrl = addresUrlStr;
             [self loadListDataWithstrUrl:addresUrlStr];
@@ -153,7 +153,6 @@
     
     _activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self.view addSubview:_activity];
-    
     
     //加载播放界面
     if (!_playView) {
@@ -278,29 +277,28 @@
         [_activity stopAnimating];
         _playView.hidden = NO;
         _finalPlayWithUrl = docStr;
-        //用于重置播放
+        //地址为 MP4时可下载视频并保存当前播放数据传递
         if ([docStr rangeOfString:@"mp4"].location != NSNotFound){
             _playView.hasDownload = YES;
-            //从保存里的当前播放数据传递给下载
             NSDictionary *playHistory = [_dataTools getDetailAboutWithTitle:_detailList[@"dmAbout"][@"alt"]];
             _playView.aboutDict = playHistory;
             _playView.urlStr = playHistory[@"href"];
         }else{
             _playView.hasDownload = NO;
         }
-        if (_isCreate) {
+        if (_isCreate) {//已经创建
             [self.playView resetToPlayNewURL];
-            self.playView.videoURL = [NSURL URLWithString:docStr];
+             self.playView.videoURL = [NSURL URLWithString:docStr];
         }else{//第一次创建
-            _isCreate = YES;
+           
             //wifi 或者 用户开启4G 网络时才可播放
             if ( (_isWIFIPlay == YES && _is4G == NO ) ||  (_canUse4GPlay && _is4G ) ) {
               self.playView.videoURL = [NSURL URLWithString:docStr];
-                self.isPlay = YES;
-            } else if(!_canUse4GPlay && _is4G ){
+              _isCreate = YES;
+              self.isPlay = YES;
+            }else if(!_canUse4GPlay && _is4G ){
                 [self is4GsetVideoToPause];
             }else{
-                
             }
         }
         if (docStr != nil){

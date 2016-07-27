@@ -49,7 +49,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
-    _isNetWorking = YES;
     [self setUpView];
     _dataTools = [ZKDataTools sharedZKDataTools];
     if (type == ZKPlayANDStartHistoryType ) {
@@ -129,12 +128,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (_isNetWorking) {
+    if (_is4G || (_is4G == NO)) {
         ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
         vc.is4G = _is4G;
         [self.navigationController pushViewController:vc animated:YES];
-
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
     }
@@ -183,12 +181,10 @@
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
     _is4G = NO;
-    _isNetWorking = YES;
 }
 
 - (void)isNotNetWork{
     _is4G = nil;
-    _isNetWorking = NO;
 }
 
 - (void)is4GWAAN{

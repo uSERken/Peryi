@@ -112,12 +112,16 @@ static NSString *ID = identifier;
 - (void)setTitle:(NSString *)title{
     _title = title;
         //获取记录
-        ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:[_dataTools getDetailAboutWithTitle:title]];        //获取播放集数的纯数字
+    ZKDetailAbout *model = [ZKDetailAbout mj_objectWithKeyValues:[_dataTools getDetailAboutWithTitle:title]];
+    //获取播放集数的纯数字
     NSString *playTitle= [[model.currentplaytitle componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
     if (playTitle) {
-        self.firstIndex = [playTitle integerValue] - 1;
+        _firstIndex = [playTitle integerValue] - 1;
+        if (_firstIndex < 0) {
+            _firstIndex = 0;
+        }
     }else{
-        self.firstIndex = 0;
+        _firstIndex = 0;
     }
     _firstSel = YES;
 }
@@ -183,8 +187,8 @@ static NSString *ID = identifier;
             if (indexPath.row == _firstIndex) {
                 cell.isSelected = YES;
             }
-        }
-     }
+         }
+      }
     }else{
         cell.isSelected = NO;
     }

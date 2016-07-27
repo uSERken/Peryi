@@ -45,6 +45,11 @@
 //蜂窝数据
 #define isWWAN @"isWWAN"
 
+/**
+ *  接受到通知
+ */
+#define getNoti @"localNotification"
+
 #define  ZKSettingModelPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"settingModel.data"]
 
 #endif /* PrefixHeader_pch */

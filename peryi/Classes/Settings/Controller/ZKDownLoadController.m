@@ -11,13 +11,13 @@
 #import "ZKDownLoadingCell.h"
 #import "ZKDownloadCompleteCell.h"
 #import "ZKVideoController.h"
-@interface ZKDownLoadController ()<UITableViewDelegate,UITableViewDataSource,ZFDownloadDelegate>
+#import "MBProgressHUD+Extend.h"
+@interface ZKDownLoadController ()<UITableViewDelegate,UITableViewDataSource,ZFDownloadDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *donwloadArr;
-//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
-@property (nonatomic,assign)BOOL is4G;
-
+//判断是否已经提醒
+@property (nonatomic,assign) BOOL  isAlert;
 @end
 
 @implementation ZKDownLoadController
@@ -25,6 +25,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [MobClick beginLogPageView:@"DownLoadPage"];
+    _isAlert = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
@@ -39,7 +40,6 @@
       self.title = @"离线缓存";
      [self setUpView];
      self.view.backgroundColor = [UIColor whiteColor];
-
      [self initData];
     
 }
@@ -108,27 +108,39 @@
         cell.downloadBlock = ^ {
             [[ZFDownloadManager sharedInstance] download:downloadObject.url withHtmlStr:(NSString *)downloadObject.urlStr withAbout:downloadObject.aboutDict progress:^(CGFloat progress, NSString *speed, NSString *remainingTime, NSString *writtenSize, NSString *totalSize) {} state:^(DownloadState state) {}];
         };
+        
+        [self setDownLoadBtnForCell:cell];
         return cell;
     }
 }
 
+- (void)setDownLoadBtnForCell:(ZKDownLoadingCell *)cell{
+    if (_is4G && !_is4GSwitchOpen) {
+        cell.downloadBtn.enabled = NO;
+        if (_isAlert) {
+            _isAlert = NO;
+            [self alertMessage];
+        }
+    }else if((_is4G = nil)){
+        [MBProgressHUD showError:@"您的网络已断开"];
+        cell.downloadBtn.enabled = NO;
+    }else{
+        cell.downloadBtn.enabled = YES;
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ZFSessionModel *model= self.donwloadArr[indexPath.section][indexPath.row];
-    if (model.isDownComplete) {
+    BOOL isDownCompleted = [[ZFDownloadManager sharedInstance] isCompletion:model.url];
+    if (isDownCompleted) {
         NSString *url = [NSString stringWithFormat:@"file://%@",ZFFileFullpath(model.fileName)];
-        NSLog(@"视屏地址%@",url);
             ZKVideoController *videoVC = [[ZKVideoController alloc] initWithAddress:url];
             videoVC.localHtml = model.urlStr;
             videoVC.is4G = _is4G;
             [self.navigationController pushViewController:videoVC animated:YES];
         }
-  
-    
-
-    
 }
 
 
@@ -205,14 +217,30 @@
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
     _is4G = NO;
+    [self.tableView reloadData];
 }
 
 - (void)isNotNetWork{
     _is4G = nil;
+    [self.tableView reloadData];
 }
 
 - (void)is4GWAAN{
     _is4G = YES;
+    if (!_is4GSwitchOpen) {
+        NSArray *downArr = _donwloadArr[1];
+        for (int i = 0; i < downArr.count; i++) {
+            ZFSessionModel *model = downArr[i];
+            [[ZFDownloadManager sharedInstance] pause:model.url];
+        }
+        [self alertMessage];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)alertMessage{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"注意" message:@"您正使用4G 网络。如需使用4G下载，请在设置中开启！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 -(void)dealloc{

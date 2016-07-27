@@ -39,6 +39,14 @@
     //友盟应用分析
     [self steupBugCrash];
     
+    
+    //如果已经获得发送通知的授权则创建本地通知，否则请求授权(注意：如果不请求授权在设置中是没有对应的通知设置项的，也就是说如果从来没有发送过请求，即使通过设置也打不开消息允许设置)
+    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types!=UIUserNotificationTypeNone) {
+        [self addLocalNotification];
+    }else{
+        [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound  categories:nil]];
+    }
+    
     return YES;
 }
 
@@ -55,6 +63,39 @@
     [MobClick setEncryptEnabled:YES];
     [MobClick setLogEnabled:NO];
     [MobClick startWithConfigure:UMConfigInstance];
+}
+
+#pragma mark 添加本地通知
+-(void)addLocalNotification{
+    
+    //定义本地通知对象
+    UILocalNotification *notification=[[UILocalNotification alloc]init];
+    //设置调用时间
+    notification.timeZone = [NSTimeZone defaultTimeZone];//本地时区
+    //每个周末调用通知
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *comp = [calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]];
+    NSInteger weekDay=[comp weekday];
+    if (weekDay == 7 || weekDay == 1) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"HH:mm:ss"];
+        NSDate *now = [formatter dateFromString:@"09:30:00"];//触发通知的时间
+        notification.fireDate = now;
+        
+    }
+    notification.repeatInterval=2;//通知重复次数
+     //notification.repeatCalendar=[NSCalendar currentCalendar];//当前日历，使用前最好设置时区等信息以便能够自动同步时间
+    //设置通知属性
+    notification.alertBody=@"又到周末啦~快来看一看(●'◡'●)ﾉ♥？"; //通知主体
+    notification.alertAction = NSLocalizedString(@"查看", nil);
+    notification.applicationIconBadgeNumber=1;//应用程序图标右上角显示的消息数
+    notification.alertAction=@"打开应用"; //待机界面的滑动动作提示
+    notification.alertLaunchImage=@"Default";//通过点击通知打开应用时的启动图片,这里使用程序启动图片
+    notification.soundName=UILocalNotificationDefaultSoundName;//收到通知时播放的声音，默认消息声音
+    //设置用户信息
+//    notification.userInfo=@{@"id":@1,@"user":@"Kenshin Cui"};//绑定到通知上的其他附加信息
+
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 -(void)detectionNetWorking{
@@ -98,6 +139,18 @@
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
+// 接收本地通知时触发
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    [[NSNotificationCenter defaultCenter] postNotificationName:getNoti object:nil];
+}
+
+//注册通知
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings{
+    if (notificationSettings.types!=UIUserNotificationTypeNone) {
+        [self addLocalNotification];
+    }
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -110,6 +163,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+      [[UIApplication sharedApplication]setApplicationIconBadgeNumber:0];//进入前台取消应用消息图标
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -202,6 +256,7 @@
     }
 }
 
+#pragma mark - 3DTouch 点击
 - (void)application:(UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler{
       ZKMainController *mainVC = (ZKMainController *)self.window.rootViewController;
     if ([shortcutItem.localizedTitle isEqual:@"搜索"]) {
@@ -214,5 +269,8 @@
     
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

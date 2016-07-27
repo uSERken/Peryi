@@ -9,7 +9,7 @@
 #import "ZKDownLoadingCell.h"
 #import <MJExtension/MJExtension.h>
 #import "ZKDetailAbout.h"
-
+#import "ZFDownloadManager.h"
 
 @interface ZKDownLoadingCell()
 

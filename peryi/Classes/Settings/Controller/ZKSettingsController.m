@@ -22,20 +22,32 @@
 @property (nonatomic, strong) UITableView *tabelView;
 
 @property (nonatomic, strong) NSArray *functionArr;
-
+//配置信息模型
 @property (nonatomic, strong) ZKSettingModel *model;
 
-@property (nonatomic,assign)BOOL isNetWorking;
+//判断是否开启4G 播放下载
+@property (nonatomic,assign) BOOL is4GSwitchOpen;
+//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
+@property (nonatomic,assign) BOOL is4G;
 @end
 
 @implementation ZKSettingsController
 
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWork) name:isNotNet object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(is4GWAAN) name:isWWAN object:nil];
+    }
+    return self;
+}
+
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     _model = [ZKSettingModelTool getSettingWithModel];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNetWork) name:isNet object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(isNotNetWrok) name:isNotNet object:nil];
-    [self.tabelView reloadData];
+        [self.tabelView reloadData];
 }
 
 - (void)viewDidLoad{
@@ -106,13 +118,13 @@
          UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
          [switchview addTarget:self action:@selector(updateSwitchAtIndexPath:) forControlEvents:UIControlEventValueChanged];
          cell.accessoryView = switchview;
-         cell.textLabel.text = @"是否允许3G/4G播放";
+         cell.textLabel.text = @"是否允许3G/4G播放下载";
             if ([_model.isOpenNetwork isEqualToString:@"Yes"]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"open4G" object:nil];
                 switchview.on = YES;
+                 _is4GSwitchOpen = YES;
             }else{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"close4G" object:nil];
                 switchview.on = NO;
+                 _is4GSwitchOpen = NO;
             }
         }
     }else{
@@ -132,11 +144,13 @@
     
     if (indexPath.section == 0) {
         ZKDownLoadController *downC = [[ZKDownLoadController alloc] init];
+        downC.is4GSwitchOpen = _is4GSwitchOpen;
+        downC.is4G = _is4G;
         [self pushControllerWithController:downC];
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             ZKPlayANDStarTableVC *StartVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartCollectionType];
-            StartVC.isNetWorking = _isNetWorking;
+            StartVC.isNetWorking = _is4G;
             [self pushControllerWithController:StartVC];
         }else{
             ZKPlayANDStarTableVC *HisttoryVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartHistoryType];
@@ -183,11 +197,13 @@
     if ([switchView isOn]){
         model.isOpenNetwork = @"Yes";
         [ZKSettingModelTool saveSettingWithModel:model];
+         _is4GSwitchOpen = YES;
         [MBProgressHUD showSuccess:@"开启3G/4G播放"];
     }
     else{
         model.isOpenNetwork = @"No";
         [ZKSettingModelTool saveSettingWithModel:model];
+         _is4GSwitchOpen = NO;
         [MBProgressHUD showSuccess:@"关闭3G/4G播放"];
     }
     _model = nil;
@@ -239,12 +255,18 @@
 
 
 - (void)isNetWork{
-    _isNetWorking = YES;
+    _is4G = NO;
+  
 }
 
-- (void)isNotNetWrok{
-    _isNetWorking = NO;
+- (void)isNotNetWork{
+    _is4G = nil;
 }
+
+- (void)is4GWAAN{
+    _is4G = YES;
+}
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }

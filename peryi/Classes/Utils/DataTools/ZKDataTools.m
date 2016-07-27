@@ -145,8 +145,9 @@ SingletonM(ZKDataTools);
     NSString *savesSql =  nil;
     if (fromType == saveList) {
         if ([self isRepateWithHistoryOrStartWithTitle:model.alt withType:getHistory]) {
-            savesSql = @"insert into history (title, src,current,href,currentplaytitle,currentplayhref) values(?,?,?,?,?,?)";
-            [_db executeUpdate:savesSql,model.alt,model.src,model.about[@"update"],model.href,model.currentplaytitle,model.currentplayhref];
+            savesSql = @"insert into history (title, src,current,href,currentplaytitle,currentplayhref,date) values(?,?,?,?,?,?,?)";
+             NSDate *nowTime = [self getNowTime];
+            [_db executeUpdate:savesSql,model.alt,model.src,model.about[@"update"],model.href,model.currentplaytitle,model.currentplayhref,nowTime];
         }
     }else{
         if ([self isRepateWithHistoryOrStartWithTitle:model.title withType:getStart]) {
@@ -163,8 +164,9 @@ SingletonM(ZKDataTools);
     _db = [FMDatabase databaseWithPath:dbpath];
     if ([_db open]) {
         //更新历史
-        NSString *hissSql = @"update history set currentplaytitle=?, currentplayhref=? where title=?";
-        [_db executeUpdate:hissSql,playTitle,href,title];
+        NSString *hissSql = @"update history set currentplaytitle=?, currentplayhref=? , date=? where title=?";
+        NSDate *nowTime = [self getNowTime];
+        [_db executeUpdate:hissSql,playTitle,href,nowTime,title];
         //先查询在收藏是否有再更新
         NSString *selStartSql = @"select * from start where title=?";
         FMResultSet *startSet = [_db executeQuery:selStartSql,title];
@@ -186,7 +188,7 @@ SingletonM(ZKDataTools);
     NSMutableArray *arr = [NSMutableArray array];
     NSString *selectSql = nil;
     if (from == getHistory) {
-        selectSql = @"select * from history";
+        selectSql = @"select * from history order by date(date) asc";
     }else{
         selectSql = @"select * from start";
     }
@@ -396,5 +398,17 @@ SingletonM(ZKDataTools);
     }
 }
 
+- (NSDate *)getNowTime{
+    
+    NSDate *time = [NSDate date];
+    
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    
+    NSInteger interval = [zone secondsFromGMTForDate: time];
+    
+    NSDate *nowTime = [time  dateByAddingTimeInterval: interval];
+    
+    return nowTime;
+}
 
 @end

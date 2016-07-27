@@ -24,27 +24,11 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
     [self setupViewControllers];
     
-    [self thisNetWork];
 }
 
-//通知当前网络状态
-- (void)thisNetWork{
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        if (status == AFNetworkReachabilityStatusNotReachable || status == AFNetworkReachabilityStatusUnknown) {
-            [MBProgressHUD showError:@"您的网络已断开"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:isNotNet object:nil];
-        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
-            NSLog(@"4G");
-            [[NSNotificationCenter defaultCenter] postNotificationName:isWWAN object:nil];
-        }else{
-            NSLog(@"WIFI");
-            [[NSNotificationCenter defaultCenter] postNotificationName:isNet object:nil];
-        }
-    }];
-}
 
 // 哪些页面支持自动转屏
 - (BOOL)shouldAutorotate{
@@ -78,8 +62,10 @@
     
     [self setCustomizeTabBar];
     
-     self.delegate = self;
+    self.delegate = self;
     
+    //判断网络状态
+    [self thisNetWork];
 }
 
 /**
@@ -101,7 +87,7 @@
         index++;
         
     }
-    
+
 }
 
 - (BOOL)tabBarController:(RDVTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
@@ -119,6 +105,29 @@
     
     
     return YES;
+}
+
+//通知当前网络状态
+- (void)thisNetWork{
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status == AFNetworkReachabilityStatusNotReachable || status == AFNetworkReachabilityStatusUnknown) {
+            [MBProgressHUD showError:@"您的网络已断开"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNotNet object:nil];
+        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
+            NSLog(@"4G");
+            [[NSNotificationCenter defaultCenter] postNotificationName:isWWAN object:nil];
+        }else{
+            NSLog(@"WIFI");
+            [[NSNotificationCenter defaultCenter] postNotificationName:isNet object:nil];
+        }
+    }];
+}
+
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
