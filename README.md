@@ -16,8 +16,8 @@
 
 ## 编译、测试环境
 * Xcode 7.3.1
-* IOS 9.3.2
-
+* IOS 9.3
+* 支持 IOS8 级以上
 ## 部分演示效果
 
  ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E4%B8%BB%E9%A1%B5.png)
