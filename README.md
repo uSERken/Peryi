@@ -20,12 +20,11 @@
 
 ## 部分演示效果
 
- ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/IMG_0122.PNG)
- ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/IMG_0123.PNG)
- ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/IMG_0124.PNG)
- ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/IMG_0125.PNG)
-
-
+ ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E4%B8%BB%E9%A1%B5.png)
+ ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E6%90%9C%E7%B4%A2.png)
+ ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E6%90%9C%E7%B4%A2%E5%88%97%E8%A1%A8.png)
+ ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E6%92%AD%E6%94%BE.png)
+ ![图片演示效果](https://github.com/uSERken/Peryi/blob/master/%E6%BC%94%E7%A4%BA%E5%9B%BE%E7%89%87/%E6%89%8B%E5%8A%BF%E6%8E%A7%E5%88%B6.png)
 
 ####[CocoaPods](http://cocoapods.org/)里面用到的第三方类库
  - [hpple](https://github.com/topfunky/hpple)：html解析
