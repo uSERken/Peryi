@@ -115,13 +115,13 @@
 }
 
 - (void)setDownLoadBtnForCell:(ZKDownLoadingCell *)cell{
-    if (_is4G && !_is4GSwitchOpen) {
+    if ( _netWorkStatus == NetWAAN && !_is4GSwitchOpen) {
         cell.downloadBtn.enabled = NO;
         if (_isAlert) {
             _isAlert = NO;
             [self alertMessage];
         }
-    }else if((_is4G = nil)){
+    }else if(_netWorkStatus == NetNil){
         [MBProgressHUD showError:@"您的网络已断开"];
         cell.downloadBtn.enabled = NO;
     }else{
@@ -138,7 +138,7 @@
         NSString *url = [NSString stringWithFormat:@"file://%@",ZFFileFullpath(model.fileName)];
             ZKVideoController *videoVC = [[ZKVideoController alloc] initWithAddress:url];
             videoVC.localHtml = model.urlStr;
-            videoVC.is4G = _is4G;
+            videoVC.netWorkStatus = _netWorkStatus;
             [self.navigationController pushViewController:videoVC animated:YES];
         }
 }
@@ -216,17 +216,17 @@
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
     [self.tableView reloadData];
 }
 
 - (void)isNotNetWork{
-    _is4G = nil;
+    _netWorkStatus = NetNil;
     [self.tableView reloadData];
 }
 
 - (void)is4GWAAN{
-    _is4G = YES;
+    _netWorkStatus = NetWAAN;
     if (!_is4GSwitchOpen) {
         NSArray *downArr = _donwloadArr[1];
         for (int i = 0; i < downArr.count; i++) {

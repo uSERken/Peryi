@@ -41,8 +41,8 @@
 @property (nonatomic, assign) BOOL isNetWorking;
 //无数据时的提醒文字
 @property (nonatomic, strong) UILabel *tipLabel;
-//判定网络状态，4G时为 YES，WIFI 时为 NO，无网络时为 nil
-@property (nonatomic,assign)BOOL is4G;
+//网络状态
+@property (nonatomic,assign) netWorkStatus netWorkStatus;
 
 @end
 
@@ -167,7 +167,7 @@
         vc.dmListDict = listDict;
         vc.pageStyle = urlStr;
         vc.navTitle = title;
-        vc.is4G = _is4G;
+        vc.netWorkStatus = _netWorkStatus;
         [weakSelf.navigationController pushViewController:vc animated:YES];
         [MBProgressHUD hideHUD];
     }];
@@ -252,7 +252,7 @@
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
     _isNetWorking = YES;
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
     [_tipLabel removeFromSuperview];
     WeakSelf;
     [weakSelf.httpTools searchHomeListgetDatasuccess:^(NSArray *listArr) {
@@ -276,13 +276,13 @@
 }
 
 - (void)isNotNetWork{
-    _is4G = nil;
+    _netWorkStatus = NetNil;
     _isNetWorking = NO;
     [self getTypeListFromDB];
 }
 
 -(void)is4GWAAN{
-    _is4G = YES;
+    _netWorkStatus = NetWAAN;
 }
 
 /**

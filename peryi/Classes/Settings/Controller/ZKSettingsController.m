@@ -27,8 +27,8 @@
 
 //判断是否开启4G 播放下载
 @property (nonatomic,assign) BOOL is4GSwitchOpen;
-//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
-@property (nonatomic,assign) BOOL is4G;
+//网络状态
+@property (nonatomic,assign) netWorkStatus netWorkStatus;
 @end
 
 @implementation ZKSettingsController
@@ -145,12 +145,12 @@
     if (indexPath.section == 0) {
         ZKDownLoadController *downC = [[ZKDownLoadController alloc] init];
         downC.is4GSwitchOpen = _is4GSwitchOpen;
-        downC.is4G = _is4G;
+        downC.netWorkStatus = _netWorkStatus;
         [self pushControllerWithController:downC];
     }else if(indexPath.section == 1){
         if (indexPath.row == 0) {
             ZKPlayANDStarTableVC *StartVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartCollectionType];
-            StartVC.isNetWorking = _is4G;
+            StartVC.netWorkStatus = _netWorkStatus;
             [self pushControllerWithController:StartVC];
         }else{
             ZKPlayANDStarTableVC *HisttoryVC = [[ZKPlayANDStarTableVC alloc] initControllerWithType:ZKPlayANDStartHistoryType];
@@ -255,16 +255,16 @@
 
 
 - (void)isNetWork{
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
   
 }
 
 - (void)isNotNetWork{
-    _is4G = nil;
+       _netWorkStatus = NetNil;
 }
 
 - (void)is4GWAAN{
-    _is4G = YES;
+       _netWorkStatus = NetWAAN;
 }
 
 - (void)dealloc{

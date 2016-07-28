@@ -77,9 +77,9 @@
     }else{
         _canUse4GPlay = NO;
     }
-    if (_is4G) {
+    if (_netWorkStatus == NetWAAN) {
         _isWIFIPlay = NO;
-    }else if(_is4G == NO){
+    }else if(_netWorkStatus == NetWIFI){
         _isWIFIPlay = YES;
     }else{
         _isWIFIPlay = NO;
@@ -118,7 +118,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    if ((_is4G = nil)) {
+    if (_netWorkStatus == NetNil) {
         [self is4GsetVideoToPause];
     }
 }
@@ -250,7 +250,7 @@
             [weakSelf.activity startAnimating];
         }else{//没有数据时
             [MBProgressHUD hideHUD];
-            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"网络超时" message:@"您的网络连接断开，请检查您的网络！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIAlertView *aler = [[UIAlertView alloc] initWithTitle:@"网络错误" message:@"您的网络连接断开，请检查您的网络！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             aler.tag = 1;
             [aler show];
         }
@@ -292,11 +292,11 @@
         }else{//第一次创建
            
             //wifi 或者 用户开启4G 网络时才可播放
-            if ( (_isWIFIPlay == YES && _is4G == NO ) ||  (_canUse4GPlay && _is4G ) ) {
+            if ( (_isWIFIPlay == YES && _netWorkStatus == NetWIFI ) ||  (_canUse4GPlay && _netWorkStatus == NetWAAN ) ) {
               self.playView.videoURL = [NSURL URLWithString:docStr];
               _isCreate = YES;
               self.isPlay = YES;
-            }else if(!_canUse4GPlay && _is4G ){
+            }else if(!_canUse4GPlay && _netWorkStatus == NetWAAN ){
                 [self is4GsetVideoToPause];
             }else{
             }
@@ -367,10 +367,10 @@
 }
 
 #pragma mark - wifi 4g 网络处理
-//启用4G网络的时候
+//启用蜂窝网络的时候
 - (void)is4GWAAN{
+    _netWorkStatus = NetWAAN;
     _isWIFIPlay = NO;
-    _is4G = YES;
     if (_isPlay) {
        [_playView pause];
     }
@@ -388,8 +388,8 @@
 }
 
 - (void)isNetWork{
+    _netWorkStatus = NetWIFI;
     _isWIFIPlay = YES;
-    _is4G = NO;
     _detailListView.hidden = NO;
     NSArray *dmPlay = _detailList[@"dmPlay"];
     //若离线进入播放后网络可用即重新加载数据
@@ -399,8 +399,8 @@
 }
 
 - (void)isNotNetWork{
+    _netWorkStatus = NetNil;
     _isWIFIPlay = NO;
-     _is4G = nil;
     _detailListView.hidden = YES;
 }
 
@@ -423,6 +423,7 @@
             }
         }
     }else if (alertView.tag ==1){
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

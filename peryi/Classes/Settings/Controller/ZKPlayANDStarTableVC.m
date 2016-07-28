@@ -25,8 +25,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, assign) ZKPlayANDStarttType thisType;
-//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
-@property (nonatomic,assign)BOOL is4G;
+
 @end
 
 @implementation ZKPlayANDStarTableVC
@@ -128,10 +127,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (_is4G || (_is4G == NO)) {
+    if (_netWorkStatus == NetWIFI || _netWorkStatus == NetWAAN ) {
         ZKDetailAbout *model = self.historyAndStartArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
-        vc.is4G = _is4G;
+        vc.netWorkStatus = _netWorkStatus;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
@@ -180,15 +179,15 @@
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
 }
 
 - (void)isNotNetWork{
-    _is4G = nil;
+    _netWorkStatus = NetNil;
 }
 
 - (void)is4GWAAN{
-    _is4G = YES;
+    _netWorkStatus = NetWAAN;
 }
 
 -(void)dealloc{

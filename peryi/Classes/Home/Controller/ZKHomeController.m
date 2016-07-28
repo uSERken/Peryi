@@ -35,8 +35,8 @@
 @property (nonatomic, strong) ZKHttpTools *httpTools;
 
 @property (nonatomic, assign) BOOL isNetWorking;
-//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
-@property (nonatomic,assign)BOOL is4G;
+//网络状态
+@property (nonatomic,assign) netWorkStatus netWorkStatus;
 
 @property (nonatomic,strong)NSTimer *timer;
 
@@ -153,7 +153,7 @@
 
 - (void)goToVideoControllerWithStrUrl:(NSString *)strUrl{
     ZKVideoController *viewCtr = [[ZKVideoController alloc] initWithAddress:strUrl];
-    viewCtr.is4G = _is4G;
+    viewCtr.netWorkStatus = _netWorkStatus;
     [self.navigationController pushViewController:viewCtr animated:YES];
 }
 
@@ -226,16 +226,16 @@
 
 - (void)isNetWork{
     _isNetWorking = YES;
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
 }
 
 - (void)isNotNetWork{
     _isNetWorking = NO;
-    _is4G = nil;
+    _netWorkStatus = NetNil;
 }
 
 - (void)is4GWAAN{
-    _is4G = YES;
+    _netWorkStatus = NetWAAN;
 }
 
 - (void)getNotificationAction{

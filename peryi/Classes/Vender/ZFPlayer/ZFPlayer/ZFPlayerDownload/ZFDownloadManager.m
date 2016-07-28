@@ -25,7 +25,7 @@
 
 typedef NS_ENUM(NSInteger, downState){
     downStateStart = 0,     /** 下载中 */
-    downStateSuspended,     /** 下载暂停 */
+    downStateSuspended     /** 下载暂停 */
 };
 
 @interface ZFDownloadManager()<NSCopying, NSURLSessionDelegate>

@@ -177,10 +177,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     //为 wifi 或4g 的情况下加载动漫
-    if ((_is4G == YES) || (_is4G == NO)) {
+    if (_netWorkStatus == NetWIFI || _netWorkStatus == NetWAAN) {
         ZKListModel *model = self.dmListArr[indexPath.row];
         ZKVideoController *vc = [[ZKVideoController alloc] initWithAddress:model.href];
-        vc.is4G = _is4G;
+        vc.netWorkStatus = _netWorkStatus;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         [MBProgressHUD showError:@"您的网络已断开"];
@@ -251,17 +251,17 @@
 
 
 - (void)isWork{
-    _is4G = NO;
+    _netWorkStatus = NetWIFI;
     _isNetWork = YES;
 }
 
 - (void)isNotNetWork{
-    _is4G = nil;
+    _netWorkStatus = NetNil;
     _isNetWork = NO;
 }
 
 -(void)is4GWAAN{
-    _is4G = YES;
+    _netWorkStatus = NetWAAN;
 }
 
 -(void)dealloc{

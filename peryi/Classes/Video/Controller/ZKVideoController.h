@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, requestType) {
 
 @property (nonatomic, strong) NSString *localHtml;
 
-//为 nil 时无网络，NO 时是 wifi，YES 时是4G 网络
-@property (nonatomic,assign)BOOL is4G;
+//网络状态
+@property (nonatomic,assign) netWorkStatus netWorkStatus;
 
 @end

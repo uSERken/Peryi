@@ -335,6 +335,7 @@
 		0AF675CC1CD20D63002CE56B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0AF675CE1CD20D6A002CE56B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		163565F221DD6E38340B6102 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		AB13ACF91D49AC24001F5AA9 /* publicDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = publicDefine.h; sourceTree = "<group>"; };
 		AB36DF4E1CFD287C00D7816A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		AB36DF4F1CFD287C00D7816A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AB36DF511CFD287C00D7816A /* ZFBrightnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBrightnessView.h; sourceTree = "<group>"; };
@@ -730,6 +731,7 @@
 		0A98AFF01CCDE79200721956 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				AB13ACF91D49AC24001F5AA9 /* publicDefine.h */,
 				0A5697EF1CCF054500F55397 /* PeryiHeader.pch */,
 				0A5697F01CCF0D5500F55397 /* Singelon.h */,
 				0AF585D01CE5A16800DE8950 /* DataTools */,
