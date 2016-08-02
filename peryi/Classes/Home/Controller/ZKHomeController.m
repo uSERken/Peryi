@@ -34,7 +34,6 @@
 
 @property (nonatomic, strong) ZKHttpTools *httpTools;
 
-@property (nonatomic, assign) BOOL isNetWorking;
 //网络状态
 @property (nonatomic,assign) netWorkStatus netWorkStatus;
 
@@ -93,7 +92,7 @@
     }
     WeakSelf;
     self.slideView.tapActionBlock=^(ZKHomeList *homeListModel){
-        if (weakSelf.isNetWorking) {
+        if (_netWorkStatus == NetWIFI || _netWorkStatus == NetWAAN) {
             ZKHomeList *model = homeListModel;
             [weakSelf goToVideoControllerWithStrUrl:model.href];
         }else{
@@ -181,7 +180,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (_isNetWorking) {
+    if (_netWorkStatus == NetWIFI || _netWorkStatus == NetWAAN) {
         ZKHomeList *selectModel = _dmList[indexPath.row];
         [self goToVideoControllerWithStrUrl:selectModel.href];
     }else{
@@ -225,12 +224,11 @@
 }
 
 - (void)isNetWork{
-    _isNetWorking = YES;
+   
     _netWorkStatus = NetWIFI;
 }
 
 - (void)isNotNetWork{
-    _isNetWorking = NO;
     _netWorkStatus = NetNil;
 }
 

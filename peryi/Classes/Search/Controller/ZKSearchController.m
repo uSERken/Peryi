@@ -37,8 +37,6 @@
 
 @property (nonatomic, strong) ZKDataTools *dataTools;
 
-//判断是否有网络
-@property (nonatomic, assign) BOOL isNetWorking;
 //无数据时的提醒文字
 @property (nonatomic, strong) UILabel *tipLabel;
 //网络状态
@@ -131,7 +129,7 @@
     
         WeakSelf;
         _searchViewVC.actionBlock=^(NSString *text){
-            if (weakSelf.isNetWorking) {
+            if (weakSelf.netWorkStatus == NetWIFI || weakSelf.netWorkStatus == NetWAAN) {
                 [MBProgressHUD showMessage:@"请稍候..."];
                 [weakSelf.httpTools serarchWithString:text withPage:nil getDatasuccess:^(NSDictionary *listDict) {
                     NSArray *arr = listDict[@"list"];
@@ -206,7 +204,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(nonnull NSIndexPath *)indexPath{
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-    if (_isNetWorking) {
+    if (_netWorkStatus == NetWIFI || _netWorkStatus == NetWAAN) {
         ZKTypeModel *model = _typeList[indexPath.section][indexPath.row];
         [self getSearchWithType:model.href withTitle:model.title];
     }else{
@@ -251,7 +249,6 @@
 
 #pragma mark - 网络判断后加载数据
 - (void)isNetWork{
-    _isNetWorking = YES;
     _netWorkStatus = NetWIFI;
     [_tipLabel removeFromSuperview];
     WeakSelf;
@@ -277,7 +274,6 @@
 
 - (void)isNotNetWork{
     _netWorkStatus = NetNil;
-    _isNetWorking = NO;
     [self getTypeListFromDB];
 }
 
