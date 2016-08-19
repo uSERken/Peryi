@@ -72,9 +72,9 @@
         notification.timeZone = [NSTimeZone defaultTimeZone];//本地时区
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm:ss"];
-        NSDate *now = [formatter dateFromString:@"20:00:00"];//触发通知的时间
-        notification.fireDate = now;
-        notification.repeatInterval= kCFCalendarUnitWeekday;//通知重复次数
+        NSDate *notificationTime = [formatter dateFromString:@"20:00:00"];//触发通知的时间
+        notification.fireDate = notificationTime;
+        notification.repeatInterval= kCFCalendarUnitWeekOfMonth;//通知重复次数
         //设置通知属性
         notification.alertBody=@"又更新啦~快来看看吧(●'◡'●)ﾉ♥？"; //通知主体
         notification.alertAction = NSLocalizedString(@"查看", nil);
