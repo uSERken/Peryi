@@ -272,8 +272,11 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
 
     //加载网页完成后还需加载视频连接
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *docStr=[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('cciframe').getAttribute('src')"];//获取
+        if (docStr != NULL && ![docStr  isEqual: @""]) {
+            [_webView reload];
+        }
         [_activity stopAnimating];
         _playView.hidden = NO;
         _finalPlayWithUrl = docStr;
